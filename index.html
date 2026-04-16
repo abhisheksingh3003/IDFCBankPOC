@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mastercard - Modern Trip Planning</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            red: {
+              50: '#fff1f1',
+              100: '#ffe1e1',
+              200: '#ffc9c9',
+              300: '#ffa1a1',
+              400: '#ff6969',
+              500: '#ff3a3a',
+              600: '#EB001B', // Primary Mastercard Brand Red
+              700: '#c50016',
+              800: '#a10012',
+              900: '#85000f',
+              950: '#480006',
+            },
+            brand: {
+              red: '#EB001B',
+              orange: '#FF5F00',
+              yellow: '#F79E1B',
+            },
+            amber: {
+              400: '#FF5F00', // Mapping amber-400 to Mastercard Orange for consistency
+              500: '#F79E1B', // Mastercard Yellow
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html,
+    body,
+    #root {
+      height: 100%;
+      min-height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Custom scrollbar for a cleaner UI */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    .dark::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .mc-gradient {
+      background: linear-gradient(135deg, #EB001B 0%, #FF5F00 50%, #F79E1B 100%);
+    }
+
+    .mc-gradient-text {
+      background: linear-gradient(135deg, #EB001B 0%, #FF5F00 50%, #F79E1B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .mc-gradient-border {
+      border-image: linear-gradient(135deg, #EB001B 0%, #FF5F00 50%, #F79E1B 100%) 1;
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "framer-motion": "https://esm.sh/framer-motion@^12.26.2",
+    "@google/genai": "https://esm.sh/@google/genai@^1.37.0"
+  }
+}
+</script>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+  <div id="root" class="h-full w-full"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
