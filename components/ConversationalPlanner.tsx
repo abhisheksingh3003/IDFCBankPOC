@@ -154,20 +154,20 @@ const DayContextCard = ({ description }: { description: DayDescription }) => {
                     <Utensils className="w-4 h-4 text-red-600" />
                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Suggested Dining</span>
                 </div>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {description.diningTips.map((tip, idx) => (
                         <div key={idx} className="group relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full">
                             {/* Card Image with Price Overlay */}
                             <div className="h-28 w-full relative overflow-hidden">
-                                <SafeImage 
-                                    src={tip.imageKeyword} 
-                                    alt={tip.name} 
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                                    category="dining" 
+                                <SafeImage
+                                    src={tip.imageKeyword}
+                                    alt={tip.name}
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    category="dining"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-                                
+
                                 {/* Price Overlay */}
                                 <div className="absolute top-2 right-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2 py-1 rounded-lg border border-white/20 shadow-lg flex items-center gap-0.5">
                                     <span className={`text-[10px] font-black ${tip.priceRange.length >= 1 ? 'text-emerald-600' : 'text-slate-300'}`}>$</span>
@@ -232,7 +232,7 @@ const TripSummaryHeader = ({ summary, destination }: { summary: string; destinat
         <div className="mb-8 p-6 bg-slate-900 dark:bg-white rounded-3xl shadow-xl shadow-slate-200 dark:shadow-none relative overflow-hidden group">
             {/* Decorative background element */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-red-600/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000" />
-            
+
             <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-3">
                     <div className="w-1.5 h-4 bg-red-600 rounded-full" />
@@ -277,7 +277,7 @@ const LANDING_TRANSLATIONS = {
     en: {
         heroTitle1: 'Your next journey,',
         heroTitle2: 'reimagined.',
-        heroSubtitle: 'Describe your dream escape, and our AI will craft a bespoke itinerary in seconds.',
+        heroSubtitle: 'Describe your dream escape, and our Anya will craft a bespoke itinerary in seconds.',
         placeholder: "Try: 'Anya, I have a board meeting in London next Monday. Book my usuals.'",
         startPlanning: 'Start Planning',
         stepByStep: 'Step-by-Step Planner',
@@ -285,7 +285,7 @@ const LANDING_TRANSLATIONS = {
     pl: {
         heroTitle1: 'Twoja następna podróż,',
         heroTitle2: 'na nowo.',
-        heroSubtitle: 'Opisz swoją wymarzoną ucieczkę, a nasza AI stworzy spersonalizowany plan w kilka sekund.',
+        heroSubtitle: 'Opisz swoją wymarzoną ucieczkę, a nasza Anya stworzy spersonalizowany plan w kilka sekund.',
         placeholder: "Try: 'Anya, I have a board meeting in London next Monday. Book my usuals.'",
         startPlanning: 'Zaplanuj Podróż',
         stepByStep: 'Planer Krok po Kroku',
@@ -644,7 +644,7 @@ const buildScript = (scenario: ScenarioId, user: UserProfile | null, branch?: st
     if (scenario === 'paris') {
         // FILTER REDUNDANT STEPS FOR PARIS SCENARIO
         let filteredSteps = [...opening];
-        
+
         if (user) {
             // Skip vibe/pace question if user has preference
             if (user.pacePreference) {
@@ -655,7 +655,7 @@ const buildScript = (scenario: ScenarioId, user: UserProfile | null, branch?: st
                 filteredSteps = filteredSteps.filter(s => s.aiMessage.id !== 'p5');
             }
         }
-        
+
         return filteredSteps;
     }
     return [];
@@ -723,7 +723,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         recognition.onresult = (event: any) => {
             const transcript = event.results[0][0].transcript;
             setChatInput(transcript);
-            
+
             // Auto-submit in Live Mode
             if (isLiveMode || autoSubmit) {
                 setTimeout(() => {
@@ -1040,14 +1040,14 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         if (msgs.length === 0) return false;
         const lastAI = [...msgs].reverse().find(m => m.sender === 'ai');
         if (!lastAI) return false;
-        
+
         const content = lastAI.content.toLowerCase();
-        return content.includes('all set') || 
-               content.includes('ready to build') || 
-               content.includes('generating your') ||
-               content.includes('hotel style') || 
-               content.includes('preferences') ||
-               content.includes('thank you for the details');
+        return content.includes('all set') ||
+            content.includes('ready to build') ||
+            content.includes('generating your') ||
+            content.includes('hotel style') ||
+            content.includes('preferences') ||
+            content.includes('thank you for the details');
     };
 
     // ─── Conversation Engine ─────────────────────────────────────────
@@ -1062,12 +1062,12 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
         const builtScript = buildScript(scenario, user, userBranch, diffDays);
         setScript(builtScript);
-        
+
         if (stepIndex >= builtScript.length) return;
-        
+
         const step = builtScript[stepIndex];
         setSuggestions(getSuggestions(scenario, stepIndex));
-        
+
         setIsTyping(true);
         const delay = step.delay || 1500;
         const t = setTimeout(() => {
@@ -1084,7 +1084,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         if (isGenerating) return;
 
         const newUserMsg: ChatMessage = { id: `u-${Date.now()}`, sender: 'user', content: reply };
-        
+
         setMessages(prev => {
             const updated = prev.map((m, idx) => {
                 if (idx === prev.length - 1) return { ...m, isResponded: true };
@@ -1092,7 +1092,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             });
             return [...updated, newUserMsg];
         });
-        
+
         setWaitingForUser(false);
         setIsFinalGeneration(checkIfFinalTurn(messages, reply));
         setIsGenerating(true);
@@ -1105,7 +1105,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             const historyForAI = [...messages, newUserMsg];
             const result = await generateAIItinerary(reply, historyForAI, user);
 
-            
+
             const aiMessage: ChatMessage = {
                 id: `ai-${Date.now()}`,
                 sender: 'ai',
@@ -1118,14 +1118,14 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             };
 
             setMessages(prev => [...prev, aiMessage]);
-            
+
             if (result.itineraryItems) {
                 const newItems: ItineraryItem[] = result.itineraryItems.map((item: any) => ({
                     ...item,
                     id: item.id || `ai-item-${Math.random().toString(36).substr(2, 9)}`
                 }));
                 // Strategy: Append new items but avoid duplicates if Gemini is just refining
-                setItinerary(newItems); 
+                setItinerary(newItems);
             }
 
             if (result.quickReplies) {
@@ -1226,9 +1226,9 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             setMessages(prev => [...prev, {
                 id: `ai-err-${Date.now()}`,
                 sender: 'ai',
-                content: isQuota 
+                content: isQuota
                     ? "I'm sorry, my daily travel planning quota has been reached. 🛑 Please try again in a few hours or check back tomorrow."
-                    : (isModelNotFound 
+                    : (isModelNotFound
                         ? "I'm sorry, the selected AI model is currently unavailable. 🛫 I'm looking for an alternative..."
                         : (isParseError
                             ? "I'm sorry, I had trouble processing the itinerary details. 🧩 Please try sending your last message again."
@@ -1251,7 +1251,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         if (lastMessage && lastMessage.sender === 'ai' && lastMessage.content) {
             // Clean markdown bold for better TTS
             const cleanText = lastMessage.content.replace(/\*\*/g, '');
-            
+
             speak(cleanText, () => {
                 // If in Live Mode, restart mic after Anya finishes talking
                 if (isLiveMode) {
@@ -1269,12 +1269,12 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         setIsFinalGeneration(isFinal);
         setIsGenerating(true);
         setItinerary([]);
-        setScenario('ai_custom'); 
+        setScenario('ai_custom');
 
         try {
             const result = await generateAIItinerary(input, [], user);
 
-            
+
             const aiMessage: ChatMessage = {
                 id: `ai-start-${Date.now()}`,
                 sender: 'ai',
@@ -1287,7 +1287,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             };
 
             setMessages(prev => [...prev, aiMessage]);
-            
+
             if (result.itineraryItems) {
                 setItinerary(result.itineraryItems);
             }
@@ -1596,11 +1596,11 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                     </div>
                     {/* Download */}
                     <button
-                            onClick={() => generatePDF(type)}
-                            className={`w-full ${btnColor} text-white text-[11px] font-bold py-2 rounded-lg flex items-center justify-center gap-1.5 transition-all shadow-sm hover:shadow-md active:scale-95`}
-                        >
-                            <Download size={12} /> Download PDF
-                        </button>
+                        onClick={() => generatePDF(type)}
+                        className={`w-full ${btnColor} text-white text-[11px] font-bold py-2 rounded-lg flex items-center justify-center gap-1.5 transition-all shadow-sm hover:shadow-md active:scale-95`}
+                    >
+                        <Download size={12} /> Download PDF
+                    </button>
                 </div>
             );
         };
@@ -1626,12 +1626,12 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                 const parts = (item.subtitle || '').split(' • ');
                 const routePart = parts[0] || '';
                 const timesPart = parts[2] || '';
-                
+
                 // Parse "DXB → LHR" or similar
                 const routeMatch = routePart.match(/([A-Z]{3})\s*[→\-]+\s*([A-Z]{3})/);
                 const originIata = routeMatch?.[1] || 'DXB';
-                const destIata = routeMatch?.[2] || curation?.destination?.name?.slice(0,3).toUpperCase() || 'DXB';
-                
+                const destIata = routeMatch?.[2] || curation?.destination?.name?.slice(0, 3).toUpperCase() || 'DXB';
+
                 // Parse "10:30 → 18:45" or similar
                 const timeMatch = timesPart.match(/(\d{1,2}:\d{2})\s*[→\-]+\s*(\d{1,2}:\d{2})/);
                 const depTime = timeMatch?.[1] ? `${timeMatch[1]} AM` : '10:30 AM';
@@ -1670,8 +1670,8 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                     imageUrl: item.image || ''
                 };
             } else if ((item.type === 'transfer' || item.type === 'insurance') && !item.essentialsRef) {
-                const catalogItem = ESSENTIALS_CATALOG.find(e => 
-                    e.title.toLowerCase().includes(item.title.toLowerCase()) || 
+                const catalogItem = ESSENTIALS_CATALOG.find(e =>
+                    e.title.toLowerCase().includes(item.title.toLowerCase()) ||
                     e.category.toLowerCase() === item.type.toLowerCase()
                 );
                 item.essentialsRef = [{
@@ -1688,8 +1688,8 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         return item;
     })();
 
-    const scenarioLabel = (curation?.tripName && curation.tripName !== 'New Trip') 
-        ? curation.tripName 
+    const scenarioLabel = (curation?.tripName && curation.tripName !== 'New Trip')
+        ? curation.tripName
         : (scenario ? (scenario === 'executive' ? 'London Business Trip' : scenario === 'family' ? 'Italy Family Holiday' : 'Frankfurt Bleisure') : (initialCuration?.tripName || 'Your Itinerary'));
     const isExtended = scenario === 'bleisure' && (userBranch?.startsWith('extend') || userBranch === 'extend');
     const hasFamilyDates = scenario === 'family' && curation?.startDate && curation?.endDate && curation.startDate !== '' && curation.endDate !== '';
@@ -1705,7 +1705,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             const opts: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
             return `${s.toLocaleDateString('en-US', opts)} – ${e.toLocaleDateString('en-US', opts)}, ${s.getFullYear()}`;
         }
-        
+
         const sDate = curation?.startDate || initialCuration?.startDate;
         const eDate = curation?.endDate || initialCuration?.endDate;
         if (sDate && eDate && sDate !== '' && eDate !== '') {
@@ -1745,7 +1745,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             : (curation?.travelers ? `${curation.travelers} traveler${curation.travelers > 1 ? 's' : ''}` : (scenario === 'executive' ? '1 traveler' : scenario === 'family' ? '2 adults, 2 children' : (initialCuration ? `${initialCuration.travelers} traveler(s)` : '? traveler')))
         ) : (scenario === 'ai_custom' ? '' : '');
 
-    const scenarioRoute = useMemo(() => (curation?.origin && curation?.destination?.name && curation.destination.name !== 'Destination' && curation.destination.name !== 'TBD' && curation.origin !== '') 
+    const scenarioRoute = useMemo(() => (curation?.origin && curation?.destination?.name && curation.destination.name !== 'Destination' && curation.destination.name !== 'TBD' && curation.origin !== '')
         ? `${curation.origin} → ${curation.destination.name}`
         : (scenario ? (
             scenario === 'paris'
@@ -1754,8 +1754,8 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         ) : (initialCuration ? `${initialCuration.origin || 'Dubai'} → ${initialCuration.destination.name}` : '')), [curation, scenario, initialCuration]);
 
     // Moved these hooks here to avoid violation of "Rules of Hooks" due to late definition after an early return
-    const destName = useMemo(() => (curation?.destination?.name && curation.destination.name !== 'Destination' && curation.destination.name !== 'TBD') 
-        ? curation.destination.name 
+    const destName = useMemo(() => (curation?.destination?.name && curation.destination.name !== 'Destination' && curation.destination.name !== 'TBD')
+        ? curation.destination.name
         : (scenario === 'executive' ? 'London' : scenario === 'family' ? 'Italy' : scenario === 'paris' ? 'Paris' : ''), [curation, scenario]);
 
     const montageAttractions = useMemo(() => {
@@ -1763,7 +1763,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             if (scenario === 'executive') return [...LONDON_ACTIVITIES, ...LONDON_HOTELS.map(h => ({ id: h.id, name: h.name, category: 'Accommodation', imageUrl: h.imageUrl }))];
             if (scenario === 'family') return [...ITALY_ACTIVITIES, ...ITALY_HOTELS.map(h => ({ id: h.id, name: h.name, category: 'Accommodation', imageUrl: h.imageUrl }))];
             if (scenario === 'paris') return [...PARIS_ACTIVITIES, ...PARIS_HOTELS.map(h => ({ id: h.id, name: h.name, category: 'Accommodation', imageUrl: h.imageUrl }))];
-            
+
             // Dynamic search for any destination in ai_custom
             const currentDest = destName || curation?.destination?.name;
             if (currentDest && currentDest !== 'Destination' && currentDest !== 'TBD' && currentDest !== '') {
@@ -1807,16 +1807,54 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         { row: '4 / 5', col: '3 / 4', fromX: 100, fromY: 80, delay: 3.2, rotate: -3 },
     ], []);
 
+    const FloatingCard = ({ attraction, layout }: { attraction: any, layout: any }) => (
+        <motion.div
+            initial={{ opacity: 0, x: layout.fromX, y: layout.fromY, rotate: layout.rotate }}
+            animate={{
+                opacity: 0.25,
+                x: 0,
+                y: 0,
+                rotate: layout.rotate,
+                transition: { duration: 2, delay: layout.delay, ease: "easeOut" }
+            }}
+            whileHover={{
+                opacity: 0.6,
+                scale: 1.05,
+                rotate: 0,
+                zIndex: 50,
+                transition: { duration: 0.4 }
+            }}
+            className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer"
+            style={{
+                gridRow: layout.row,
+                gridColumn: layout.col
+            }}
+        >
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60 z-10" />
+            <SafeImage
+                src={attraction.imageUrl}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                alt={attraction.name}
+                category="activity"
+            />
+            <div className="absolute bottom-4 left-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-[10px] font-black text-brand-orange uppercase tracking-widest mb-1">{attraction.category}</p>
+                <h5 className="text-sm font-bold text-white leading-tight">{attraction.name}</h5>
+            </div>
+        </motion.div>
+    );
+
+
     // ─── LANDING PAGE ──────────────────────────────────────────────────
     if (phase === 'landing') {
         return (
             <div className="w-full h-full flex flex-col overflow-hidden bg-slate-950 relative">
                 {/* Immersive Background */}
-                <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/80 via-slate-900/60 to-red-950/30 z-10" />
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-950/90 to-red-950/20 z-10" />
 
-                    {/* Noise Texture overlay for high-end cinematic feel */}
-                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-20" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
+                    {/* Noise Texture */}
+                    <div className="absolute inset-0 opacity-[0.03] z-20" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
 
                     <motion.div
                         animate={{
@@ -1826,7 +1864,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                         transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                         className="absolute inset-0"
                     >
-                        <img src="/planner-hero.png" className="w-full h-full object-cover grayscale-[30%] brightness-[0.5]" alt="" />
+                        <img src="/auth-hero.png" className="w-full h-full object-cover grayscale-[0.2]" alt="" />
                     </motion.div>
 
                     {/* Atmospheric Glows */}
@@ -1834,106 +1872,116 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                     <div className="absolute bottom-1/4 -right-20 w-[350px] h-[350px] bg-blue-600/10 blur-[120px] rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
                 </div>
 
-                <div className="relative z-30 flex-1 flex flex-col items-center px-6 overflow-y-auto scrollbar-hide py-12">
-                    <div className="w-full max-w-2xl flex flex-col items-center">
+                <div className="relative z-30 flex-1 flex flex-col items-center px-6 overflow-y-auto scrollbar-hide py-12 lg:py-24">
+                    <div className="w-full max-w-4xl flex flex-col items-center">
                         {/* Hero Section */}
                         <motion.div
-                            initial={{ y: 20, opacity: 0 }}
+                            initial={{ y: 30, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="text-center mb-10"
+                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                            className="text-center mb-12"
                         >
-                            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] md:leading-none mb-4">
+                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[0.95] mb-6">
                                 {LANDING_TRANSLATIONS[language].heroTitle1}<br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-amber-300">
+                                <span className="mc-gradient-text animate-gradient-x">
                                     {LANDING_TRANSLATIONS[language].heroTitle2}
                                 </span>
                             </h1>
-                            <p className="text-base md:text-xl text-slate-300/90 font-medium max-w-lg mx-auto leading-relaxed">
+                            <p className="text-lg md:text-xl text-slate-300/80 font-medium max-w-2xl mx-auto leading-relaxed">
                                 {LANDING_TRANSLATIONS[language].heroSubtitle}
                             </p>
                         </motion.div>
 
-                        {/* AI Input Container ("Anya Box") */}
+                        {/* Premium AI Input Area */}
                         <motion.div
-                            initial={{ y: 30, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.3, duration: 0.8 }}
-                            className="w-full group"
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                            className="w-full max-w-3xl group"
                         >
                             <div className="relative">
-                                {/* Focus Glow effect */}
-                                <motion.div
-                                    animate={{ opacity: [0.3, 0.5, 0.3] }}
-                                    transition={{ duration: 4, repeat: Infinity }}
-                                    className="absolute -inset-1 bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-[30px] blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity"
-                                />
+                                {/* Intense Glow Shadow */}
+                                <div className="absolute -inset-1 bg-gradient-to-r from-brand-red/20 via-brand-orange/20 to-brand-yellow/20 rounded-[34px] blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-1000" />
 
-                                <div className="relative bg-white/10 backdrop-blur-3xl rounded-[28px] p-3 shadow-2xl border border-white/20 flex flex-col text-left transition-all group-hover:bg-white/[0.12] group-focus-within:ring-2 group-focus-within:ring-red-500/40">
+                                <div className="relative bg-slate-900/40 backdrop-blur-3xl rounded-[32px] p-4 shadow-2xl border border-white/10 flex flex-col transition-all duration-500 group-hover:bg-slate-900/60 group-focus-within:ring-2 group-focus-within:ring-brand-red/40 group-focus-within:border-white/20">
                                     <textarea
                                         value={input}
                                         onChange={(e) => setInput(e.target.value)}
                                         onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleStart(); } }}
                                         placeholder={LANDING_TRANSLATIONS[language].placeholder}
-                                        className="w-full h-24 md:h-28 p-5 text-base md:text-lg text-white placeholder:text-slate-400/70 bg-transparent outline-none resize-none font-medium selection:bg-red-500/30"
+                                        className="w-full h-32 md:h-40 p-6 text-lg md:text-xl text-white placeholder:text-slate-500/70 bg-transparent outline-none resize-none font-medium selection:bg-brand-red/30"
                                     />
-                                    <div className="flex justify-between items-center px-4 pb-3">
-                                        <div className="flex gap-2">
-                                            <button className="p-2.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-xl transition-all"><Paperclip size={18} /></button>
-                                            <button className="p-2.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-xl transition-all"><Mic size={18} /></button>
+                                    <div className="flex justify-between items-center px-4 pb-4">
+                                        <div className="flex gap-1.5">
+                                            <button className="p-3 text-slate-400 hover:text-white hover:bg-white/10 rounded-2xl transition-all active:scale-95"><Paperclip size={20} /></button>
+                                            <button className="p-3 text-slate-400 hover:text-white hover:bg-white/10 rounded-2xl transition-all active:scale-95"><Mic size={20} /></button>
                                         </div>
                                         <button
                                             onClick={handleStart}
-                                            className="bg-red-600 hover:bg-red-500 text-white font-black py-3 px-6 md:px-8 rounded-2xl flex items-center gap-2 transition-all shadow-xl shadow-red-900/40 hover:scale-[1.02] active:scale-95 group/btn"
+                                            className="bg-gradient-to-r from-brand-red via-brand-orange to-brand-yellow p-[2px] rounded-[20px] transition-all hover:scale-[1.03] active:scale-95 group/btn shadow-[0_0_20px_rgba(235,0,27,0.3)] hover:shadow-[0_0_30px_rgba(235,0,27,0.5)]"
                                         >
-                                            <Sparkles size={18} className="animate-pulse group-hover/btn:scale-110 transition-transform" />
-                                            <span className="text-sm md:text-base">{LANDING_TRANSLATIONS[language].startPlanning}</span>
+                                            <div className="bg-slate-900 group-hover/btn:bg-transparent rounded-[18px] px-8 py-3.5 flex items-center gap-3 transition-colors duration-300">
+                                                <Sparkles size={18} className="text-brand-yellow group-hover/btn:text-white transition-colors" />
+                                                <span className="text-sm md:text-base font-black text-white">{LANDING_TRANSLATIONS[language].startPlanning}</span>
+                                                <ArrowRight size={18} className="text-white transform group-hover/btn:translate-x-1 transition-transform" />
+                                            </div>
                                         </button>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Simple Scenario Chips */}
-                            <div className="flex flex-wrap justify-center gap-3 mt-8 max-w-xl mx-auto">
+                            {/* Refined Quick Action Prompts */}
+                            <motion.div
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.8, duration: 0.8 }}
+                                className="flex flex-wrap justify-center gap-2.5 mt-10"
+                            >
                                 {QUICK_PROMPTS[language].map((qp, i) => (
                                     <button
                                         key={i}
                                         onClick={() => setInput(qp.text)}
-                                        className="bg-white/5 hover:bg-white/10 backdrop-blur-md text-white/70 hover:text-white px-5 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all border border-white/10 shadow-lg"
+                                        className="bg-white/5 hover:bg-white/10 backdrop-blur-md text-slate-300 hover:text-white px-5 py-2.5 rounded-2xl text-[11px] font-black uppercase tracking-wider flex items-center gap-2 transition-all border border-white/5 hover:border-white/20 active:scale-95"
                                     >
-                                        <qp.icon size={14} /> {qp.label}
+                                        <qp.icon size={14} className="text-brand-orange" /> {qp.label}
                                     </button>
                                 ))}
                                 <button
                                     onClick={onOpenManual}
-                                    className="bg-white/5 hover:bg-white/10 backdrop-blur-md text-white/70 hover:text-white px-5 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all border border-white/10 shadow-lg"
+                                    className="bg-white/5 hover:bg-white/10 backdrop-blur-md text-slate-300 hover:text-white px-5 py-2.5 rounded-2xl text-[11px] font-black uppercase tracking-wider flex items-center gap-2 transition-all border border-brand-orange/20 hover:border-brand-orange/50 active:scale-95"
                                 >
-                                    <Plus size={14} /> {LANDING_TRANSLATIONS[language].stepByStep}
+                                    <Plus size={14} className="text-brand-yellow" /> {LANDING_TRANSLATIONS[language].stepByStep}
                                 </button>
-                            </div>
+                            </motion.div>
                         </motion.div>
                     </div>
 
                     {/* Highly Polished Footer Branding */}
-                    <div className="mt-auto pt-16 pb-4 flex flex-col items-center gap-5 w-full">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 0.5 }}
-                            transition={{ delay: 1 }}
-                            className="flex items-center gap-4 w-full justify-center"
-                        >
-                            <div className="flex-1 max-w-[80px] h-[1px] bg-gradient-to-r from-transparent to-slate-800" />
-                            <span className="text-[8px] md:text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] whitespace-nowrap">Mastercard Experience</span>
-                            <div className="flex-1 max-w-[80px] h-[1px] bg-gradient-to-l from-transparent to-slate-800" />
-                        </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.2, duration: 1 }}
+                        className="mt-auto pt-12 pb-4 flex flex-col items-center gap-6 w-full"
+                    >
+                        <div className="flex items-center gap-6 w-full justify-center opacity-30">
+                            <div className="flex-1 max-w-[120px] h-[1px] bg-gradient-to-r from-transparent via-slate-500 to-slate-800" />
+                            <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 rounded-full bg-brand-red" />
+                                <div className="w-2 h-2 rounded-full bg-brand-orange" />
+                                <div className="w-2 h-2 rounded-full bg-brand-yellow" />
+                            </div>
+                            <div className="flex-1 max-w-[120px] h-[1px] bg-gradient-to-l from-transparent via-slate-500 to-slate-800" />
+                        </div>
 
-                        <div className="flex items-center gap-3">
-                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Powered By</span>
-                            <div className="bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/10 flex items-center justify-center transition-all hover:scale-105 hover:bg-white/10 shadow-xl group cursor-pointer">
-                                <img src="/images/pointlabs.png" className="h-4 w-auto object-contain grayscale brightness-150 group-hover:grayscale-0 group-hover:brightness-100 transition-all" alt="Pointlabs" />
+                        <div className="flex flex-col md:flex-row items-center gap-8">
+                            <div className="flex flex-col items-center md:items-start">
+                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-2">Powered By</span>
+                                <div className="bg-white/5 backdrop-blur-md px-4 py-2 rounded-xl border border-white/5 transition-all hover:bg-white/10 flex items-center gap-2">
+                                    <img src="/images/pointlabs.png" className="h-3 w-auto object-contain grayscale brightness-200 group-hover:grayscale-0 group-hover:brightness-100 transition-all" alt="Pointlabs" />
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         );
@@ -2006,7 +2054,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                         </div>
                                     )}
                                     {msg.billData && <SplitBillCard data={msg.billData} />}
-                                    
+
                                     {/* Inline Tools (GenUI) */}
                                     {msg.sender === 'ai' && !msg.isResponded && waitingForUser && (
                                         <div className="mt-3 space-y-3">
@@ -2270,9 +2318,9 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                         {(() => {
                             const lastMessage = messages[messages.length - 1];
                             const hasQuickReplies = lastMessage?.sender === 'ai' && !lastMessage?.isResponded && !!lastMessage?.quickReplies;
-                            
+
                             return suggestions.length > 0 && waitingForUser && !isGenerating && !hasQuickReplies && (
-                                <motion.div 
+                                <motion.div
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 5 }}
@@ -2300,11 +2348,10 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setIsMuted(!isMuted)}
-                                className={`p-2 rounded-xl border transition-all ${
-                                    isMuted 
-                                    ? 'bg-slate-100 text-slate-400 border-slate-200' 
+                                className={`p-2 rounded-xl border transition-all ${isMuted
+                                    ? 'bg-slate-100 text-slate-400 border-slate-200'
                                     : 'bg-red-50 text-red-600 border-red-200'
-                                }`}
+                                    }`}
                                 title={isMuted ? "Unmute AI Voice" : "Mute AI Voice"}
                             >
                                 {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
@@ -2319,7 +2366,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                 onKeyDown={(e) => { if (e.key === 'Enter' && chatInput.trim() && !isGenerating) { handleUserReply(chatInput.trim()); setChatInput(''); } }}
                                 disabled={isGenerating}
                             />
-                            <button 
+                            <button
                                 onClick={() => {
                                     if (isLiveMode) {
                                         stopListening();
@@ -2354,12 +2401,12 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                             >
                                 <div className="relative">
                                     {/* Multiple layers of pulsing gradients for a premium "Orb" feel */}
-                                    <motion.div 
+                                    <motion.div
                                         animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
                                         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                                         className="absolute inset-0 bg-red-400 rounded-full blur-2xl"
                                     />
-                                    <motion.div 
+                                    <motion.div
                                         animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
                                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
                                         className="absolute inset-0 bg-amber-400 rounded-full blur-xl"
@@ -2696,7 +2743,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                     <AnimatePresence mode="wait">
                                                         {sortedGroups.filter(g => g === (selectedGroup || sortedGroups[0])).map((dayLabel, groupIdx) => {
                                                             const dayDesc = dayDescriptions.find(d => d.dayGroup === dayLabel);
-                                                            
+
                                                             return (
                                                                 <motion.div key={dayLabel} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }} className="mb-6">
                                                                     <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2 mb-4">
@@ -2707,334 +2754,334 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
                                                                     {/* Rich Day Description Card */}
                                                                     {dayDesc && <DayContextCard description={dayDesc} />}
-                                                                    
+
                                                                     <div className="space-y-4">
-                                                                {groupedItinerary[dayLabel].length === 0 ? (
-                                                                    <div className="text-center py-6 bg-white/50 rounded-2xl border border-dashed border-slate-300">
-                                                                        <p className="text-slate-500 text-sm font-medium">No plans yet for this day.</p>
-                                                                        <button
-                                                                            onClick={() => {
-                                                                                setAddingExperienceToDay(dayLabel);
-                                                                                setDrawerOpen(true);
-                                                                            }}
-                                                                            className="mt-3 bg-red-50 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-100 transition"
-                                                                        >
-                                                                            + Add Experience
-                                                                        </button>
-                                                                    </div>
-                                                                ) : groupedItinerary[dayLabel].map((item, idx) => {
-                                                                    // Build alternatives for this item
-                                                                    const isReturn = item.id.includes('ret') || item.id === 'bf2';
-                                                                    const alts = item.type === 'flight'
-                                                                        ? (scenario === 'executive' ? LONDON_ALT_FLIGHTS : (scenario === 'family' ? (isReturn ? FLIGHTS_TO_ABU_DHABI : FLIGHTS_TO_ITALY) : (scenario === 'bleisure' ? (isReturn ? FRANKFURT_RETURN_FLIGHTS : FRANKFURT_FLIGHTS) : [])))
-                                                                        : item.type === 'hotel'
-                                                                            ? (scenario === 'executive' ? LONDON_ALT_HOTELS : (scenario === 'family' ? ITALY_HOTELS : (scenario === 'bleisure' ? FRANKFURT_HOTELS : [])))
-                                                                            : [];
-                                                                    const hasAlts = (scenario === 'executive' || scenario === 'family' || scenario === 'bleisure') && alts.length > 0 && !item.booked;
-
-
-                                                                    // Parse subtitle parts
-                                                                    const subtitleParts = item.subtitle.split(' • ');
-
-                                                                    // ── Category-specific card content ──
-                                                                    const renderCardContent = () => {
-                                                                        // ─── FLIGHT CARD (horizontal booking-site style) ───
-                                                                        if (item.type === 'flight') {
-                                                                            const route = subtitleParts[0] || '';
-                                                                            const date = subtitleParts[1] || '';
-                                                                            const times = subtitleParts[2] || '';
-                                                                            const duration = subtitleParts[3] || '';
-
-                                                                            // Extract times using regex (handles HH:MM or HH:MM AM/PM or HH:MM-HH:MM)
-                                                                            const timeMatches = times.replace(/\s+/g, ' ').match(/\d{1,2}:\d{2}(?:\s?[AP]M)?/gi) || [];
-                                                                            let depTime = timeMatches[0] || '';
-                                                                            let arrTime = timeMatches[timeMatches.length - 1] || '';
-                                                                            
-                                                                            // Secondary attempt: if match is empty, try split by dash or space
-                                                                            if (!depTime && times.includes('-')) {
-                                                                                const parts = times.split('-').map(p => p.trim());
-                                                                                depTime = parts[0];
-                                                                                arrTime = parts[1];
-                                                                            }
-
-                                                                            // If no standard times found, fallback to separator split but filter out symbols
-                                                                            if (!depTime) {
-                                                                                const parts = times.split(/[\s\+→\->\-]+/).filter(p => p.trim() && !/^[\+\-→\->]+$/.test(p));
-                                                                                depTime = parts[0] || '';
-                                                                                arrTime = parts[parts.length - 1] || '';
-                                                                            }
-
-                                                                            // Robust route parsing
-                                                                            const routeParts = route.split(/[\s→\->\-]+/).filter(p => {
-                                                                                const trimmed = p.trim().replace(/[\(\)]/g, '');
-                                                                                return trimmed.length >= 2 && !/^[\+→\->\-]+$/.test(trimmed);
-                                                                            });
-                                                                            let origin = routeParts[0] || '';
-                                                                            let dest = routeParts[routeParts.length - 1] || '';
-
-                                                                            // Check if origin/dest already include the city name or just IATA
-                                                                            // If routeParts has more segments, try to be more specific
-                                                                            if (routeParts.length >= 2) {
-                                                                                origin = routeParts[0];
-                                                                                dest = routeParts[routeParts.length - 1];
-                                                                            }
-
-                                                                            return (
-                                                                                <div className="space-y-4">
-                                                                                    <div className="flex items-center justify-between">
-                                                                                        <div className="flex items-center gap-2">
-                                                                                            <Plane size={12} className="text-slate-400" />
-                                                                                            <span className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Flight</span>
-                                                                                        </div>
-                                                                                        {renderBadge()}
-                                                                                    </div>
-                                                                                    
-                                                                                    <div className="flex items-center gap-6">
-                                                                                        {/* Airline Section */}
-                                                                                        <div className="flex flex-col items-center shrink-0 w-24 pr-6 border-r border-slate-100">
-                                                                                            <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-50 flex items-center justify-center p-1.5 overflow-hidden group-hover:scale-105 transition-transform">
-                                                                                                <SafeImage src={item.image} category="flight" alt={item.title} className="w-full h-full object-contain" />
-                                                                                            </div>
-                                                                                            <p className="text-[10px] text-slate-900 font-bold mt-2 text-center leading-tight uppercase tracking-wider">{item.title.split(' ').slice(0, 2).join(' ')}</p>
-                                                                                            <span className="inline-block text-[8px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md mt-1.5 border border-blue-100 uppercase tracking-[0.1em]">Business</span>
-                                                                                        </div>
-
-                                                                                        {/* Journey Section */}
-                                                                                        <div className="flex-1 flex items-center justify-between gap-4">
-                                                                                            {/* Departure */}
-                                                                                            <div className="flex flex-col items-start min-w-[70px]">
-                                                                                                <p className="text-2xl font-black text-slate-900 tracking-tighter tabular-nums leading-none mb-1">{depTime || '—'}</p>
-                                                                                                <p className="text-xs text-slate-400 font-bold uppercase tracking-wide truncate max-w-[100px]">{origin || '—'}</p>
-                                                                                            </div>
-
-                                                                                            {/* Path Visualizer */}
-                                                                                            <div className="flex-1 flex flex-col items-center px-2">
-                                                                                                <span className="text-[9px] text-slate-400 font-black uppercase tracking-[0.15em] mb-2">{duration || 'Direct'}</span>
-                                                                                                <div className="flex items-center w-full relative">
-                                                                                                    <div className="w-1.5 h-1.5 rounded-full border-2 border-slate-200 bg-white z-10" />
-                                                                                                    <div className="flex-1 h-[2px] bg-slate-100 relative mx-0">
-                                                                                                        <div className="absolute inset-0 bg-gradient-to-r from-red-200 via-red-500 to-red-200 h-full w-full opacity-30" />
-                                                                                                        <Plane size={14} className="absolute -top-[6px] left-1/2 -track-x-1/2 text-red-600 rotate-90 z-20" />
-                                                                                                    </div>
-                                                                                                    <div className="w-1.5 h-1.5 rounded-full border-2 border-slate-200 bg-white z-10" />
-                                                                                                </div>
-                                                                                                <span className="text-[9px] text-emerald-600 font-black uppercase tracking-[0.15em] mt-2">Non-Stop</span>
-                                                                                            </div>
-
-                                                                                            {/* Arrival */}
-                                                                                            <div className="flex flex-col items-end min-w-[70px]">
-                                                                                                <p className="text-2xl font-black text-slate-900 tracking-tighter tabular-nums leading-none mb-1">{arrTime || '—'}</p>
-                                                                                                <p className="text-xs text-slate-400 font-bold uppercase tracking-wide text-right truncate max-w-[100px]">{dest || '—'}</p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            );
-                                                                        }
-
-                                                                        // ─── HOTEL CARD (booking-site style) ───
-                                                                        if (item.type === 'hotel') {
-                                                                            return (
-                                                                                <div className="space-y-3">
-                                                                                    <div className="flex items-center justify-between">
-                                                                                        <div className="flex items-center gap-2">
-                                                                                            <HotelIcon size={12} className="text-slate-400" />
-                                                                                            <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Hotel</span>
-                                                                                        </div>
-                                                                                        {renderBadge()}
-                                                                                    </div>
-                                                                                    <div className="flex gap-4">
-                                                                                        <div className="relative w-28 h-24 rounded-xl overflow-hidden shrink-0 bg-slate-100">
-                                                                                            <SafeImage src={item.image} category="hotel" alt="" className="w-full h-full object-cover" />
-                                                                                            <button className="absolute top-1.5 left-1.5 w-5 h-5 bg-white/80 backdrop-blur rounded flex items-center justify-center text-slate-500 hover:text-slate-700 transition">
-                                                                                                <MapPin size={11} />
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        <div className="flex-1 min-w-0 flex flex-col justify-between">
-                                                                                            <div>
-                                                                                                <div className="flex items-start justify-between gap-2">
-                                                                                                    <h4 className="text-base font-bold text-slate-900 leading-tight line-clamp-1">{item.title}</h4>
-                                                                                                </div>
-                                                                                                <div className="flex items-center gap-1.5 mt-1">
-                                                                                                    <MapPin size={11} className="text-slate-400" />
-                                                                                                    <span className="text-xs text-slate-500 font-medium truncate">{item.subtitle.split(' • ')[1] || 'Exquisite Property'}</span>
-                                                                                                </div>
-                                                                                                <div className="flex items-center gap-0.5 mt-1.5">
-                                                                                                    {[1, 2, 3, 4, 5].map(s => <Star key={s} size={11} className="text-amber-400 fill-amber-400" />)}
-                                                                                                    <span className="text-[10px] text-slate-500 font-bold ml-1.5 uppercase tracking-wide">Premium Stay</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div className="flex items-end justify-between mt-1">
-                                                                                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Selected Property</p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            );
-                                                                        }
-
-                                                                        // ─── ACTIVITY / TRANSFER CARD ───
-                                                                        if (item.type === 'activity' || item.type === 'transfer') {
-                                                                            return (
-                                                                                <div className="space-y-3">
-                                                                                    <div className="flex items-center justify-between">
-                                                                                        <div className="flex items-center gap-2">
-                                                                                            <Camera size={12} className="text-slate-400" />
-                                                                                            <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">{item.type === 'activity' ? 'Experience' : 'Transfer'}</span>
-                                                                                        </div>
-                                                                                        {renderBadge()}
-                                                                                    </div>
-                                                                                    <div className="flex gap-4">
-                                                                                        <div className="w-28 h-24 rounded-xl overflow-hidden shrink-0 bg-slate-100">
-                                                                                            <SafeImage src={item.image} category="activity" alt="" className="w-full h-full object-cover" />
-                                                                                        </div>
-                                                                                        <div className="flex-1 min-w-0">
-                                                                                            <div className="flex items-start justify-between gap-2">
-                                                                                                <h4 className="text-base font-bold text-slate-900 leading-tight">{item.title}</h4>
-                                                                                            </div>
-                                                                                            <p className="text-xs text-slate-500 mt-1.5 font-medium leading-relaxed line-clamp-2">{item.subtitle}</p>
-                                                                                            <div className="flex items-center gap-1.5 mt-2">
-                                                                                                <MapPin size={10} className="text-slate-400" />
-                                                                                                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Prime Location</span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            );
-                                                                        }
-
-                                                                        // ─── ESSENTIALS CARD ───
-                                                                        return (
-                                                                            <div className="space-y-3">
-                                                                                <div className="flex items-center justify-between">
-                                                                                    <div className="flex items-center gap-2">
-                                                                                        <Shield size={12} className="text-slate-400" />
-                                                                                        <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Essentials</span>
-                                                                                    </div>
-                                                                                    {renderBadge()}
-                                                                                </div>
-                                                                                <div className="flex gap-4">
-                                                                                    <div className="w-28 h-24 rounded-xl bg-red-50 flex items-center justify-center shrink-0 border border-red-100 shadow-sm">
-                                                                                        <Shield size={24} className="text-red-500" />
-                                                                                    </div>
-                                                                                    <div className="flex-1 min-w-0 py-0.5">
-                                                                                        <h4 className="text-base font-bold text-slate-900 leading-tight">{item.title}</h4>
-                                                                                        <p className="text-xs text-slate-500 mt-1.5 font-medium leading-relaxed">{item.subtitle}</p>
-                                                                                        <div className="flex items-center gap-1.5 mt-2.5">
-                                                                                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Mandatory</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
+                                                                        {groupedItinerary[dayLabel].length === 0 ? (
+                                                                            <div className="text-center py-6 bg-white/50 rounded-2xl border border-dashed border-slate-300">
+                                                                                <p className="text-slate-500 text-sm font-medium">No plans yet for this day.</p>
+                                                                                <button
+                                                                                    onClick={() => {
+                                                                                        setAddingExperienceToDay(dayLabel);
+                                                                                        setDrawerOpen(true);
+                                                                                    }}
+                                                                                    className="mt-3 bg-red-50 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-100 transition"
+                                                                                >
+                                                                                    + Add Experience
+                                                                                </button>
                                                                             </div>
-                                                                        );
-                                                                    };
+                                                                        ) : groupedItinerary[dayLabel].map((item, idx) => {
+                                                                            // Build alternatives for this item
+                                                                            const isReturn = item.id.includes('ret') || item.id === 'bf2';
+                                                                            const alts = item.type === 'flight'
+                                                                                ? (scenario === 'executive' ? LONDON_ALT_FLIGHTS : (scenario === 'family' ? (isReturn ? FLIGHTS_TO_ABU_DHABI : FLIGHTS_TO_ITALY) : (scenario === 'bleisure' ? (isReturn ? FRANKFURT_RETURN_FLIGHTS : FRANKFURT_FLIGHTS) : [])))
+                                                                                : item.type === 'hotel'
+                                                                                    ? (scenario === 'executive' ? LONDON_ALT_HOTELS : (scenario === 'family' ? ITALY_HOTELS : (scenario === 'bleisure' ? FRANKFURT_HOTELS : [])))
+                                                                                    : [];
+                                                                            const hasAlts = (scenario === 'executive' || scenario === 'family' || scenario === 'bleisure') && alts.length > 0 && !item.booked;
 
-                                                                    // Badge renderer
-                                                                    const renderBadge = () => {
-                                                                        if (item.booked) {
-                                                                            return <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold bg-emerald-100 text-emerald-600 shrink-0"><CheckCircle2 size={14} /> Booked</span>;
-                                                                        }
-                                                                        if (item.badge) {
-                                                                            return (
-                                                                                <span className={`px-3 py-1 rounded-full text-sm font-bold shrink-0
+
+                                                                            // Parse subtitle parts
+                                                                            const subtitleParts = item.subtitle.split(' • ');
+
+                                                                            // ── Category-specific card content ──
+                                                                            const renderCardContent = () => {
+                                                                                // ─── FLIGHT CARD (horizontal booking-site style) ───
+                                                                                if (item.type === 'flight') {
+                                                                                    const route = subtitleParts[0] || '';
+                                                                                    const date = subtitleParts[1] || '';
+                                                                                    const times = subtitleParts[2] || '';
+                                                                                    const duration = subtitleParts[3] || '';
+
+                                                                                    // Extract times using regex (handles HH:MM or HH:MM AM/PM or HH:MM-HH:MM)
+                                                                                    const timeMatches = times.replace(/\s+/g, ' ').match(/\d{1,2}:\d{2}(?:\s?[AP]M)?/gi) || [];
+                                                                                    let depTime = timeMatches[0] || '';
+                                                                                    let arrTime = timeMatches[timeMatches.length - 1] || '';
+
+                                                                                    // Secondary attempt: if match is empty, try split by dash or space
+                                                                                    if (!depTime && times.includes('-')) {
+                                                                                        const parts = times.split('-').map(p => p.trim());
+                                                                                        depTime = parts[0];
+                                                                                        arrTime = parts[1];
+                                                                                    }
+
+                                                                                    // If no standard times found, fallback to separator split but filter out symbols
+                                                                                    if (!depTime) {
+                                                                                        const parts = times.split(/[\s\+→\->\-]+/).filter(p => p.trim() && !/^[\+\-→\->]+$/.test(p));
+                                                                                        depTime = parts[0] || '';
+                                                                                        arrTime = parts[parts.length - 1] || '';
+                                                                                    }
+
+                                                                                    // Robust route parsing
+                                                                                    const routeParts = route.split(/[\s→\->\-]+/).filter(p => {
+                                                                                        const trimmed = p.trim().replace(/[\(\)]/g, '');
+                                                                                        return trimmed.length >= 2 && !/^[\+→\->\-]+$/.test(trimmed);
+                                                                                    });
+                                                                                    let origin = routeParts[0] || '';
+                                                                                    let dest = routeParts[routeParts.length - 1] || '';
+
+                                                                                    // Check if origin/dest already include the city name or just IATA
+                                                                                    // If routeParts has more segments, try to be more specific
+                                                                                    if (routeParts.length >= 2) {
+                                                                                        origin = routeParts[0];
+                                                                                        dest = routeParts[routeParts.length - 1];
+                                                                                    }
+
+                                                                                    return (
+                                                                                        <div className="space-y-4">
+                                                                                            <div className="flex items-center justify-between">
+                                                                                                <div className="flex items-center gap-2">
+                                                                                                    <Plane size={12} className="text-slate-400" />
+                                                                                                    <span className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Flight</span>
+                                                                                                </div>
+                                                                                                {renderBadge()}
+                                                                                            </div>
+
+                                                                                            <div className="flex items-center gap-6">
+                                                                                                {/* Airline Section */}
+                                                                                                <div className="flex flex-col items-center shrink-0 w-24 pr-6 border-r border-slate-100">
+                                                                                                    <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-50 flex items-center justify-center p-1.5 overflow-hidden group-hover:scale-105 transition-transform">
+                                                                                                        <SafeImage src={item.image} category="flight" alt={item.title} className="w-full h-full object-contain" />
+                                                                                                    </div>
+                                                                                                    <p className="text-[10px] text-slate-900 font-bold mt-2 text-center leading-tight uppercase tracking-wider">{item.title.split(' ').slice(0, 2).join(' ')}</p>
+                                                                                                    <span className="inline-block text-[8px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md mt-1.5 border border-blue-100 uppercase tracking-[0.1em]">Business</span>
+                                                                                                </div>
+
+                                                                                                {/* Journey Section */}
+                                                                                                <div className="flex-1 flex items-center justify-between gap-4">
+                                                                                                    {/* Departure */}
+                                                                                                    <div className="flex flex-col items-start min-w-[70px]">
+                                                                                                        <p className="text-2xl font-black text-slate-900 tracking-tighter tabular-nums leading-none mb-1">{depTime || '—'}</p>
+                                                                                                        <p className="text-xs text-slate-400 font-bold uppercase tracking-wide truncate max-w-[100px]">{origin || '—'}</p>
+                                                                                                    </div>
+
+                                                                                                    {/* Path Visualizer */}
+                                                                                                    <div className="flex-1 flex flex-col items-center px-2">
+                                                                                                        <span className="text-[9px] text-slate-400 font-black uppercase tracking-[0.15em] mb-2">{duration || 'Direct'}</span>
+                                                                                                        <div className="flex items-center w-full relative">
+                                                                                                            <div className="w-1.5 h-1.5 rounded-full border-2 border-slate-200 bg-white z-10" />
+                                                                                                            <div className="flex-1 h-[2px] bg-slate-100 relative mx-0">
+                                                                                                                <div className="absolute inset-0 bg-gradient-to-r from-red-200 via-red-500 to-red-200 h-full w-full opacity-30" />
+                                                                                                                <Plane size={14} className="absolute -top-[6px] left-1/2 -track-x-1/2 text-red-600 rotate-90 z-20" />
+                                                                                                            </div>
+                                                                                                            <div className="w-1.5 h-1.5 rounded-full border-2 border-slate-200 bg-white z-10" />
+                                                                                                        </div>
+                                                                                                        <span className="text-[9px] text-emerald-600 font-black uppercase tracking-[0.15em] mt-2">Non-Stop</span>
+                                                                                                    </div>
+
+                                                                                                    {/* Arrival */}
+                                                                                                    <div className="flex flex-col items-end min-w-[70px]">
+                                                                                                        <p className="text-2xl font-black text-slate-900 tracking-tighter tabular-nums leading-none mb-1">{arrTime || '—'}</p>
+                                                                                                        <p className="text-xs text-slate-400 font-bold uppercase tracking-wide text-right truncate max-w-[100px]">{dest || '—'}</p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    );
+                                                                                }
+
+                                                                                // ─── HOTEL CARD (booking-site style) ───
+                                                                                if (item.type === 'hotel') {
+                                                                                    return (
+                                                                                        <div className="space-y-3">
+                                                                                            <div className="flex items-center justify-between">
+                                                                                                <div className="flex items-center gap-2">
+                                                                                                    <HotelIcon size={12} className="text-slate-400" />
+                                                                                                    <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Hotel</span>
+                                                                                                </div>
+                                                                                                {renderBadge()}
+                                                                                            </div>
+                                                                                            <div className="flex gap-4">
+                                                                                                <div className="relative w-28 h-24 rounded-xl overflow-hidden shrink-0 bg-slate-100">
+                                                                                                    <SafeImage src={item.image} category="hotel" alt="" className="w-full h-full object-cover" />
+                                                                                                    <button className="absolute top-1.5 left-1.5 w-5 h-5 bg-white/80 backdrop-blur rounded flex items-center justify-center text-slate-500 hover:text-slate-700 transition">
+                                                                                                        <MapPin size={11} />
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                                <div className="flex-1 min-w-0 flex flex-col justify-between">
+                                                                                                    <div>
+                                                                                                        <div className="flex items-start justify-between gap-2">
+                                                                                                            <h4 className="text-base font-bold text-slate-900 leading-tight line-clamp-1">{item.title}</h4>
+                                                                                                        </div>
+                                                                                                        <div className="flex items-center gap-1.5 mt-1">
+                                                                                                            <MapPin size={11} className="text-slate-400" />
+                                                                                                            <span className="text-xs text-slate-500 font-medium truncate">{item.subtitle.split(' • ')[1] || 'Exquisite Property'}</span>
+                                                                                                        </div>
+                                                                                                        <div className="flex items-center gap-0.5 mt-1.5">
+                                                                                                            {[1, 2, 3, 4, 5].map(s => <Star key={s} size={11} className="text-amber-400 fill-amber-400" />)}
+                                                                                                            <span className="text-[10px] text-slate-500 font-bold ml-1.5 uppercase tracking-wide">Premium Stay</span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div className="flex items-end justify-between mt-1">
+                                                                                                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Selected Property</p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    );
+                                                                                }
+
+                                                                                // ─── ACTIVITY / TRANSFER CARD ───
+                                                                                if (item.type === 'activity' || item.type === 'transfer') {
+                                                                                    return (
+                                                                                        <div className="space-y-3">
+                                                                                            <div className="flex items-center justify-between">
+                                                                                                <div className="flex items-center gap-2">
+                                                                                                    <Camera size={12} className="text-slate-400" />
+                                                                                                    <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">{item.type === 'activity' ? 'Experience' : 'Transfer'}</span>
+                                                                                                </div>
+                                                                                                {renderBadge()}
+                                                                                            </div>
+                                                                                            <div className="flex gap-4">
+                                                                                                <div className="w-28 h-24 rounded-xl overflow-hidden shrink-0 bg-slate-100">
+                                                                                                    <SafeImage src={item.image} category="activity" alt="" className="w-full h-full object-cover" />
+                                                                                                </div>
+                                                                                                <div className="flex-1 min-w-0">
+                                                                                                    <div className="flex items-start justify-between gap-2">
+                                                                                                        <h4 className="text-base font-bold text-slate-900 leading-tight">{item.title}</h4>
+                                                                                                    </div>
+                                                                                                    <p className="text-xs text-slate-500 mt-1.5 font-medium leading-relaxed line-clamp-2">{item.subtitle}</p>
+                                                                                                    <div className="flex items-center gap-1.5 mt-2">
+                                                                                                        <MapPin size={10} className="text-slate-400" />
+                                                                                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Prime Location</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    );
+                                                                                }
+
+                                                                                // ─── ESSENTIALS CARD ───
+                                                                                return (
+                                                                                    <div className="space-y-3">
+                                                                                        <div className="flex items-center justify-between">
+                                                                                            <div className="flex items-center gap-2">
+                                                                                                <Shield size={12} className="text-slate-400" />
+                                                                                                <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Essentials</span>
+                                                                                            </div>
+                                                                                            {renderBadge()}
+                                                                                        </div>
+                                                                                        <div className="flex gap-4">
+                                                                                            <div className="w-28 h-24 rounded-xl bg-red-50 flex items-center justify-center shrink-0 border border-red-100 shadow-sm">
+                                                                                                <Shield size={24} className="text-red-500" />
+                                                                                            </div>
+                                                                                            <div className="flex-1 min-w-0 py-0.5">
+                                                                                                <h4 className="text-base font-bold text-slate-900 leading-tight">{item.title}</h4>
+                                                                                                <p className="text-xs text-slate-500 mt-1.5 font-medium leading-relaxed">{item.subtitle}</p>
+                                                                                                <div className="flex items-center gap-1.5 mt-2.5">
+                                                                                                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Mandatory</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                );
+                                                                            };
+
+                                                                            // Badge renderer
+                                                                            const renderBadge = () => {
+                                                                                if (item.booked) {
+                                                                                    return <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold bg-emerald-100 text-emerald-600 shrink-0"><CheckCircle2 size={14} /> Booked</span>;
+                                                                                }
+                                                                                if (item.badge) {
+                                                                                    return (
+                                                                                        <span className={`px-3 py-1 rounded-full text-sm font-bold shrink-0
                                                         ${item.verified ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' :
-                                                                                        item.badge === 'Weekend' ? 'bg-purple-50 text-purple-600 border border-purple-200' :
-                                                                                            item.billingType === 'business' ? 'bg-blue-50 text-blue-600 border border-blue-200' :
-                                                                                                item.billingType === 'personal' ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' :
-                                                                                                    'bg-amber-50 text-amber-600 border border-amber-200'}`}>
-                                                                                    {item.badge}
-                                                                                </span>
-                                                                            );
-                                                                        }
-                                                                        return null;
-                                                                    };
+                                                                                                item.badge === 'Weekend' ? 'bg-purple-50 text-purple-600 border border-purple-200' :
+                                                                                                    item.billingType === 'business' ? 'bg-blue-50 text-blue-600 border border-blue-200' :
+                                                                                                        item.billingType === 'personal' ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' :
+                                                                                                            'bg-amber-50 text-amber-600 border border-amber-200'}`}>
+                                                                                            {item.badge}
+                                                                                        </span>
+                                                                                    );
+                                                                                }
+                                                                                return null;
+                                                                            };
 
-                                                                    return (
-                                                                        <motion.div
-                                                                            key={item.id}
-                                                                            initial={{ opacity: 0, y: 20 }}
-                                                                            animate={{ opacity: 1, y: 0 }}
-                                                                            transition={{ delay: idx * 0.08 }}
-                                                                            className="space-y-0"
-                                                                        >
-                                                                            {/* Main card */}
-                                                                            {item.id.startsWith('bc') ? (
-                                                                                <div className="py-2 px-1">
-                                                                                    <p className="text-sm font-medium text-slate-600 italic flex items-center gap-2">
-                                                                                        <Briefcase size={14} className="text-slate-400" />
-                                                                                        {item.title} — {item.subtitle.split(' • ')[1] || 'All Day'}
-                                                                                    </p>
-                                                                                </div>
-                                                                            ) : (
-                                                                                <div
-                                                                                    onClick={() => !item.booked && handleBookItem(item)}
-                                                                                    className={`rounded-2xl border transition-all cursor-pointer group overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-1
+                                                                            return (
+                                                                                <motion.div
+                                                                                    key={item.id}
+                                                                                    initial={{ opacity: 0, y: 20 }}
+                                                                                    animate={{ opacity: 1, y: 0 }}
+                                                                                    transition={{ delay: idx * 0.08 }}
+                                                                                    className="space-y-0"
+                                                                                >
+                                                                                    {/* Main card */}
+                                                                                    {item.id.startsWith('bc') ? (
+                                                                                        <div className="py-2 px-1">
+                                                                                            <p className="text-sm font-medium text-slate-600 italic flex items-center gap-2">
+                                                                                                <Briefcase size={14} className="text-slate-400" />
+                                                                                                {item.title} — {item.subtitle.split(' • ')[1] || 'All Day'}
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    ) : (
+                                                                                        <div
+                                                                                            onClick={() => !item.booked && handleBookItem(item)}
+                                                                                            className={`rounded-2xl border transition-all cursor-pointer group overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-1
                                                                                         ${item.booked ? 'bg-emerald-50/50 border-emerald-200 cursor-default shadow-sm' : 'bg-white border-slate-200 hover:border-red-300'}
                                                                                         ${item.billingType === 'business' ? 'border-l-4 border-l-blue-500' : item.billingType === 'personal' ? 'border-l-4 border-l-emerald-500' : ''}`}
-                                                                                >
-                                                                                    <div className="p-5">
-                                                                                        {renderCardContent()}
-                                                                                    </div>
+                                                                                        >
+                                                                                            <div className="p-5">
+                                                                                                {renderCardContent()}
+                                                                                            </div>
 
-                                                                                    {/* Footer: Price (for non-flight/hotel) + Actions */}
-                                                                                    <div className={`flex items-center justify-between px-5 py-3 border-t ${item.booked ? 'border-emerald-100 bg-emerald-50/30' : 'border-slate-100 bg-slate-50/50'}`}>
-                                                                                        <div className="flex items-center gap-3 w-1/2">
-                                                                                            {item.type !== 'hotel' && (
-                                                                                                <p className="text-base font-bold text-slate-900 shrink-0">AED {item.price.toLocaleString()}</p>
-                                                                                            )}
-                                                                                            {item.type === 'hotel' && (
-                                                                                                <p className="text-base font-bold text-slate-900 shrink-0">AED {item.price.toLocaleString()} <span className="text-xs text-slate-400 font-medium">total incl. taxes</span></p>
-                                                                                            )}
-                                                                                            {(item.type === 'activity' || item.type === 'essentials') && (
-                                                                                                <button
-                                                                                                    onClick={(e) => {
-                                                                                                        e.stopPropagation();
-                                                                                                        setItinerary(prev => prev.filter(it => it.id !== item.id));
-                                                                                                    }}
-                                                                                                    className="text-[11px] text-slate-400 hover:text-red-600 font-bold underline transition-colors"
-                                                                                                >
-                                                                                                    Remove
-                                                                                                </button>
-                                                                                            )}
+                                                                                            {/* Footer: Price (for non-flight/hotel) + Actions */}
+                                                                                            <div className={`flex items-center justify-between px-5 py-3 border-t ${item.booked ? 'border-emerald-100 bg-emerald-50/30' : 'border-slate-100 bg-slate-50/50'}`}>
+                                                                                                <div className="flex items-center gap-3 w-1/2">
+                                                                                                    {item.type !== 'hotel' && (
+                                                                                                        <p className="text-base font-bold text-slate-900 shrink-0">AED {item.price.toLocaleString()}</p>
+                                                                                                    )}
+                                                                                                    {item.type === 'hotel' && (
+                                                                                                        <p className="text-base font-bold text-slate-900 shrink-0">AED {item.price.toLocaleString()} <span className="text-xs text-slate-400 font-medium">total incl. taxes</span></p>
+                                                                                                    )}
+                                                                                                    {(item.type === 'activity' || item.type === 'essentials') && (
+                                                                                                        <button
+                                                                                                            onClick={(e) => {
+                                                                                                                e.stopPropagation();
+                                                                                                                setItinerary(prev => prev.filter(it => it.id !== item.id));
+                                                                                                            }}
+                                                                                                            className="text-[11px] text-slate-400 hover:text-red-600 font-bold underline transition-colors"
+                                                                                                        >
+                                                                                                            Remove
+                                                                                                        </button>
+                                                                                                    )}
+                                                                                                </div>
+                                                                                                <div className="flex items-center justify-end gap-2 w-1/2">
+                                                                                                    {hasAlts && (
+                                                                                                        <button
+                                                                                                            onClick={(e) => { e.stopPropagation(); handleBookItem(item, 'search', alts); }}
+                                                                                                            className="text-xs text-slate-500 hover:text-red-600 font-bold flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg hover:bg-red-50 border border-transparent hover:border-red-200"
+                                                                                                        >
+                                                                                                            <RefreshCw size={13} /> Explore alternatives
+                                                                                                        </button>
+                                                                                                    )}
+                                                                                                    {!item.booked && (
+                                                                                                        <button
+                                                                                                            onClick={(e) => { e.stopPropagation(); handleBookItem(item, 'details', alts); }}
+                                                                                                            className="text-xs text-white font-bold flex items-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm"
+                                                                                                        >
+                                                                                                            {item.type === 'flight' ? 'Book Flight' : item.type === 'hotel' ? 'Book Hotel' : 'Book now'} <ArrowRight size={13} />
+                                                                                                        </button>
+                                                                                                    )}
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
-                                                                                        <div className="flex items-center justify-end gap-2 w-1/2">
-                                                                                            {hasAlts && (
-                                                                                                <button
-                                                                                                    onClick={(e) => { e.stopPropagation(); handleBookItem(item, 'search', alts); }}
-                                                                                                    className="text-xs text-slate-500 hover:text-red-600 font-bold flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg hover:bg-red-50 border border-transparent hover:border-red-200"
-                                                                                                >
-                                                                                                    <RefreshCw size={13} /> Explore alternatives
-                                                                                                </button>
-                                                                                            )}
-                                                                                            {!item.booked && (
-                                                                                                <button
-                                                                                                    onClick={(e) => { e.stopPropagation(); handleBookItem(item, 'details', alts); }}
-                                                                                                    className="text-xs text-white font-bold flex items-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm"
-                                                                                                >
-                                                                                                    {item.type === 'flight' ? 'Book Flight' : item.type === 'hotel' ? 'Book Hotel' : 'Book now'} <ArrowRight size={13} />
-                                                                                                </button>
-                                                                                            )}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            )}
+                                                                                    )}
 
-                                                                            {/* Existing itinerary items closing logic */}
-                                                                        </motion.div>
-                                                                    );
-                                                                })}
-                                                            </div>
+                                                                                    {/* Existing itinerary items closing logic */}
+                                                                                </motion.div>
+                                                                            );
+                                                                        })}
+                                                                    </div>
 
-                                                            {dayLabel !== 'Trip Essentials' && (
-                                                                <button
-                                                                    onClick={(e) => { e.stopPropagation(); setAddingExperienceToDay(dayLabel); }}
-                                                                    className="w-full mt-3 py-3 rounded-xl border-2 border-dashed border-slate-200 text-slate-500 hover:text-red-500 hover:border-red-300 hover:bg-red-50 flex items-center justify-center gap-2 font-bold transition-all hover:shadow-md"
-                                                                >
-                                                                    <Plus size={16} /> Add Experience
-                                                                </button>
-                                                            )}
+                                                                    {dayLabel !== 'Trip Essentials' && (
+                                                                        <button
+                                                                            onClick={(e) => { e.stopPropagation(); setAddingExperienceToDay(dayLabel); }}
+                                                                            className="w-full mt-3 py-3 rounded-xl border-2 border-dashed border-slate-200 text-slate-500 hover:text-red-500 hover:border-red-300 hover:bg-red-50 flex items-center justify-center gap-2 font-bold transition-all hover:shadow-md"
+                                                                        >
+                                                                            <Plus size={16} /> Add Experience
+                                                                        </button>
+                                                                    )}
 
-                                                        </motion.div>
+                                                                </motion.div>
                                                             );
                                                         })}
                                                     </AnimatePresence>
