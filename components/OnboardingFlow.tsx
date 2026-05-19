@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     CheckCircle2, 
@@ -168,12 +168,12 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, userName })
     };
 
     return (
-        <div className="fixed inset-0 z-[200] bg-slate-50 dark:bg-slate-950 flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-[200] bg-[#f8f7f4] flex flex-col overflow-hidden">
             {/* Background Grain & Atmosphere */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
             
             {/* Header / Nav */}
-            <div className="relative z-10 w-full px-8 py-6 flex justify-between items-center bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+            <div className="relative z-10 w-full px-8 py-6 flex justify-between items-center glass-nav">
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center shadow-lg">
                         <img src="/images/IDFC_First_Logo.png" className="w-5 h-5 invert brightness-0" />
@@ -183,7 +183,7 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, userName })
                 
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
-                        <div className="w-24 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
                             <motion.div 
                                 initial={{ width: 0 }}
                                 animate={{ width: `${progress}%` }}
@@ -195,7 +195,7 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, userName })
                     </div>
                     <button 
                         onClick={() => setIsMuted(!isMuted)}
-                        className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-400"
+                        className="p-2 rounded-full hover:bg-white/10 transition-colors text-slate-400"
                     >
                         {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
                     </button>
@@ -261,10 +261,10 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, userName })
                                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-red-600">{currentStep.label}</span>
                                             </div>
                                         )}
-                                        <p className="text-xl lg:text-2xl font-black text-slate-900 dark:text-white leading-tight">
+                                        <p className="text-xl lg:text-2xl font-black text-[#1a1a2e] leading-tight">
                                             {currentStep.question.replace('{name}', userName)}
                                         </p>
-                                        <p className="text-xs font-medium text-slate-500 dark:text-slate-400 italic">
+                                        <p className="text-xs font-medium text-slate-600 italic">
                                              "Listening for your preference..."
                                         </p>
                                     </>
@@ -275,7 +275,7 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, userName })
                 </div>
 
                 {/* Vertical Divider for Desktop */}
-                <div className="hidden lg:block w-px h-64 bg-slate-200 dark:bg-slate-800 mx-12" />
+                <div className="hidden lg:block w-px h-64 bg-slate-200 mx-12" />
 
                 {/* Interactive Response Section */}
                 <div className="flex-1 w-full max-w-md">
@@ -301,8 +301,8 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, userName })
                                                 onClick={() => handleNext(opt)}
                                                 className={`w-full p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 ${
                                                     isSelected 
-                                                    ? 'bg-red-600 border-red-500 shadow-xl shadow-red-600/20 text-white' 
-                                                    : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-red-600 dark:hover:border-red-600 text-slate-700 dark:text-slate-300'
+                                                    ? 'bg-red-600 border-red-500 shadow-xl shadow-red-600/20 text-white glow-brand' 
+                                                    : 'glass-card text-[#1a1a2e] hover:glow-border-brand'
                                                 }`}
                                             >
                                                 <div className="flex flex-col items-start">
@@ -312,7 +312,7 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, userName })
                                                 {isSelected ? (
                                                     <CheckCircle2 size={24} className="text-white" />
                                                 ) : (
-                                                    <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <ArrowRight size={20} className="text-red-600" />
                                                     </div>
                                                 )}
@@ -324,7 +324,7 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, userName })
                                 {currentStep.multi && (
                                     <button
                                         onClick={goToNextStep}
-                                        className="w-full mt-4 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-2"
+                                        className="w-full mt-4 py-4 glass-button text-white rounded-2xl font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-2"
                                     >
                                         <span>Confirm Selections</span>
                                         <CheckCircle2 size={16} />

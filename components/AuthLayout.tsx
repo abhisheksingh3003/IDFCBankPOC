@@ -29,7 +29,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
     const mcLogoUrl = "/images/IDFC_First_Logo.png";
 
     return (
-        <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 flex flex-col md:flex-row transition-colors duration-500 overflow-hidden">
+        <div className="min-h-screen w-full bg-transparent flex flex-col md:flex-row transition-colors duration-500 overflow-hidden">
             {/* Left Side: Immersive Hero Section (60% width on Desktop) */}
             <div className="hidden md:flex md:w-[60%] relative overflow-hidden group">
                 <motion.div
@@ -43,7 +43,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                         alt="Premium Travel"
                         className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[3000ms]"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/65 via-slate-950/20 to-transparent dark:to-slate-950/80" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/65 via-slate-950/20 to-[#f8f7f4]" />
                 </motion.div>
 
                 {/* Subtle Brand Overlay Content */}
@@ -89,7 +89,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                 </div>
 
                 {/* Glassy overlay on the right edge to blend into form side */}
-                <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-slate-50 dark:from-slate-950 to-transparent z-20" />
+                <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-[#f8f7f4] to-transparent z-20" />
             </div>
 
             {/* Right Side: Authentication Form (40% width on Desktop) */}
@@ -103,7 +103,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                             scale: [1, 1.2, 1],
                         }}
                         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -top-24 -right-24 w-96 h-96 bg-brand-red/10 dark:bg-brand-red/20 rounded-full blur-[100px]"
+                        className="absolute -top-24 -right-24 w-96 h-96 bg-red-600/15 rounded-full blur-[100px]"
                     />
                     <motion.div
                         animate={{
@@ -112,7 +112,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                             scale: [1, 1.1, 1],
                         }}
                         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                        className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-brand-orange/10 dark:bg-brand-orange/20 rounded-full blur-[120px]"
+                        className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-amber-600/10 rounded-full blur-[120px]"
                     />
                     <motion.div
                         animate={{
@@ -120,12 +120,12 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                             y: [0, 30, 0],
                         }}
                         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 5 }}
-                        className="absolute top-1/2 left-1/4 w-64 h-64 bg-brand-yellow/10 dark:bg-brand-yellow/15 rounded-full blur-[80px]"
+                        className="absolute top-1/2 left-1/4 w-64 h-64 bg-amber-500/8 rounded-full blur-[80px]"
                     />
                 </div>
 
                 {/* Noise Texture Overlay */}
-                <div className="absolute inset-0 -z-5 opacity-[0.03] dark:opacity-[0.05] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                <div className="absolute inset-0 -z-5 opacity-[0.04] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
                 <div className="w-full max-w-[420px] mb-8 mt-12 md:mt-0">
                     <div className="md:hidden flex justify-center mb-12">
@@ -135,7 +135,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                     <motion.h1
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-2 leading-none tracking-tighter text-center md:text-left"
+                        className="text-4xl md:text-5xl font-black text-[#1a1a2e] mb-2 leading-none tracking-tighter text-center md:text-left"
                     >
                         {title}
                     </motion.h1>
@@ -143,7 +143,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-slate-500 dark:text-slate-400 font-medium text-center md:text-left"
+                        className="text-slate-500 font-medium text-center md:text-left"
                     >
                         {subtitle}
                     </motion.p>
@@ -155,7 +155,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                     transition={{ delay: 0.2, type: "spring", damping: 25 }}
                     className="w-full max-w-[420px]"
                 >
-                    <div className="bg-white/40 dark:bg-slate-900/40 backdrop-blur-3xl rounded-[2rem] p-8 border border-white/50 dark:border-slate-800/50 shadow-[0_32px_80px_-16px_rgba(0,0,0,0.1)] dark:shadow-[0_48px_96px_-24px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+                    <div className="glass-card rounded-[2rem] p-8 shadow-[0_12px_48px_rgba(0,0,0,0.06)] relative overflow-hidden group">
                         {/* Elegant brand accent */}
                         {/* <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-red via-brand-orange to-brand-yellow opacity-80" /> */}
 

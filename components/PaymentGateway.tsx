@@ -37,14 +37,14 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
     const isProcessing = isLoading || isInternalProcessing;
 
     return (
-        <div className="flex flex-col min-h-[600px] bg-white dark:bg-black rounded-[32px] overflow-hidden">
+        <div className="flex flex-col min-h-[600px] glass-card rounded-[32px] overflow-hidden">
             <div className="flex-1 lg:grid lg:grid-cols-2 lg:gap-0">
 
                 {/* 1. Left Column: Order Summary (Desktop Only side-by-side) */}
-                <div className="bg-slate-50 dark:bg-slate-900/50 p-8 lg:p-12 border-r border-slate-100 dark:border-slate-800">
+                <div className="glass-sidebar p-8 lg:p-12 border-r border-slate-200">
                     <div className="max-w-md mx-auto h-full flex flex-col">
                         <div className="mb-8">
-                            <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Review your order</h2>
+                            <h2 className="text-2xl font-black text-[#1a1a2e] mb-2">Review your order</h2>
                             <p className="text-sm text-slate-500 font-medium">Verify your booking details before proceeding to secure payment.</p>
                         </div>
 
@@ -52,20 +52,20 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                             <div className="space-y-4">
                                 {breakdown.map((item, idx) => (
                                     <div key={idx} className="flex justify-between items-center group">
-                                        <span className="text-slate-500 font-bold group-hover:text-slate-700 transition-colors">{item.label}</span>
-                                        <span className="font-black text-slate-900 dark:text-white">{currency} {typeof item.value === 'number' ? item.value.toLocaleString() : item.value}</span>
+                                        <span className="text-slate-600 font-bold group-hover:text-slate-800 transition-colors">{item.label}</span>
+                                        <span className="font-black text-[#1a1a2e]">{currency} {typeof item.value === 'number' ? item.value.toLocaleString() : item.value}</span>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="pt-6 border-t border-slate-200 dark:border-slate-700">
+                            <div className="pt-6 border-t border-slate-200">
                                 <div className="flex justify-between items-end">
                                     <div className="space-y-1">
                                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Amount</span>
-                                        <p className="text-4xl font-black text-slate-900 dark:text-white">{currency} {total.toLocaleString()}</p>
+                                        <p className="text-4xl font-black text-[#1a1a2e]">{currency} {total.toLocaleString()}</p>
                                     </div>
                                     <div className="pb-1">
-                                        <div className="flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full text-[10px] font-black uppercase tracking-wider">
+                                        <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-600 border border-green-200 rounded-full text-[10px] font-black uppercase tracking-wider">
                                             <Check size={12} strokeWidth={3} />
                                             Best Price
                                         </div>
@@ -75,11 +75,11 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                         </div>
 
                         <div className="mt-12 space-y-4 hidden lg:block">
-                            <div className="flex items-center gap-3 text-slate-400">
+                            <div className="flex items-center gap-3 text-slate-600">
                                 <Zap size={16} className="text-red-500" />
                                 <span className="text-xs font-bold">Secure SSL encrypted payment</span>
                             </div>
-                            <div className="flex items-center gap-3 text-slate-400">
+                            <div className="flex items-center gap-3 text-slate-600">
                                 <QrCode size={16} className="text-red-500" />
                                 <span className="text-xs font-bold">Authorized by IDFC First Bank</span>
                             </div>
@@ -88,7 +88,7 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                 </div>
 
                 {/* 2. Right Column: Payment Details */}
-                <div className="p-8 lg:p-12 bg-white dark:bg-black">
+                <div className="p-8 lg:p-12 bg-transparent">
                     <div className="max-w-md mx-auto space-y-8">
 
                         {/* Visual Card */}
@@ -135,7 +135,7 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                                         <div className="flex justify-between items-end border-t border-white/5 pt-3">
                                             <div>
                                                 <p className="text-[8px] font-bold uppercase tracking-widest text-white/40 mb-0.5">Card Holder</p>
-                                                <p className="font-bold tracking-wide text-sm uppercase text-slate-100">IDFC First Bank Holder</p>
+                                                <p className="font-bold tracking-wide text-sm uppercase text-slate-100">John Doe</p>
                                             </div>
                                             <div className="text-right">
                                                 <p className="text-[8px] font-bold uppercase tracking-widest text-white/40 mb-0.5">Expires</p>
@@ -158,8 +158,8 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                                     key={method.id}
                                     onClick={() => setSelectedMethod(method.id)}
                                     className={`p-4 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all active:scale-95 ${selectedMethod === method.id
-                                            ? 'border-red-600 bg-red-50 dark:bg-red-900/20 text-red-600'
-                                            : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-400'
+                                            ? 'border-red-600 glass-pill-active text-red-600 glow-brand'
+                                            : 'glass-pill text-slate-500'
                                         }`}
                                 >
                                     <method.icon size={20} />
@@ -172,7 +172,7 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                         <div className="hidden lg:block space-y-4">
                             <div className="space-y-2">
                                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Email Address</label>
-                                <div className="px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-900 dark:text-white">
+                                <div className="px-4 py-3 glass-input rounded-xl font-bold text-[#1a1a2e]">
                                     john.doe@example.com
                                 </div>
                             </div>
@@ -221,7 +221,7 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                                 <button
                                     onClick={() => { if (!isProcessing) { setIsInternalProcessing(true); onPay(); } }}
                                     disabled={isProcessing}
-                                    className="w-full h-16 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-black text-xl shadow-xl shadow-red-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group"
+                                    className="w-full h-16 bg-[#9D1D27] hover:bg-[#851820] text-white rounded-2xl font-black text-xl shadow-xl shadow-[#9D1D27]/20 active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group"
                                 >
                                     {isProcessing ? (
                                         <div className="flex items-center gap-2">
@@ -240,7 +240,7 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                             <button
                                 onClick={onBack}
                                 disabled={isProcessing}
-                                className="w-full mt-4 py-2 text-slate-400 font-bold text-sm hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                                className="w-full mt-4 py-2 text-slate-500 font-bold text-sm hover:text-slate-800 transition-colors"
                             >
                                 Cancel and return
                             </button>

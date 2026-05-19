@@ -1,5 +1,5 @@
-$PROJECT_ID = "mastercard-493518"
-$IMAGE_NAME = "mastercardsmarttraveller"
+$PROJECT_ID = "idfcfirstpoc"
+$IMAGE_NAME = "idfcbankpoc"
 $REGION = "us-central1"
 $REPO_NAME = "cloud-run-source-deploy"
 

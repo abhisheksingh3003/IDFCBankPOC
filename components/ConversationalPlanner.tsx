@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Send, Users, Sparkles, ArrowRight, Plane, Mic, MicOff, Paperclip, Plus,
@@ -127,7 +127,7 @@ const DayContextCard = ({ description }: { description: DayDescription }) => {
                 <div className="bg-white dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-200 dark:border-slate-700/50 shadow-sm transition-all hover:shadow-md">
                     <div className="flex items-center gap-2 mb-3">
                         <ListChecks className="w-4 h-4 text-emerald-500" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Daily Inclusions</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Daily Inclusions</span>
                     </div>
                     <ul className="space-y-2">
                         {description.inclusions.map((item, idx) => (
@@ -143,7 +143,7 @@ const DayContextCard = ({ description }: { description: DayDescription }) => {
                 <div className="bg-orange-50/50 dark:bg-brand-orange/10 rounded-2xl p-4 border border-brand-orange/20 dark:border-brand-orange/30 shadow-sm transition-all hover:shadow-md">
                     <div className="flex items-center gap-2 mb-3">
                         <Lightbulb className="w-4 h-4 text-brand-orange" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-brand-orange/70">Expert Insight</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-amber-700 dark:text-amber-450">Expert Insight</span>
                     </div>
                     <p className="text-xs font-bold text-slate-700 dark:text-slate-200 leading-relaxed">
                         {description.whyThisWorks}
@@ -155,7 +155,7 @@ const DayContextCard = ({ description }: { description: DayDescription }) => {
             <div className="space-y-3">
                 <div className="flex items-center gap-2 mb-1">
                     <Utensils className="w-4 h-4 text-red-600" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Suggested Dining</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Suggested Dining</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -1914,46 +1914,42 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
     // ─── LANDING PAGE ──────────────────────────────────────────────────
     if (phase === 'landing') {
         return (
-            <div className="w-full h-full flex flex-col overflow-hidden bg-slate-950 relative">
+            <div className="w-full h-full flex flex-col overflow-hidden bg-transparent relative">
                 {/* Immersive Background */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-950/90 to-red-950/20 z-10" />
-
-                    {/* Noise Texture */}
-                    <div className="absolute inset-0 opacity-[0.03] z-20" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
-
                     <motion.div
                         animate={{
-                            scale: [1, 1.05, 1],
-                            opacity: [0.4, 0.2, 0.4]
+                            scale: [1, 1.05, 1]
                         }}
-                        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
                         className="absolute inset-0"
                     >
-                        <img src="/auth-hero.png" className="w-full h-full object-cover grayscale-[0.2]" alt="" />
+                        <img src="/new_auth_hero.png" className="w-full h-full object-cover" alt="" />
                     </motion.div>
-
-                    {/* Atmospheric Glows */}
-                    <div className="absolute top-1/4 -left-20 w-[400px] h-[400px] bg-red-600/15 blur-[120px] rounded-full animate-pulse" />
-                    <div className="absolute bottom-1/4 -right-20 w-[350px] h-[350px] bg-blue-600/10 blur-[120px] rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
                 </div>
 
-                <div className="relative z-30 flex-1 flex flex-col items-center px-6 overflow-y-auto scrollbar-hide py-12 lg:py-24">
+                <div className="relative z-30 flex-1 flex flex-col items-center px-6 overflow-y-auto scrollbar-hide pt-4 pb-12 lg:pt-6 lg:pb-24">
                     <div className="w-full max-w-4xl flex flex-col items-center">
                         {/* Hero Section */}
                         <motion.div
-                            initial={{ y: 30, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-center mb-12"
+                            initial={{ y: 40, opacity: 0, scale: 0.95 }}
+                            animate={{ y: 0, opacity: 1, scale: 1 }}
+                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                            className="text-center mb-6 px-6 md:px-12 py-4 rounded-[40px] select-none relative"
                         >
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[0.95] mb-6">
+                            <h1 
+                                className="relative text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] mb-6 z-10"
+                                style={{ textShadow: '0 4px 16px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.9)' }}
+                            >
                                 {LANDING_TRANSLATIONS[language].heroTitle1}<br />
-                                <span className="mc-gradient-text animate-gradient-x">
+                                <span className="inline-block relative">
                                     {LANDING_TRANSLATIONS[language].heroTitle2}
                                 </span>
                             </h1>
-                            <p className="text-lg md:text-xl text-slate-300/80 font-medium max-w-2xl mx-auto leading-relaxed">
+                            <p 
+                                className="relative text-lg md:text-2xl text-slate-100 font-medium max-w-2xl mx-auto leading-relaxed z-10"
+                                style={{ textShadow: '0 2px 8px rgba(0,0,0,0.9)' }}
+                            >
                                 {LANDING_TRANSLATIONS[language].heroSubtitle}
                             </p>
                         </motion.div>
@@ -1965,32 +1961,37 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                             transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
                             className="w-full max-w-3xl group"
                         >
-                            <div className="relative">
-                                {/* Intense Glow Shadow */}
-                                <div className="absolute -inset-1 bg-gradient-to-r from-brand-red/20 via-brand-orange/20 to-brand-yellow/20 rounded-[34px] blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-1000" />
+                            <div className="relative rounded-[32px] overflow-hidden p-[2px] shadow-[0_16px_40px_rgba(0,0,0,0.4)]">
+                                {/* Spinning Red Rectangle Background */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[200%] bg-red-600/50 animate-[spin_3s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                                <div className="relative bg-slate-900/40 backdrop-blur-3xl rounded-[32px] p-4 shadow-2xl border border-white/10 flex flex-col transition-all duration-500 group-hover:bg-slate-900/60 group-focus-within:ring-2 group-focus-within:ring-brand-red/40 group-focus-within:border-white/20">
+                                <div className="relative bg-slate-950/80 backdrop-blur-3xl rounded-[30px] p-4 flex flex-col transition-all duration-500 z-10">
                                     <textarea
                                         value={input}
                                         onChange={(e) => setInput(e.target.value)}
                                         onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleStart(); } }}
                                         placeholder={LANDING_TRANSLATIONS[language].placeholder}
-                                        className="w-full h-32 md:h-40 p-6 text-lg md:text-xl text-white placeholder:text-slate-500/70 bg-transparent outline-none resize-none font-medium selection:bg-brand-red/30"
+                                        className="w-full h-24 md:h-32 p-4 text-lg md:text-xl text-white placeholder:text-slate-400/60 bg-transparent outline-none resize-none font-medium selection:bg-brand-red/40 scrollbar-hide leading-relaxed"
                                     />
-                                    <div className="flex justify-between items-center px-4 pb-4">
-                                        <div className="flex gap-1.5">
-                                            <button className="p-3 text-slate-400 hover:text-white hover:bg-white/10 rounded-2xl transition-all active:scale-95"><Paperclip size={20} /></button>
-                                            <button className="p-3 text-slate-400 hover:text-white hover:bg-white/10 rounded-2xl transition-all active:scale-95"><Mic size={20} /></button>
+                                    <div className="flex justify-between items-center px-2 pb-1">
+                                        <div className="flex gap-1">
+                                            <button className="p-2.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-2xl transition-all active:scale-95 group/btn relative">
+                                                <Paperclip size={20} className="relative z-10" />
+                                                <div className="absolute inset-0 bg-white/5 rounded-2xl scale-0 group-hover/btn:scale-100 transition-transform duration-300"></div>
+                                            </button>
+                                            <button className="p-2.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-2xl transition-all active:scale-95 group/btn relative">
+                                                <Mic size={20} className="relative z-10" />
+                                                <div className="absolute inset-0 bg-white/5 rounded-2xl scale-0 group-hover/btn:scale-100 transition-transform duration-300"></div>
+                                            </button>
                                         </div>
                                         <button
                                             onClick={handleStart}
-                                            className="bg-gradient-to-r from-brand-red via-brand-orange to-brand-yellow p-[2px] rounded-[20px] transition-all hover:scale-[1.03] active:scale-95 group/btn shadow-[0_0_20px_rgba(235,0,27,0.3)] hover:shadow-[0_0_30px_rgba(235,0,27,0.5)]"
+                                            className="relative overflow-hidden bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-orange-500 text-white px-6 py-2.5 rounded-full flex items-center gap-2 transition-all duration-500 hover:scale-[1.04] active:scale-95 shadow-[0_0_20px_rgba(157,29,39,0.5)] hover:shadow-[0_0_40px_rgba(157,29,39,0.8)] border border-red-500/50 group/start"
                                         >
-                                            <div className="bg-slate-900 group-hover/btn:bg-transparent rounded-[18px] px-8 py-3.5 flex items-center gap-3 transition-colors duration-300">
-                                                <Sparkles size={18} className="text-brand-yellow group-hover/btn:text-white transition-colors" />
-                                                <span className="text-sm md:text-base font-black text-white">{LANDING_TRANSLATIONS[language].startPlanning}</span>
-                                                <ArrowRight size={18} className="text-white transform group-hover/btn:translate-x-1 transition-transform" />
-                                            </div>
+                                            <div className="absolute inset-0 shimmer-effect opacity-50"></div>
+                                            <Sparkles size={18} className="text-[#ffccd0] group-hover/start:animate-pulse relative z-10" />
+                                            <span className="text-sm font-black tracking-widest uppercase relative z-10">{LANDING_TRANSLATIONS[language].startPlanning}</span>
+                                            <ArrowRight size={18} className="transform group-hover/start:translate-x-2 transition-transform duration-300 relative z-10" />
                                         </button>
                                     </div>
                                 </div>
@@ -1998,26 +1999,37 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
                             {/* Refined Quick Action Prompts */}
                             <motion.div
-                                initial={{ y: 20, opacity: 0 }}
+                                initial={{ y: 30, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ delay: 0.8, duration: 0.8 }}
-                                className="flex flex-wrap justify-center gap-2.5 mt-10"
+                                className="flex flex-wrap justify-center gap-3 mt-12 relative z-20"
                             >
                                 {QUICK_PROMPTS[language].map((qp, i) => (
-                                    <button
+                                    <motion.button
                                         key={i}
+                                        whileHover={{ y: -4, scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
                                         onClick={() => setInput(qp.text)}
-                                        className="bg-white/5 hover:bg-white/10 backdrop-blur-md text-slate-300 hover:text-white px-5 py-2.5 rounded-2xl text-[11px] font-black uppercase tracking-wider flex items-center gap-2 transition-all border border-white/5 hover:border-white/20 active:scale-95"
+                                        className="relative overflow-hidden bg-slate-900/50 hover:bg-slate-900/80 backdrop-blur-xl text-slate-100 hover:text-white px-6 py-3.5 rounded-2xl text-[12px] font-bold uppercase tracking-widest flex items-center gap-3 transition-all border border-white/10 hover:border-brand-orange/50 shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(196,149,58,0.2)] group/prompt"
                                     >
-                                        <qp.icon size={14} className="text-brand-orange" /> {qp.label}
-                                    </button>
+                                        <div className="absolute inset-0 bg-gradient-to-r from-brand-orange/0 via-brand-orange/10 to-brand-orange/0 translate-x-[-100%] group-hover/prompt:translate-x-[100%] transition-transform duration-1000 ease-in-out"></div>
+                                        <div className="p-1.5 bg-white/10 rounded-lg group-hover/prompt:bg-brand-orange/20 transition-colors">
+                                            <qp.icon size={16} className="text-brand-orange group-hover/prompt:text-brand-yellow transition-colors" />
+                                        </div>
+                                        {qp.label}
+                                    </motion.button>
                                 ))}
-                                <button
+                                <motion.button
+                                    whileHover={{ y: -4, scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
                                     onClick={onOpenManual}
-                                    className="bg-white/5 hover:bg-white/10 backdrop-blur-md text-slate-300 hover:text-white px-5 py-2.5 rounded-2xl text-[11px] font-black uppercase tracking-wider flex items-center gap-2 transition-all border border-brand-orange/20 hover:border-brand-orange/50 active:scale-95"
+                                    className="relative overflow-hidden bg-gradient-to-r from-brand-orange/10 to-brand-yellow/10 hover:from-brand-orange/20 hover:to-brand-yellow/20 backdrop-blur-xl text-white hover:text-white px-6 py-3.5 rounded-2xl text-[12px] font-bold uppercase tracking-widest flex items-center gap-3 transition-all border border-brand-orange/30 hover:border-brand-yellow/50 shadow-[0_8px_30px_rgba(196,149,58,0.15)] group/prompt"
                                 >
-                                    <Plus size={14} className="text-brand-yellow" /> {LANDING_TRANSLATIONS[language].stepByStep}
-                                </button>
+                                    <div className="p-1.5 bg-brand-orange/20 rounded-lg group-hover/prompt:bg-brand-yellow/30 transition-colors">
+                                        <Plus size={16} className="text-brand-yellow group-hover/prompt:text-amber-200 transition-colors" />
+                                    </div>
+                                    {LANDING_TRANSLATIONS[language].stepByStep}
+                                </motion.button>
                             </motion.div>
                         </motion.div>
                     </div>
@@ -2041,9 +2053,9 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
                         <div className="flex flex-col md:flex-row items-center gap-8">
                             <div className="flex flex-col items-center md:items-start">
-                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-2">Powered By</span>
-                                <div className="bg-white/5 backdrop-blur-md px-4 py-2 rounded-xl border border-white/5 transition-all hover:bg-white/10 flex items-center gap-2">
-                                    <img src="/images/pointlabs.png" className="h-3 w-auto object-contain grayscale brightness-200 group-hover:grayscale-0 group-hover:brightness-100 transition-all" alt="Pointlabs" />
+                                <span className="text-[10px] font-black text-slate-800 uppercase tracking-[0.4em] mb-2" style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}>Powered By</span>
+                                <div className="bg-slate-950/80 px-4 py-2 rounded-xl border border-slate-800 transition-all hover:bg-slate-900 flex items-center gap-2 shadow-md">
+                                    <img src="/images/pointlabs.png" className="h-4 w-auto object-contain brightness-125 contrast-125" alt="Pointlabs" />
                                 </div>
                             </div>
                         </div>
@@ -2055,18 +2067,18 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
     // ─── CHAT VIEW ───────────────────────────────────────────────────
     return (
-        <div className="w-full h-full flex flex-col lg:flex-row overflow-hidden bg-white relative">
+        <div className="w-full h-full flex flex-col lg:flex-row overflow-hidden bg-transparent relative">
             {isMobile && hasItinerary && (
-                <div className="flex shrink-0 bg-white border-b border-slate-200 p-1">
+                <div className="flex shrink-0 glass-nav p-1">
                     <button
                         onClick={() => setMobileView('chat')}
-                        className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest transition-all ${mobileView === 'chat' ? 'text-red-600 border-b-2 border-red-600' : 'text-slate-400'}`}
+                        className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest transition-all ${mobileView === 'chat' ? 'text-red-500 border-b-2 border-red-500' : 'text-slate-500'}`}
                     >
                         Chat
                     </button>
                     <button
                         onClick={() => setMobileView('itinerary')}
-                        className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest transition-all ${mobileView === 'itinerary' ? 'text-red-600 border-b-2 border-red-600' : 'text-slate-400'}`}
+                        className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest transition-all ${mobileView === 'itinerary' ? 'text-red-500 border-b-2 border-red-500' : 'text-slate-500'}`}
                     >
                         Itinerary
                     </button>
@@ -2082,15 +2094,15 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                     pointerEvents: viewMode === 'results-only' || (isMobile && mobileView !== 'chat') ? 'none' : 'auto'
                 }}
                 transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-                className={`h-full flex flex-col border-r border-slate-200 bg-slate-50 shrink-0 relative overflow-hidden ${isMobile && mobileView !== 'chat' ? 'hidden' : 'flex'}`}
+                className={`h-full flex flex-col border-r border-white/5 glass-sidebar shrink-0 relative overflow-hidden ${isMobile && mobileView !== 'chat' ? 'hidden' : 'flex'}`}
             >
                 {/* Header */}
-                <div className="h-14 border-b border-slate-200 flex items-center px-4 gap-3 shrink-0 bg-white">
-                    <button onClick={handleBack} className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors text-slate-400 hover:text-slate-700"><ArrowLeft size={16} /></button>
+                <div className="h-14 border-b border-slate-200 flex items-center px-4 gap-3 shrink-0 glass-nav">
+                    <button onClick={handleBack} className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors text-slate-500 hover:text-slate-800"><ArrowLeft size={16} /></button>
                     <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-red-600 to-orange-500 text-white flex items-center justify-center font-bold text-xs">A</div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-slate-900 font-bold text-sm truncate">Anya AI</p>
-                        <p className="text-[10px] text-slate-400">Travel assistant</p>
+                        <p className="text-[#1a1a2e] font-bold text-sm truncate">Anya AI</p>
+                        <p className="text-[10px] text-slate-500">Travel assistant</p>
                     </div>
                     <span className="w-2 h-2 rounded-full bg-emerald-500" title="Online" />
                 </div>
@@ -2110,11 +2122,11 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                     {msg.content && (
                                         <div className={`p-3.5 rounded-2xl text-[13px] leading-relaxed whitespace-pre-line ${msg.sender === 'user'
                                             ? 'bg-red-600 text-white rounded-tr-sm'
-                                            : 'bg-white text-slate-700 rounded-tl-sm border border-slate-200 shadow-sm'
+                                            : 'glass-card text-slate-850 rounded-tl-sm'
                                             }`}>
                                             {msg.content.split(/(\*\*.*?\*\*)/).map((part, i) =>
                                                 part.startsWith('**') && part.endsWith('**')
-                                                    ? <strong key={i} className={`font-bold ${msg.sender === 'user' ? 'text-white' : 'text-slate-900'}`}>{part.slice(2, -2)}</strong>
+                                                    ? <strong key={i} className={`font-bold ${msg.sender === 'user' ? 'text-white' : 'text-[#1a1a2e]'}`}>{part.slice(2, -2)}</strong>
                                                     : <span key={i}>{part}</span>
                                             )}
                                         </div>
@@ -2129,7 +2141,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-wrap gap-2">
                                                     {msg.quickReplies.map((qr, i) => (
                                                         <button key={i} onClick={() => handleUserReply(qr.label, qr.value)}
-                                                            className="bg-red-50 hover:bg-red-600 text-red-600 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all border border-red-200 hover:border-red-600 hover:shadow-md">
+                                                            className="glass-pill hover:bg-red-600 text-slate-700 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all hover:shadow-md hover:glow-brand">
                                                             {qr.label}
                                                         </button>
                                                     ))}
@@ -2139,7 +2151,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                             {/* Inline Calendar Picker */}
                                             {msg.showCalendar && (
                                                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-[320px]">
-                                                    <div className="bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden">
+                                                    <div className="glass-card rounded-2xl overflow-hidden">
                                                         {/* Calendar Header */}
                                                         <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-red-600 to-orange-500">
                                                             <button onClick={() => setCalendarMonth(prev => { const d = new Date(prev); d.setMonth(d.getMonth() - 1); return d; })} className="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"><ChevronLeft size={16} /></button>
@@ -2184,11 +2196,11 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                                     setCalendarToDate(null);
                                                                                 }
                                                                             }}
-                                                                            className={`w-full aspect-square flex items-center justify-center text-[11px] font-medium rounded-lg transition-all ${isPast ? 'text-slate-200 cursor-not-allowed' :
-                                                                                isFrom ? 'bg-red-600 text-white font-bold shadow-md' :
-                                                                                    isTo ? 'bg-red-600 text-white font-bold shadow-md' :
-                                                                                        isInRange ? 'bg-red-100 text-red-700' :
-                                                                                            'text-slate-700 hover:bg-red-50 hover:text-red-600 cursor-pointer'
+                                                                            className={`w-full aspect-square flex items-center justify-center text-[11px] font-medium rounded-lg transition-all ${isPast ? 'text-slate-400 cursor-not-allowed' :
+                                                                                isFrom ? 'bg-red-600 text-white font-bold shadow-md glow-brand' :
+                                                                                    isTo ? 'bg-red-600 text-white font-bold shadow-md glow-brand' :
+                                                                                        isInRange ? 'bg-red-50 text-red-600' :
+                                                                                            'text-slate-700 hover:bg-slate-100 hover:text-red-600 cursor-pointer'
                                                                                 }`}
                                                                         >
                                                                             {day}
@@ -2378,7 +2390,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                 </div>
 
                 {/* Input */}
-                <div className="border-t border-slate-200 px-4 pt-3 pb-2 bg-white shrink-0 relative">
+                <div className="border-t border-slate-200 px-4 pt-3 pb-2 glass-nav shrink-0 relative">
                     {/* Smart Suggestion Chips */}
                     <AnimatePresence>
                         {(() => {
@@ -2390,7 +2402,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 5 }}
-                                    className="absolute bottom-full left-0 right-0 px-4 py-3 flex gap-2 overflow-x-auto scrollbar-hide bg-gradient-to-t from-white via-white to-transparent pointer-events-auto"
+                                    className="absolute bottom-full left-0 right-0 px-4 py-3 flex gap-2 overflow-x-auto scrollbar-hide bg-gradient-to-t from-[#f8f7f4] via-[#f8f7f4]/80 to-transparent pointer-events-auto"
                                 >
                                     {suggestions.map((suggestion, idx) => (
                                         <button
@@ -2399,7 +2411,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                 handleUserReply(suggestion);
                                                 setSuggestions([]);
                                             }}
-                                            className="shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50 text-[11px] font-bold shadow-sm transition-all whitespace-nowrap active:scale-95"
+                                            className="shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full glass-pill text-slate-700 hover:text-red-650 hover:glow-border-brand text-[11px] font-bold shadow-sm transition-all whitespace-nowrap active:scale-95"
                                         >
                                             <Sparkles size={12} className="text-amber-500" />
                                             {suggestion}
@@ -2415,17 +2427,17 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                             <button
                                 onClick={() => setIsMuted(!isMuted)}
                                 className={`p-2 rounded-xl border transition-all ${isMuted
-                                    ? 'bg-slate-100 text-slate-400 border-slate-200'
-                                    : 'bg-red-50 text-red-600 border-red-200'
+                                    ? 'glass-pill text-slate-500'
+                                    : 'bg-red-900/30 text-red-400 border-red-800/40'
                                     }`}
                                 title={isMuted ? "Unmute AI Voice" : "Mute AI Voice"}
                             >
                                 {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
                             </button>
                         </div>
-                        <div className="flex-1 flex items-center gap-2 bg-slate-100 rounded-xl px-3 py-2.5">
+                        <div className="flex-1 flex items-center gap-2 glass-input rounded-xl px-3 py-2.5">
                             <input
-                                className="flex-1 bg-transparent border-none outline-none text-sm text-slate-900 placeholder:text-slate-400 disabled:opacity-50"
+                                className="flex-1 bg-transparent border-none outline-none text-sm text-[#1a1a2e] placeholder:text-slate-400 disabled:opacity-50"
                                 placeholder={isGenerating ? "Anya is thinking..." : (isListening ? "Listening..." : (waitingForUser ? "Pick a reply or type..." : "Watching Anya..."))}
                                 value={chatInput}
                                 onChange={(e) => setChatInput(e.target.value)}
@@ -2441,7 +2453,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                         startListening(true);
                                     }
                                 }}
-                                className={`p-1.5 rounded-xl transition-all ${isLiveMode ? 'bg-red-500 text-white shadow-lg shadow-red-500/20' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-200'}`}
+                                className={`p-1.5 rounded-xl transition-all ${isLiveMode ? 'bg-red-500 text-white shadow-lg shadow-red-500/20' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'}`}
                                 title={isLiveMode ? "Disable Hands-free Mode" : "Enable Gemini-style Hands-free Mode"}
                             >
                                 <Mic size={18} className={isLiveMode ? 'animate-pulse' : ''} />
@@ -2449,7 +2461,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                         </div>
                         <button
                             onClick={() => { if (chatInput.trim() && !isGenerating) { handleUserReply(chatInput.trim()); setChatInput(''); } }}
-                            className={`p-2.5 rounded-xl text-white transition-colors ${isGenerating || (!chatInput.trim() && !isListening) ? 'bg-slate-300 cursor-not-allowed' : 'bg-red-600 hover:bg-red-500'}`}
+                            className={`p-2.5 rounded-xl text-white transition-colors ${isGenerating || (!chatInput.trim() && !isListening) ? 'bg-slate-300 cursor-not-allowed' : 'bg-red-600 hover:bg-red-500 glow-brand'}`}
                             disabled={isGenerating || (!chatInput.trim() && !isListening)}
                         >
                             <Send size={14} />
@@ -2507,8 +2519,8 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             </motion.div>
 
             {/* ─── RIGHT PANEL: Destination Context (Phase 1) OR Itinerary (Phase 2) ─── */}
-            <div className={`relative overflow-hidden h-full ${viewMode === 'results-only' ? 'w-full flex items-center justify-center p-4 lg:p-8 bg-slate-100 dark:bg-slate-950' : 'flex-1'} ${isMobile && mobileView !== 'itinerary' ? 'hidden' : 'block'}`}>
-                <div className={`${viewMode === 'results-only' ? 'w-full max-w-4xl h-full rounded-2xl lg:rounded-[40px] shadow-2xl bg-white dark:bg-slate-900 overflow-hidden relative' : 'w-full h-full relative'}`}>
+            <div className={`relative overflow-hidden h-full ${viewMode === 'results-only' ? 'w-full flex items-center justify-center p-4 lg:p-8 bg-transparent' : 'flex-1'} ${isMobile && mobileView !== 'itinerary' ? 'hidden' : 'block'}`}>
+                <div className={`${viewMode === 'results-only' ? 'w-full max-w-4xl h-full rounded-2xl lg:rounded-[40px] shadow-2xl glass-card overflow-hidden relative' : 'w-full h-full relative'}`}>
                     {/* Phase 1: Destination Context Card */}
                     <AnimatePresence>
                         {!hasItinerary && (
@@ -2518,14 +2530,14 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.5 }}
-                                className="absolute inset-0 bg-slate-950 flex flex-col"
+                                className="absolute inset-0 bg-transparent flex flex-col"
                             >
                                 {/* Top bar: Destination info + progress */}
                                 <div className="shrink-0 px-8 pt-6 pb-4 z-10">
                                     <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                                        <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Destination</p>
-                                        <h2 className="text-4xl font-black text-white">{destName}</h2>
-                                        <p className="text-white/50 text-sm mt-1">{scenarioRoute} • {scenarioDates}</p>
+                                        <p className="text-slate-500 dark:text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Destination</p>
+                                        <h2 className="text-4xl font-black text-[#1a1a2e] dark:text-white">{destName}</h2>
+                                        <p className="text-slate-600 dark:text-white/50 text-sm mt-1">{scenarioRoute} • {scenarioDates}</p>
                                     </motion.div>
 
                                     {/* Anya progress bar */}
@@ -2533,19 +2545,19 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.5 }}
-                                        className="mt-4 bg-white/8 backdrop-blur-xl rounded-xl p-3 border border-white/10 flex items-center gap-3"
+                                        className="mt-4 bg-slate-100/80 dark:bg-white/8 backdrop-blur-xl rounded-xl p-3 border border-slate-200 dark:border-white/10 flex items-center gap-3"
                                     >
-                                        <div className="w-9 h-9 rounded-full bg-red-600/30 flex items-center justify-center shrink-0">
-                                            <Sparkles size={16} className="text-red-400 animate-pulse" />
+                                        <div className="w-9 h-9 rounded-full bg-red-50 dark:bg-red-600/30 flex items-center justify-center shrink-0">
+                                            <Sparkles size={16} className="text-red-500 dark:text-red-400 animate-pulse" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-white font-bold text-xs">{thinkingMessage.replace('Concierge', 'Anya')}</p>
-                                            <p className="text-white/40 text-[10px]">Answer a few questions to personalize your itinerary</p>
+                                            <p className="text-[#1a1a2e] dark:text-white font-bold text-xs">{thinkingMessage.replace('Concierge', 'Anya')}</p>
+                                            <p className="text-slate-550 dark:text-white/40 text-[10px]">Answer a few questions to personalize your itinerary</p>
                                         </div>
                                         <div className="flex gap-1 shrink-0">
-                                            <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0 }} className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                                            <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }} className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                                            <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }} className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                                            <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0 }} className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                                            <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }} className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                                            <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }} className="w-1.5 h-1.5 rounded-full bg-red-500" />
                                         </div>
                                     </motion.div>
 
@@ -2561,10 +2573,10 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                 initial={{ opacity: 0, y: 8 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: 0.7 + i * 0.1 }}
-                                                className="bg-white/6 rounded-lg px-3 py-2 border border-white/8"
+                                                className="bg-slate-100/60 dark:bg-white/6 rounded-lg px-3 py-2 border border-slate-200 dark:border-white/8"
                                             >
-                                                <p className="text-white/30 text-[8px] font-bold uppercase tracking-widest">{stat.label}</p>
-                                                <p className="text-white text-[11px] font-bold mt-0.5">{stat.value}</p>
+                                                <p className="text-slate-500 dark:text-white/30 text-[8px] font-bold uppercase tracking-widest">{stat.label}</p>
+                                                <p className="text-[#1a1a2e] dark:text-white text-[11px] font-bold mt-0.5">{stat.value}</p>
                                             </motion.div>
                                         ))}
                                     </div>
@@ -2658,22 +2670,22 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                 animate={viewMode === 'results-only' ? { opacity: 1, scale: 1 } : { x: 0, opacity: 1 }}
                                 exit={viewMode === 'results-only' ? { opacity: 0, scale: 0.95 } : { x: 300, opacity: 0 }}
                                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                                className="absolute inset-0 flex flex-col bg-white dark:bg-slate-900 overflow-hidden"
+                                className="absolute inset-0 flex flex-col glass-sidebar overflow-hidden"
                             >
                                 {/* Itinerary Header */}
-                                <div className={`shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 ${isMobile ? 'p-3 px-4' : 'p-4 px-6'}`}>
+                                <div className={`shrink-0 glass-nav border-b border-white/10 ${isMobile ? 'p-3 px-4' : 'p-4 px-6'}`}>
                                     {/* Title & Price Row */}
                                     <div className="flex items-center justify-between gap-3 mb-2">
                                         <div className="flex items-center gap-2 min-w-0">
                                             {viewMode === 'results-only' && (
                                                 <button
                                                     onClick={() => onOpenManual()}
-                                                    className="p-1 -ml-1 text-slate-400 hover:text-red-600 transition-colors"
+                                                    className="p-1 -ml-1 text-slate-400 hover:text-red-500 transition-colors"
                                                 >
                                                     <ChevronLeft size={isMobile ? 18 : 20} />
                                                 </button>
                                             )}
-                                            <h2 className={`${isMobile ? 'text-lg' : 'text-xl'} font-black text-slate-900 dark:text-white uppercase tracking-tight truncate`}>
+                                            <h2 className={`${isMobile ? 'text-lg' : 'text-xl'} font-black text-[#1a1a2e] dark:text-white uppercase tracking-tight truncate`}>
                                                 {viewMode === 'results-only' ? (initialCuration?.tripName || 'Your Itinerary') : scenarioLabel}
                                             </h2>
                                         </div>
@@ -2687,42 +2699,42 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                 </button>
                                             )}
                                             {!isMobile && bookedCount > 0 && (
-                                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
+                                                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-900/20 px-2.5 py-1 rounded-full border border-emerald-800">
                                                     {bookedCount}/{itinerary.length} booked
                                                 </span>
                                             )}
-                                            <p className={`${isMobile ? 'text-xs' : 'text-sm'} font-black text-slate-900 dark:text-white`}>
-                                                <span className="text-[10px] text-slate-400 font-bold mr-1">INR</span>
+                                            <p className={`${isMobile ? 'text-xs' : 'text-sm'} font-black text-[#1a1a2e] dark:text-white`}>
+                                                <span className="text-[10px] text-slate-500 font-bold mr-1">INR</span>
                                                 {totalCost.toLocaleString()}
                                             </p>
                                         </div>
                                     </div>
 
                                     {/* Meta Info Row: Compact on Mobile */}
-                                    <div className={`flex items-center gap-2 ${isMobile ? 'overflow-x-auto scrollbar-hide mb-3' : 'mt-2 text-sm text-slate-500 font-medium'}`}>
+                                    <div className={`flex items-center gap-2 ${isMobile ? 'overflow-x-auto scrollbar-hide mb-3' : 'mt-2 text-sm text-slate-600 font-medium'}`}>
                                         {[
                                             { icon: MapPin, text: scenarioRoute },
                                             { icon: Calendar, text: scenarioDates },
                                             { icon: Users, text: scenarioTravelers }
                                         ].map((item, i) => (
-                                            <div key={i} className={`flex items-center gap-1.5 whitespace-nowrap ${isMobile ? 'bg-slate-50 dark:bg-slate-800 py-1 px-2.5 rounded-lg border border-slate-100 dark:border-slate-700 text-[11px] font-bold text-slate-600 dark:text-slate-300' : 'text-slate-500'}`}>
-                                                <item.icon size={isMobile ? 12 : 14} className={isMobile ? 'text-red-500' : 'text-slate-400'} />
+                                            <div key={i} className={`flex items-center gap-1.5 whitespace-nowrap ${isMobile ? 'glass-pill py-1 px-2.5 rounded-lg text-[11px] font-bold text-slate-700 dark:text-slate-300' : 'text-slate-650 dark:text-slate-400'}`}>
+                                                <item.icon size={isMobile ? 12 : 14} className={isMobile ? 'text-red-500' : 'text-slate-500 dark:text-slate-400'} />
                                                 {item.text}
-                                                {!isMobile && i < 2 && <span className="ml-1 text-slate-300">•</span>}
+                                                {!isMobile && i < 2 && <span className="ml-1 text-slate-400 dark:text-slate-600">•</span>}
                                             </div>
                                         ))}
                                     </div>
 
                                     {/* Tabs Row */}
-                                    <div className={`flex items-center justify-between ${isMobile ? 'gap-2' : 'mt-4 pt-4 border-t border-slate-100 dark:border-slate-800'}`}>
+                                    <div className={`flex items-center justify-between ${isMobile ? 'gap-2' : 'mt-4 pt-4 border-t border-white/10'}`}>
                                         <div className="flex gap-1.5 overflow-x-auto scrollbar-hide py-1 flex-1">
                                             {['Itinerary', 'Essentials'].map(tab => (
                                                 <button
                                                     key={tab}
                                                     onClick={() => setActiveTab(tab as any)}
                                                     className={`shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all ${activeTab === tab
-                                                        ? 'bg-slate-900 dark:bg-white dark:text-slate-950 text-white shadow-md'
-                                                        : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                                        ? 'glass-pill-active text-red-700 dark:text-white shadow-md font-black'
+                                                        : 'glass-pill text-slate-600 dark:text-slate-400 hover:text-[#1a1a2e] dark:hover:text-white'
                                                         }`}
                                                 >
                                                     {tab}
@@ -2730,7 +2742,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                             ))}
                                         </div>
                                         {isMobile && bookedCount > 0 && (
-                                            <span className="text-[9px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-100 uppercase tracking-wider">
+                                            <span className="text-[9px] font-black text-emerald-400 glass-pill px-2 py-1 rounded-lg uppercase tracking-wider">
                                                 {bookedCount}/{itinerary.length} Booked
                                             </span>
                                         )}
@@ -2753,14 +2765,14 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                 exit={{ height: 0, opacity: 0 }}
                                                 className="overflow-hidden"
                                             >
-                                                <div className="flex gap-2 overflow-x-auto scrollbar-hide py-2 mt-2 border-t border-slate-50 dark:border-slate-800/50">
+                                                <div className="flex gap-2 overflow-x-auto scrollbar-hide py-2 mt-2 border-t border-white/5">
                                                     {sortedGroups.map(group => (
                                                         <button
                                                             key={group}
                                                             onClick={() => setSelectedGroup(group)}
                                                             className={`shrink-0 px-3 py-1 rounded-full text-[11px] font-bold transition-all ${(!selectedGroup ? group === sortedGroups[0] : selectedGroup === group)
-                                                                ? 'bg-red-50 dark:bg-red-900/20 text-red-600 border border-red-200 dark:border-red-800'
-                                                                : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                                                ? 'glass-pill-active text-red-700 dark:text-red-400'
+                                                                : 'glass-pill text-slate-600 dark:text-slate-400 hover:text-[#1a1a2e] dark:hover:text-white'
                                                                 }`}
                                                         >
                                                             {formatDayWithDate(group)}
@@ -2773,7 +2785,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                 </div>
 
                                 {/* Itinerary Items */}
-                                <div className="flex-1 overflow-y-auto p-[0.6rem] px-6 scrollbar-hide bg-slate-50/50">
+                                <div className="flex-1 overflow-y-auto p-[0.6rem] px-6 scrollbar-hide bg-transparent">
                                     {showMap ? (
                                         <div className="w-full h-full min-h-[500px] rounded-2xl overflow-hidden relative shadow-inner border border-slate-200 bg-slate-100 mb-8">
                                             <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=1600" className="w-full h-full object-cover grayscale opacity-80" alt="Map View" />
@@ -2791,12 +2803,12 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 whitespace-nowrap pointer-events-none transition-opacity z-10">Airport</div>
                                             </div>
 
-                                            <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-slate-100 flex items-center justify-between">
+                                            <div className="absolute bottom-6 left-6 right-6 glass-card rounded-2xl p-4 shadow-xl flex items-center justify-between">
                                                 <div>
-                                                    <p className="font-bold text-slate-900">Interactive Map</p>
+                                                    <p className="font-bold text-[#1a1a2e] dark:text-white">Interactive Map</p>
                                                     <p className="text-xs text-slate-500">{itinerary.length} items spread across {destName}</p>
                                                 </div>
-                                                <button onClick={() => setShowMap(false)} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition active:scale-95">View List</button>
+                                                <button onClick={() => setShowMap(false)} className="glass-button text-white px-4 py-2 rounded-xl text-xs font-bold transition active:scale-95">View List</button>
                                             </div>
                                         </div>
                                     ) : (
@@ -2812,10 +2824,10 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
                                                             return (
                                                                 <motion.div key={dayLabel} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }} className="mb-6">
-                                                                    <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+                                                                    <h3 className="text-sm font-black text-[#1a1a2e] dark:text-white flex items-center gap-2 mb-4">
                                                                         {dayLabel === 'Trip Overview' ? <Briefcase size={16} className="text-slate-400" /> : <div className="w-2 h-2 rounded-full bg-red-500 shrink-0" />}
                                                                         {formatDayWithDate(dayLabel)}
-                                                                        {dayDesc && <span className="text-slate-300 dark:text-slate-600 font-medium ml-1">• {dayDesc.theme}</span>}
+                                                                        {dayDesc && <span className="text-slate-500 font-medium ml-1">• {dayDesc.theme}</span>}
                                                                     </h3>
 
                                                                     {/* Rich Day Description Card */}
@@ -2823,7 +2835,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
                                                                     <div className="space-y-4">
                                                                         {groupedItinerary[dayLabel].length === 0 ? (
-                                                                            <div className="text-center py-6 bg-white/50 rounded-2xl border border-dashed border-slate-300">
+                                                                            <div className="text-center py-6 glass-card rounded-2xl border border-dashed border-white/20">
                                                                                 <p className="text-slate-500 text-sm font-medium">No plans yet for this day.</p>
                                                                                 <button
                                                                                     onClick={() => {
@@ -2842,7 +2854,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                                         setInitialBookingStep('search');
                                                                                         setDrawerOpen(true);
                                                                                     }}
-                                                                                    className="mt-3 bg-red-50 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-100 transition"
+                                                                                    className="mt-3 glass-pill-active text-red-400 px-4 py-2 rounded-xl text-xs font-bold hover:text-white transition"
                                                                                 >
                                                                                     + Add Experience
                                                                                 </button>
@@ -3047,8 +3059,8 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                                         <div className="space-y-3">
                                                                                             <div className="flex items-center justify-between">
                                                                                                 <div className="flex items-center gap-2">
-                                                                                                    <HotelIcon size={12} className="text-slate-400" />
-                                                                                                    <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Hotel</span>
+                                                                                                    <HotelIcon size={12} className="text-slate-500 dark:text-slate-400" />
+                                                                                                    <span className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Hotel</span>
                                                                                                 </div>
                                                                                                 {renderBadge()}
                                                                                             </div>
@@ -3088,8 +3100,8 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                                         <div className="space-y-3">
                                                                                             <div className="flex items-center justify-between">
                                                                                                 <div className="flex items-center gap-2">
-                                                                                                    <Camera size={12} className="text-slate-400" />
-                                                                                                    <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">{item.type === 'activity' ? 'Experience' : 'Transfer'}</span>
+                                                                                                    <Camera size={12} className="text-slate-500 dark:text-slate-400" />
+                                                                                                    <span className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{item.type === 'activity' ? 'Experience' : 'Transfer'}</span>
                                                                                                 </div>
                                                                                                 {renderBadge()}
                                                                                             </div>

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, LogIn, Facebook, ShieldCheck, ArrowRight } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -95,18 +95,18 @@ const SignInPage: React.FC<{ onLogin: (user: UserProfile) => void }> = ({ onLogi
                             type="email"
                             required
                             id="email"
-                            className="peer w-full py-2 bg-transparent border-b-2 border-slate-200 dark:border-slate-800 focus:border-brand-red outline-none text-slate-900 dark:text-white font-medium transition-all placeholder-transparent"
+                            className="peer w-full py-2 bg-transparent border-b-2 border-slate-200 focus:border-red-500 outline-none text-[#1a1a2e] font-medium transition-all placeholder-transparent"
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             placeholder="Email Address"
                         />
                         <label 
                             htmlFor="email"
-                            className="absolute left-0 -top-3.5 text-slate-500 text-xs font-bold uppercase tracking-widest transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-medium peer-placeholder-shown:normal-case peer-focus:-top-3.5 peer-focus:text-xs peer-focus:font-bold peer-focus:uppercase peer-focus:text-brand-red pointer-events-none"
+                            className="absolute left-0 -top-3.5 text-slate-500 text-xs font-bold uppercase tracking-widest transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-medium peer-placeholder-shown:normal-case peer-focus:-top-3.5 peer-focus:text-xs peer-focus:font-bold peer-focus:uppercase peer-focus:text-red-500 pointer-events-none"
                         >
                             Email Address
                         </label>
-                        <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-red transition-all duration-300 group-focus-within:w-full" />
+                        <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-focus-within:w-full" />
                     </div>
 
                     {/* Password Input */}
@@ -115,25 +115,25 @@ const SignInPage: React.FC<{ onLogin: (user: UserProfile) => void }> = ({ onLogi
                             type={showPassword ? "text" : "password"}
                             required
                             id="password"
-                            className="peer w-full py-2 bg-transparent border-b-2 border-slate-200 dark:border-slate-800 focus:border-brand-red outline-none text-slate-900 dark:text-white font-medium transition-all placeholder-transparent pr-10"
+                            className="peer w-full py-2 bg-transparent border-b-2 border-slate-200 focus:border-red-500 outline-none text-[#1a1a2e] font-medium transition-all placeholder-transparent pr-10"
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             placeholder="Password"
                         />
                         <label 
                             htmlFor="password"
-                            className="absolute left-0 -top-3.5 text-slate-500 text-xs font-bold uppercase tracking-widest transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-medium peer-placeholder-shown:normal-case peer-focus:-top-3.5 peer-focus:text-xs peer-focus:font-bold peer-focus:uppercase peer-focus:text-brand-red pointer-events-none"
+                            className="absolute left-0 -top-3.5 text-slate-500 text-xs font-bold uppercase tracking-widest transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-medium peer-placeholder-shown:normal-case peer-focus:-top-3.5 peer-focus:text-xs peer-focus:font-bold peer-focus:uppercase peer-focus:text-red-500 pointer-events-none"
                         >
                             Password
                         </label>
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-0 bottom-2 text-slate-400 hover:text-brand-red transition-colors"
+                            className="absolute right-0 bottom-2 text-slate-500 hover:text-red-500 transition-colors"
                         >
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
-                        <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-red transition-all duration-300 group-focus-within:w-full" />
+                        <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-focus-within:w-full" />
                     </div>
                 </div>
 
@@ -141,14 +141,14 @@ const SignInPage: React.FC<{ onLogin: (user: UserProfile) => void }> = ({ onLogi
                     <label className="flex items-center gap-2 cursor-pointer group">
                         <div className="relative w-4 h-4">
                             <input type="checkbox" className="peer hidden" />
-                            <div className="w-full h-full rounded border-2 border-slate-300 dark:border-slate-700 peer-checked:border-brand-red peer-checked:bg-brand-red transition-all" />
+                            <div className="w-full h-full rounded border-2 border-slate-200 peer-checked:border-red-500 peer-checked:bg-red-500 transition-all" />
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 text-white">
                                 <ShieldCheck size={10} strokeWidth={4} />
                             </div>
                         </div>
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors">Keep me signed in</span>
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover:text-slate-700 transition-colors">Keep me signed in</span>
                     </label>
-                    <button type="button" className="text-[10px] font-black text-brand-red uppercase tracking-widest hover:opacity-70 transition-all">
+                    <button type="button" className="text-[10px] font-black text-red-500 uppercase tracking-widest hover:opacity-70 transition-all">
                         Forgot password
                     </button>
                 </div>
@@ -157,7 +157,7 @@ const SignInPage: React.FC<{ onLogin: (user: UserProfile) => void }> = ({ onLogi
                     whileTap={{ scale: 0.98 }}
                     disabled={isLoading}
                     type="submit"
-                    className="w-full relative py-5 bg-slate-950 dark:bg-white text-white dark:text-slate-950 rounded-xl font-black text-sm uppercase tracking-[0.2em] overflow-hidden group shadow-2xl transition-all"
+                    className="w-full relative py-5 glass-button text-white rounded-xl font-black text-sm uppercase tracking-[0.2em] overflow-hidden group shadow-2xl transition-all"
                 >
                     <div className="relative z-10 flex items-center justify-center gap-3">
                         <AnimatePresence mode="wait">
@@ -182,15 +182,15 @@ const SignInPage: React.FC<{ onLogin: (user: UserProfile) => void }> = ({ onLogi
                     <motion.div 
                         initial={{ y: "100%" }}
                         whileHover={{ y: "0%" }}
-                        className="absolute inset-0 bg-brand-red z-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]"
+                        className="absolute inset-0 bg-gradient-to-r from-[#9D1D27] to-[#C4953A] z-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]"
                     />
                 </motion.button>
 
                 {/* Secure Divider */}
                 <div className="flex items-center gap-4">
-                    <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Identity Systems</span>
-                    <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+                    <div className="h-px flex-1 bg-slate-200" />
+                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500">Identity Systems</span>
+                    <div className="h-px flex-1 bg-slate-200" />
                 </div>
 
                 {/* Premium Social Logins */}
@@ -198,20 +198,20 @@ const SignInPage: React.FC<{ onLogin: (user: UserProfile) => void }> = ({ onLogi
                     <button 
                         type="button" 
                         onClick={() => googleLogin()}
-                        className="py-4 flex items-center justify-center gap-3 bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-brand-red transition-all group"
+                        className="py-4 flex items-center justify-center gap-3 glass-pill rounded-xl hover:border-red-500/30 transition-all group"
                     >
                         <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="h-4 w-4" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Google</span>
                     </button>
-                    <button type="button" className="py-4 flex items-center justify-center gap-3 bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-[#1877F2] transition-all group">
-                        <Facebook size={16} className="text-slate-400 group-hover:text-[#1877F2] transition-colors" />
+                    <button type="button" className="py-4 flex items-center justify-center gap-3 glass-pill rounded-xl hover:border-[#1877F2]/30 transition-all group">
+                        <Facebook size={16} className="text-slate-500 group-hover:text-[#1877F2] transition-colors" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Facebook</span>
                     </button>
                 </div>
 
                 <p className="mt-8 text-center">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">New to Smart Traveller?</span>
-                    <Link to="/signup" className="ml-2 text-[10px] font-black text-brand-red uppercase tracking-widest hover:underline underline-offset-4">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">New to Smart Traveller?</span>
+                    <Link to="/signup" className="ml-2 text-[10px] font-black text-red-500 uppercase tracking-widest hover:underline underline-offset-4">
                         Register
                     </Link>
                 </p>

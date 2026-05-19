@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Compass,
   Map as MapIcon,
@@ -442,12 +442,12 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
   const currentPhase = LOADING_PHASES[loadingPhaseIdx];
 
   return (
-    <div className="h-screen flex flex-col transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
-      <header className="sticky top-0 z-[110] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 h-14 flex items-center">
+    <div className="h-screen flex flex-col transition-colors duration-300 bg-transparent relative">
+      <header className="fixed top-0 left-0 right-0 z-[110] glass-nav h-14 flex items-center">
         <div className="max-w-[1400px] mx-auto w-full px-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {view !== 'landing' && view !== 'builder' && view !== 'manual-planner' && view !== 'manual-dashboard' && (
-              <button onClick={handleBack} className="p-1.5 bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-red-600 rounded-lg transition-all">
+              <button onClick={handleBack} className="p-1.5 glass-pill text-slate-700 hover:text-red-650 dark:text-slate-200 rounded-lg transition-all">
                 <ArrowLeft size={16} />
               </button>
             )}
@@ -460,14 +460,14 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
             </button>
           </div>
 
-          <div className="hidden lg:flex items-center gap-6 text-sm font-bold uppercase tracking-[0.1em] text-slate-600 dark:text-slate-400">
-            <button onClick={handleGoHome} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${view === 'landing' && !manualResultsCuration ? 'text-red-600' : 'hover:text-red-600'}`}>
+          <div className="hidden lg:flex items-center gap-6 text-sm font-bold uppercase tracking-[0.1em]">
+            <button onClick={handleGoHome} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${view === 'landing' && !manualResultsCuration ? 'text-red-500 glass-pill-active' : 'hover:text-red-500 glass-pill'}`}>
               <Home size={16} /> <span>Home</span>
             </button>
-            <button onClick={() => { setView('my-bookings'); setBookingsCategory('itinerary'); }} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${view === 'my-bookings' && bookingsCategory !== 'concierge' ? 'text-red-600' : 'hover:text-red-600'}`}>
+            <button onClick={() => { setView('my-bookings'); setBookingsCategory('itinerary'); }} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${view === 'my-bookings' && bookingsCategory !== 'concierge' ? 'text-red-500 glass-pill-active' : 'hover:text-red-500 glass-pill'}`}>
               <ShieldCheck size={16} /> <span>My Trips</span>
             </button>
-            <button onClick={() => { setView('my-bookings'); setBookingsCategory('concierge'); }} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${view === 'my-bookings' && bookingsCategory === 'concierge' ? 'text-red-600' : 'hover:text-red-600'}`}>
+            <button onClick={() => { setView('my-bookings'); setBookingsCategory('concierge'); }} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${view === 'my-bookings' && bookingsCategory === 'concierge' ? 'text-red-500 glass-pill-active' : 'hover:text-red-500 glass-pill'}`}>
               <Sparkles size={16} /> <span>Pre-Trip Concierge</span>
             </button>
           </div>
@@ -481,14 +481,14 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
                 onMouseLeave={() => setShowAccountPanel(false)}
               >
                 <div className="hidden sm:flex flex-col items-end leading-none">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-red-600 mb-0.5">Welcome back,</span>
-                  <span className="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white">{user.name}</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-red-500 mb-0.5">Welcome back,</span>
+                  <span className="text-xs font-black uppercase tracking-widest text-[#1a1a2e]">{user.name}</span>
                 </div>
                 <button className="relative group">
-                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white dark:border-slate-600 shadow-lg group-hover:scale-105 transition-transform">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-slate-200 shadow-md group-hover:scale-105 transition-transform">
                     <img src={user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100"} className="w-full h-full object-cover" />
                   </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full shadow-sm" />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-[#f8f7f4] rounded-full shadow-sm" />
                 </button>
 
                 {/* Account Hover Panel */}
@@ -498,28 +498,28 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="absolute top-full right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 p-4 z-[150] overflow-hidden"
+                      className="absolute top-full right-0 mt-2 w-64 glass-dropdown rounded-2xl p-4 z-[150] overflow-hidden"
                     >
                       <div className="absolute top-0 left-0 w-full h-1 bg-[#9D1D27]" />
                       
                       <div className="space-y-4 pt-2">
-                        <div className="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
-                          <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700">
+                        <div className="flex items-center gap-3 pb-3 border-b border-slate-200">
+                          <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200">
                              <img src={user.avatar} className="w-full h-full object-cover" />
                           </div>
                           <div className="flex flex-col">
-                            <span className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight">{user.name}</span>
-                            <span className="text-[9px] font-bold text-slate-400 uppercase truncate max-w-[140px]">{user.email}</span>
+                            <span className="text-xs font-black text-[#1a1a2e] uppercase tracking-tight">{user.name}</span>
+                            <span className="text-[9px] font-bold text-slate-500 uppercase truncate max-w-[140px]">{user.email}</span>
                           </div>
                         </div>
 
                         <div className="space-y-1">
-                          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-red-600 transition-all text-xs font-bold uppercase tracking-widest">
+                          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-red-500 transition-all text-xs font-bold uppercase tracking-widest">
                             <UserCircle size={16} />
                             <span>My Account</span>
                           </button>
                           
-                          <div className="flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-xs font-bold uppercase tracking-widest">
+                          <div className="flex items-center justify-between px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-all text-xs font-bold uppercase tracking-widest">
                             <div className="flex items-center gap-3">
                               <Sparkles size={16} />
                               <span>Dark Mode</span>
@@ -529,17 +529,17 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
 
                           <button 
                             onClick={handleResetPreference}
-                            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-red-600 transition-all text-xs font-bold uppercase tracking-widest"
+                            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-red-500 transition-all text-xs font-bold uppercase tracking-widest"
                           >
                             <Briefcase size={16} />
                             <span>Reset Preference</span>
                           </button>
                         </div>
 
-                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <div className="pt-2 border-t border-slate-200">
                           <button 
                             onClick={handleLogout}
-                            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all text-xs font-black uppercase tracking-widest"
+                            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-red-500 hover:bg-red-50 transition-all text-xs font-black uppercase tracking-widest"
                           >
                             <X size={16} />
                             <span>Logout</span>
@@ -553,19 +553,19 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
             ) : (
               <Link 
                 to="/signin"
-                className="flex items-center gap-2 p-1.5 pr-3 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 group transition-all hover:ring-2 hover:ring-red-600/30"
+                className="flex items-center gap-2 p-1.5 pr-3 rounded-full glass-pill group transition-all hover:ring-2 hover:ring-red-600/30"
               >
-                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white dark:border-slate-600 flex items-center justify-center bg-white dark:bg-slate-700">
-                  <UserCircle size={16} className="text-slate-400 group-hover:text-red-600 transition-colors" />
+                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-slate-200 flex items-center justify-center bg-slate-100">
+                  <UserCircle size={16} className="text-slate-500 group-hover:text-red-500 transition-colors" />
                 </div>
-                <span className="hidden sm:block text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">Sign In</span>
+                <span className="hidden sm:block text-[10px] font-black uppercase tracking-widest text-slate-700">Sign In</span>
               </Link>
             )}
           </div>
       </header>
 
-      <div className={`flex-1 flex flex-col overflow-hidden min-h-0 relative ${view === 'landing' ? 'h-full bg-slate-950' : 'w-full px-4 sm:px-8 xl:px-12 py-4 sm:py-8 bg-slate-50 dark:bg-slate-950'}`}>
-        <main className={`flex-1 min-h-0 overflow-y-auto overflow-x-hidden relative ${['builder', 'manual-planner', 'manual-dashboard'].includes(view) || isLoadingAi || isLoadingManual ? 'flex items-center justify-center' : view === 'landing' ? 'h-full bg-slate-950' : 'space-y-8 h-full max-w-[1920px] mx-auto w-full'}`}>
+      <div className={`flex-1 flex flex-col overflow-hidden min-h-0 relative ${view === 'landing' ? 'h-full bg-transparent' : 'w-full px-4 sm:px-8 xl:px-12 py-4 sm:py-8 bg-transparent'}`}>
+        <main className={`flex-1 min-h-0 overflow-y-auto overflow-x-hidden relative pt-14 ${['builder', 'manual-planner', 'manual-dashboard'].includes(view) || isLoadingAi || isLoadingManual ? 'flex items-center justify-center' : view === 'landing' ? 'h-full bg-transparent' : 'space-y-8 h-full max-w-[1920px] mx-auto w-full'}`}>
           <AnimatePresence>
             {(isLoadingAi || isLoadingManual) && (
               <motion.div
@@ -573,7 +573,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[120] bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center py-24 gap-12 w-full text-center"
+                className="fixed inset-0 z-[120] bg-[#f8f7f4]/95 backdrop-blur-xl flex flex-col items-center justify-center py-24 gap-12 w-full text-center"
               >
                 <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
                   <img
@@ -582,7 +582,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
                     className="w-full h-full object-contain"
                   />
 
-                  <div className="absolute -top-4 -right-4 z-10 w-20 h-20 sm:w-24 sm:h-24 bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-center text-red-600">
+                  <div className="absolute -top-4 -right-4 z-10 w-20 h-20 sm:w-24 sm:h-24 glass-card rounded-2xl sm:rounded-3xl flex items-center justify-center text-red-500 animate-pulse-glow">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={currentPhase.id}
@@ -603,7 +603,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
                       key={currentPhase.title}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="text-slate-900 dark:text-white font-black text-2xl sm:text-4xl uppercase tracking-tighter"
+                      className="text-[#1a1a2e] font-black text-2xl sm:text-4xl uppercase tracking-tighter"
                     >
                       {isLoadingManual ? 'Inventory Sourcing' : currentPhase.title}
                     </motion.h2>
@@ -612,7 +612,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
                     </p>
                   </div>
 
-                  <div className="bg-slate-100 dark:bg-slate-900/50 rounded-2xl px-6 py-3 font-mono text-[10px] text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-800 inline-flex items-center gap-3">
+                  <div className="glass-card rounded-2xl px-6 py-3 font-mono text-[10px] text-slate-400 inline-flex items-center gap-3">
                     <motion.div
                       animate={{ opacity: [1, 0, 1] }}
                       transition={{ duration: 0.5, repeat: Infinity }}
@@ -622,11 +622,11 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 px-6 py-3 bg-red-50 dark:bg-red-950/20 rounded-full border border-red-100 dark:border-red-900/30">
+                <div className="flex items-center gap-3 px-6 py-3 glass-pill-active rounded-full">
                   <div className="w-6 h-6 flex items-center justify-center">
                     <img src="/images/IDFC_First_Logo.png" className="w-full h-full object-contain" />
                   </div>
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-red-600">IDFC First Bank Travel Intelligence</span>
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-red-500">IDFC First Bank Travel Intelligence</span>
                 </div>
               </motion.div>
             )}

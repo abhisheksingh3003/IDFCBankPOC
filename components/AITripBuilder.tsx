@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   MapPin,
   Calendar,
@@ -123,7 +123,7 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
     <div className="w-full max-w-4xl mx-auto py-4 flex flex-col gap-10">
       {/* Stepper UI */}
       <div className="relative px-4">
-        <div className="absolute top-6 left-10 right-10 h-[2px] bg-slate-200 dark:bg-slate-800 -translate-y-1/2 z-0" />
+        <div className="absolute top-6 left-10 right-10 h-[2px] bg-slate-200 -translate-y-1/2 z-0" />
         <div
           className="absolute top-6 left-10 h-[2px] bg-red-600 -translate-y-1/2 z-0 transition-all duration-500 ease-in-out"
           style={{ width: `calc(((currentStep - 1) / (STEPS.length - 1)) * (100% - 80px))` }}
@@ -133,13 +133,13 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
             <div key={step.id} className="flex flex-col items-center gap-3">
               <div
                 className={`w-12 h-12 rounded-2xl border-4 flex items-center justify-center font-black transition-all duration-500 ${currentStep >= step.id
-                  ? 'bg-red-600 border-red-600 text-white shadow-xl shadow-red-600/40 scale-110'
-                  : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400'
+                  ? 'bg-red-600 border-red-600 text-white shadow-xl shadow-red-600/40 scale-110 glow-brand'
+                  : 'glass-card text-slate-400'
                   }`}
               >
                 {currentStep > step.id ? <Check size={24} strokeWidth={3} /> : step.id}
               </div>
-              <span className={`text-[10px] font-black uppercase tracking-widest hidden md:block ${currentStep >= step.id ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
+              <span className={`text-[10px] font-black uppercase tracking-widest hidden md:block ${currentStep >= step.id ? 'text-[#1a1a2e]' : 'text-slate-500'}`}>
                 {step.label}
               </span>
             </div>
@@ -150,10 +150,10 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-slate-900 rounded-3xl md:rounded-[48px] shadow-2xl p-6 sm:p-10 md:p-14 border border-slate-100 dark:border-slate-800 relative overflow-hidden group"
+        className="glass-card rounded-3xl md:rounded-[48px] shadow-2xl p-6 sm:p-10 md:p-14 relative overflow-hidden group"
       >
         {/* Dynamic Step Icon Decorator */}
-        <div className="absolute -bottom-10 -right-10 text-slate-100 dark:text-slate-800/20 pointer-events-none group-hover:text-red-500/5 transition-colors z-0">
+        <div className="absolute -bottom-10 -right-10 text-white/5 pointer-events-none group-hover:text-red-500/5 transition-colors z-0">
           {React.createElement(STEPS[currentStep - 1].icon, { size: 240 })}
         </div>
 
@@ -168,8 +168,8 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                 className="space-y-10"
               >
                 <div className="text-center space-y-3">
-                  <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">Pathfinding</h2>
-                  <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">Where is your adventure starting and ending?</p>
+                  <h2 className="text-2xl sm:text-4xl font-black text-[#1a1a2e]">Pathfinding</h2>
+                  <p className="text-sm sm:text-base text-slate-600 font-medium">Where is your adventure starting and ending?</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -185,7 +185,7 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                           setShowSourceSuggestions(true);
                         }}
                         onFocus={() => setShowSourceSuggestions(true)}
-                        className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-red-600 rounded-2xl sm:rounded-3xl px-6 sm:px-8 py-4 sm:py-5 text-lg sm:text-xl font-bold text-slate-900 dark:text-white outline-none transition-all shadow-sm pl-14 sm:pl-16"
+                        className="w-full glass-input rounded-2xl sm:rounded-3xl px-6 sm:px-8 py-4 sm:py-5 text-lg sm:text-xl font-bold outline-none transition-all shadow-sm pl-14 sm:pl-16"
                       />
                       <Navigation className="absolute left-6 top-1/2 -translate-y-1/2 text-red-600" size={24} />
                     </div>
@@ -196,7 +196,7 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden"
+                          className="absolute z-50 w-full mt-2 glass-dropdown rounded-2xl overflow-hidden"
                         >
                           {filteredSource.map((dest) => (
                             <button
@@ -206,9 +206,9 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                                 setSource(dest.name);
                                 setShowSourceSuggestions(false);
                               }}
-                              className="w-full px-8 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                              className="w-full px-8 py-4 text-left hover:bg-slate-100 transition-colors"
                             >
-                              <p className="font-bold text-slate-900 dark:text-white">{dest.name}</p>
+                              <p className="font-bold text-[#1a1a2e]">{dest.name}</p>
                               <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest">{dest.country}</p>
                             </button>
                           ))}
@@ -229,7 +229,7 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                           setShowDestSuggestions(true);
                         }}
                         onFocus={() => setShowDestSuggestions(true)}
-                        className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-red-600 rounded-2xl sm:rounded-3xl px-6 sm:px-8 py-4 sm:py-5 text-lg sm:text-xl font-bold text-slate-900 dark:text-white outline-none transition-all shadow-sm pl-14 sm:pl-16"
+                        className="w-full glass-input rounded-2xl sm:rounded-3xl px-6 sm:px-8 py-4 sm:py-5 text-lg sm:text-xl font-bold outline-none transition-all shadow-sm pl-14 sm:pl-16"
                       />
                       <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-red-600" size={24} />
                     </div>
@@ -240,7 +240,7 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden"
+                          className="absolute z-50 w-full mt-2 glass-dropdown rounded-2xl overflow-hidden"
                         >
                           {filteredDest.map((dest) => (
                             <button
@@ -250,9 +250,9 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                                 setDestination(dest.name);
                                 setShowDestSuggestions(false);
                               }}
-                              className="w-full px-8 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                              className="w-full px-8 py-4 text-left hover:bg-slate-100 transition-colors"
                             >
-                              <p className="font-bold text-slate-900 dark:text-white">{dest.name}</p>
+                              <p className="font-bold text-[#1a1a2e]">{dest.name}</p>
                               <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest">{dest.country}</p>
                             </button>
                           ))}
@@ -273,27 +273,27 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                 className="space-y-10"
               >
                 <div className="text-center space-y-3">
-                  <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">When is your escape?</h2>
-                  <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">When should this journey take place?</p>
+                  <h2 className="text-2xl sm:text-4xl font-black text-[#1a1a2e]">When is your escape?</h2>
+                  <p className="text-sm sm:text-base text-slate-600 font-medium">When should this journey take place?</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Departure Date</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 px-2">Departure Date</label>
                     <input
                       type="date"
                       value={fromDate}
                       onChange={(e) => setFromDate(e.target.value)}
-                      className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-red-600 rounded-3xl px-8 py-5 text-lg font-bold text-slate-900 dark:text-white outline-none transition-all shadow-sm [color-scheme:light] dark:[color-scheme:dark]"
+                      className="w-full glass-input rounded-3xl px-8 py-5 text-lg font-bold outline-none transition-all shadow-sm [color-scheme:light]"
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Return Date</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 px-2">Return Date</label>
                     <input
                       type="date"
                       value={toDate}
                       min={fromDate}
                       onChange={(e) => setToDate(e.target.value)}
-                      className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-red-600 rounded-3xl px-8 py-5 text-lg font-bold text-slate-900 dark:text-white outline-none transition-all shadow-sm [color-scheme:light] dark:[color-scheme:dark]"
+                      className="w-full glass-input rounded-3xl px-8 py-5 text-lg font-bold outline-none transition-all shadow-sm [color-scheme:light]"
                     />
                   </div>
                 </div>
@@ -309,45 +309,45 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                 className="space-y-10"
               >
                 <div className="text-center space-y-3">
-                  <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">Your Squad</h2>
-                  <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">Define the number of explorers.</p>
+                  <h2 className="text-2xl sm:text-4xl font-black text-[#1a1a2e]">Your Squad</h2>
+                  <p className="text-sm sm:text-base text-slate-600 font-medium">Define the number of explorers.</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2 block text-center">Adults (18+)</label>
-                    <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-800 rounded-3xl px-8 py-4 border-2 border-transparent hover:border-red-600/30 transition-all shadow-inner">
+                   <div className="space-y-4">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-2 block text-center">Adults (18+)</label>
+                    <div className="flex items-center justify-between glass-card rounded-3xl px-8 py-4 transition-all shadow-inner">
                       <button
                         type="button"
                         onClick={() => setAdults(Math.max(1, adults - 1))}
-                        className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-200 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all shadow-md"
+                        className="w-12 h-12 rounded-2xl glass-pill flex items-center justify-center text-slate-600 hover:text-red-600 transition-all shadow-md"
                       >
                         <Minus size={20} />
                       </button>
-                      <span className="font-black text-4xl text-slate-900 dark:text-white min-w-[2ch] text-center">{adults}</span>
+                      <span className="font-black text-4xl text-[#1a1a2e] min-w-[2ch] text-center">{adults}</span>
                       <button
                         type="button"
                         onClick={() => setAdults(adults + 1)}
-                        className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-200 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all shadow-md"
+                        className="w-12 h-12 rounded-2xl glass-pill flex items-center justify-center text-slate-600 hover:text-red-600 transition-all shadow-md"
                       >
                         <Plus size={20} />
                       </button>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2 block text-center">Children (0-17)</label>
-                    <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-800 rounded-3xl px-8 py-4 border-2 border-transparent hover:border-red-600/30 transition-all shadow-inner">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-2 block text-center">Children (0-17)</label>
+                    <div className="flex items-center justify-between glass-card rounded-3xl px-8 py-4 transition-all shadow-inner">
                       <button
                         type="button"
                         onClick={() => setChildren(Math.max(0, children - 1))}
-                        className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-200 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all shadow-md"
+                        className="w-12 h-12 rounded-2xl glass-pill flex items-center justify-center text-slate-600 hover:text-red-600 transition-all shadow-md"
                       >
                         <Minus size={20} />
                       </button>
-                      <span className="font-black text-4xl text-slate-900 dark:text-white min-w-[2ch] text-center">{children}</span>
+                      <span className="font-black text-4xl text-[#1a1a2e] min-w-[2ch] text-center">{children}</span>
                       <button
                         type="button"
                         onClick={() => setChildren(children + 1)}
-                        className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-200 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all shadow-md"
+                        className="w-12 h-12 rounded-2xl glass-pill flex items-center justify-center text-slate-600 hover:text-red-600 transition-all shadow-md"
                       >
                         <Plus size={20} />
                       </button>
@@ -366,12 +366,12 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                 className="space-y-12"
               >
                 <div className="text-center space-y-3">
-                  <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">Travel Style</h2>
-                  <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">Define your travel DNA.</p>
+                  <h2 className="text-2xl sm:text-4xl font-black text-[#1a1a2e]">Travel Style</h2>
+                  <p className="text-sm sm:text-base text-slate-600 font-medium">Define your travel DNA.</p>
                 </div>
 
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">Experience Tier</label>
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-2">Experience Tier</label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {TRAVEL_STYLES.map(style => (
                       <button
@@ -379,16 +379,16 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                         type="button"
                         onClick={() => setTravelStyle(style.id)}
                         className={`flex flex-col p-6 rounded-3xl border-4 transition-all text-left ${travelStyle === style.id
-                          ? 'bg-red-50 dark:bg-red-900/10 border-red-600 shadow-xl scale-105'
-                          : 'bg-slate-50 dark:bg-slate-800 border-transparent text-slate-500 hover:border-slate-200 dark:hover:border-slate-700'
+                          ? 'glass-pill-active border-red-600 shadow-xl scale-105 glow-brand'
+                          : 'glass-card border-transparent text-slate-500 hover:border-slate-200'
                           }`}
                       >
-                        <span className={`font-black text-xl mb-1 ${travelStyle === style.id ? 'text-red-600' : 'text-slate-700 dark:text-slate-300'}`}>
+                        <span className={`font-black text-xl mb-1 ${travelStyle === style.id ? 'text-red-600' : 'text-slate-700'}`}>
                           {style.label}
                         </span>
                         <span className={`text-[10px] uppercase font-bold tracking-widest transition-colors ${travelStyle === style.id
-                          ? 'text-red-600/70 dark:text-red-400/70'
-                          : 'text-slate-500 dark:text-slate-400'
+                          ? 'text-red-400'
+                          : 'text-slate-500'
                           }`}>
                           {style.description}
                         </span>
@@ -408,8 +408,8 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                 className="space-y-12"
               >
                 <div className="text-center space-y-3">
-                  <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">Your Preference</h2>
-                  <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">Which experiences define your perfect escape?</p>
+                  <h2 className="text-2xl sm:text-4xl font-black text-[#1a1a2e]">Your Preference</h2>
+                  <p className="text-sm sm:text-base text-slate-600 font-medium">Which experiences define your perfect escape?</p>
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-4">
@@ -419,11 +419,11 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                       type="button"
                       onClick={() => toggleInterest(interest)}
                       className={`px-8 py-4 rounded-2xl text-sm font-black transition-all flex items-center gap-3 border-4 ${selectedInterests.includes(interest)
-                        ? 'bg-red-600 border-red-600 text-white shadow-xl shadow-red-600/30 scale-110'
-                        : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-red-600/30'
+                        ? 'bg-red-600 border-red-600 text-white shadow-xl shadow-red-600/30 scale-110 glow-brand'
+                        : 'glass-card border-transparent text-slate-500 hover:border-slate-200'
                         }`}
                     >
-                      {selectedInterests.includes(interest) ? <Check size={18} strokeWidth={4} /> : <div className="w-2 h-2 bg-slate-300 dark:bg-slate-600 rounded-full" />}
+                      {selectedInterests.includes(interest) ? <Check size={18} strokeWidth={4} /> : <div className="w-2 h-2 bg-slate-500 rounded-full" />}
                       {interest}
                     </button>
                   ))}
@@ -433,7 +433,7 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-red-600 hover:bg-red-700 disabled:opacity-70 text-white font-black py-7 rounded-[32px] shadow-2xl shadow-red-600/40 transition-all flex items-center justify-center gap-4 text-2xl group"
+                    className="w-full glass-button disabled:opacity-70 text-white font-black py-7 rounded-[32px] shadow-2xl transition-all flex items-center justify-center gap-4 text-2xl group"
                   >
                     {isLoading ? (
                       <div className="w-10 h-10 flex items-center justify-center">
@@ -451,11 +451,11 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
 
           {/* Navigation Buttons */}
           {currentStep < 5 && (
-            <div className="flex gap-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex gap-6 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={handlePrev}
-                className="flex-1 py-5 rounded-3xl font-black text-slate-400 dark:text-slate-500 border-2 border-slate-100 dark:border-slate-800 hover:text-red-600 hover:border-red-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3"
+                className="flex-1 py-5 rounded-3xl font-black text-slate-500 glass-pill hover:text-red-500 hover:glow-border-brand transition-all uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3"
               >
                 <ChevronLeft size={18} /> Previous
               </button>
@@ -463,7 +463,7 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                 type="button"
                 onClick={handleNext}
                 disabled={isNextDisabled()}
-                className="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-30 text-white py-5 rounded-3xl font-black text-xl shadow-xl shadow-red-600/30 flex items-center justify-center gap-4 transition-all"
+                className="flex-1 glass-button disabled:opacity-30 text-white py-5 rounded-3xl font-black text-xl shadow-xl flex items-center justify-center gap-4 transition-all"
               >
                 Continue <ArrowRight size={24} />
               </button>
