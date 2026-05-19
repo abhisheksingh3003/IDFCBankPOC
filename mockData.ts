@@ -257,6 +257,14 @@ export const ITALY_ACTIVITIES: Activity[] = [
     price: 60,
     category: 'Leisure',
     imageUrl: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/16/ac/08/a3.jpg'
+  },
+  {
+    id: 'a-ita-9',
+    name: 'Appian Way E-Bike Tour',
+    duration: '4 hours',
+    price: 85,
+    category: 'Adventure',
+    imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=400'
   }
 ];
 
@@ -395,14 +403,27 @@ export const PARIS_ACTIVITIES: Activity[] = [
   { id: 'a1-par', name: 'Louvre Museum Private Tour', duration: '3 hours', price: 950, category: 'Culture', imageUrl: 'https://images.unsplash.com/photo-1567942585146-33d62b775db0?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bG91dnJlJTIwbXVzZXVtfGVufDB8fDB8fHww', isPopular: true, isMostVisited: true },
   { id: 'a2-par', name: 'Eiffel Tower Gourmet Lunch', duration: '2 hours', price: 1500, category: 'Dining', imageUrl: 'https://images.unsplash.com/photo-1566331551467-0dc72cc80ec0?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGFyaXMlMjBmb29kfGVufDB8fDB8fHww' },
   { id: 'a3-par', name: 'Seine River Evening Cruise', duration: '1.5 hours', price: 600, category: 'Leisure', imageUrl: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&q=80&w=400' },
-  { id: 'a4-par', name: 'Montmartre Artists Walk', duration: '2 hours', price: 450, category: 'Culture', imageUrl: 'https://memories-france.travel/wp-content/uploads/2023/03/13_Montmartre-Artists-Quarter-Tour-3.jpg' }
+  { id: 'a4-par', name: 'Montmartre Artists Walk', duration: '2 hours', price: 450, category: 'Culture', imageUrl: 'https://memories-france.travel/wp-content/uploads/2023/03/13_Montmartre-Artists-Quarter-Tour-3.jpg' },
+  { id: 'a5-par', name: 'Palace of Versailles Tour', duration: '4 hours', price: 1100, category: 'History', imageUrl: 'https://images.unsplash.com/photo-1585155770447-2f66e2a797be?auto=format&fit=crop&q=80&w=400' },
+  { id: 'a6-par', name: 'Parisian Pastry Workshop', duration: '2.5 hours', price: 350, category: 'Food', imageUrl: 'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&q=80&w=400' }
 ];
 
 export const ABU_DHABI_ACTIVITIES: Activity[] = [
   { id: 'a1-auh', name: 'Sheikh Zayed Grand Mosque Tour', duration: '4 hours', price: 800, category: 'Sightseeing', imageUrl: 'https://images.unsplash.com/photo-1544161442-e3db36c4f67c?auto=format&fit=crop&q=80&w=400' },
   { id: 'a2-auh', name: 'Ferrari World Adventure', duration: '3 hours', price: 1200, category: 'Adventure', imageUrl: 'https://images.unsplash.com/photo-1511210352396-54a44b50c90c?auto=format&fit=crop&q=80&w=400' },
   { id: 'a3-auh', name: 'Louver Abu Dhabi Exploration', duration: '5 hours', price: 950, category: 'Culture', imageUrl: 'https://images.unsplash.com/photo-1614589057371-6ae4a85fa0f4?auto=format&fit=crop&q=80&w=400' },
-  { id: 'a4-auh', name: 'Desert Safari Expedition', duration: '2 hours', price: 600, category: 'Culture', imageUrl: 'https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?auto=format&fit=crop&q=80&w=400' }
+  { id: 'a4-auh', name: 'Desert Safari Expedition', duration: '2 hours', price: 600, category: 'Culture', imageUrl: 'https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?auto=format&fit=crop&q=80&w=400' },
+  { id: 'a5-auh', name: 'Yas Marina Circuit Experience', duration: '2 hours', price: 1500, category: 'Adventure', imageUrl: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=400' },
+  { id: 'a6-auh', name: 'Qasr Al Watan Visit', duration: '2.5 hours', price: 400, category: 'Culture', imageUrl: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=400' }
+];
+
+export const ALTERNATIVE_ACTIVITIES: Activity[] = [
+  { id: 'aa1', name: 'Private Yacht Sunset Cruise', duration: '3 hours', price: 2500, category: 'Leisure', imageUrl: 'https://images.unsplash.com/photo-1567896836021-73b369e09296?auto=format&fit=crop&q=80&w=400' },
+  { id: 'aa2', name: 'Helicopter City Tour', duration: '20 min', price: 1200, category: 'Adventure', imageUrl: 'https://images.unsplash.com/photo-1559067096-49ebca3406aa?auto=format&fit=crop&q=80&w=400' },
+  { id: 'aa3', name: 'Exclusive Wine Tasting', duration: '2 hours', price: 800, category: 'Food', imageUrl: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=400' },
+  { id: 'aa4', name: 'Luxury Spa Day', duration: '4 hours', price: 1500, category: 'Wellness', imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=400' },
+  { id: 'aa5', name: 'Private Chef Experience', duration: '3 hours', price: 1800, category: 'Dining', imageUrl: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=400' },
+  { id: 'aa6', name: 'VIP Gallery Tour', duration: '2 hours', price: 600, category: 'Culture', imageUrl: 'https://images.unsplash.com/photo-1518998053502-bd2722f3?auto=format&fit=crop&q=80&w=400' }
 ];
 
 export const TOKYO_ACTIVITIES: Activity[] = [

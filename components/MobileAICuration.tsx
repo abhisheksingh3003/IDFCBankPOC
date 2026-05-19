@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Plane, Hotel as HotelIcon, Star, CheckCircle2,
@@ -106,7 +106,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                     {/* Flight Detail View */}
                     {booking.flight && (
                         <div className="p-0 text-left">
-                            <div className="bg-[#d91918] p-8 pb-12 pt-12">
+                            <div className="bg-[#9D1D27] p-8 pb-12 pt-12">
                                 <div className="flex justify-between items-center mb-8">
                                     <div className="flex items-center gap-3">
                                         <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center p-2 shadow-lg">
@@ -207,7 +207,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                                     <div className="w-px h-8 bg-slate-200 dark:bg-slate-700" />
                                     <div className="text-center flex-1">
                                         <p className="text-slate-400 text-[10px] font-black uppercase mb-1">Nights</p>
-                                        <p className="text-[#d91918] font-black text-lg">3</p>
+                                        <p className="text-[#9D1D27] font-black text-lg">3</p>
                                     </div>
                                     <div className="w-px h-8 bg-slate-200 dark:bg-slate-700" />
                                     <div className="text-center flex-1">
@@ -227,7 +227,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                                         </div>
                                     </div>
                                 </div>
-                                <button onClick={onClose} className="w-full py-5 bg-[#d91918] text-white rounded-2xl font-black text-lg shadow-xl shadow-red-600/30 active:scale-95 transition-transform">
+                                <button onClick={onClose} className="w-full py-5 bg-[#9D1D27] text-white rounded-2xl font-black text-lg shadow-xl shadow-red-600/30 active:scale-95 transition-transform">
                                     Done
                                 </button>
                             </div>
@@ -259,7 +259,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                                     </div>
                                     <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-[2rem] text-center">
                                         <p className="text-slate-400 text-[10px] font-black uppercase mb-1">Time</p>
-                                        <p className="text-[#d91918] font-black text-lg">{booking.experience.time}</p>
+                                        <p className="text-[#9D1D27] font-black text-lg">{booking.experience.time}</p>
                                     </div>
                                 </div>
 
@@ -280,7 +280,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                                         </div>
                                         <div className="text-right">
                                             <p className="text-slate-400 text-[10px] font-black uppercase mb-1">Total</p>
-                                            <p className="text-slate-900 dark:text-white font-bold">AED {(booking.experience.price * (booking.experience.quantity || 1)).toLocaleString()}</p>
+                                            <p className="text-slate-900 dark:text-white font-bold">INR {(booking.experience.price * (booking.experience.quantity || 1)).toLocaleString()}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -292,7 +292,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                                     </div>
                                 </div>
 
-                                <button onClick={onClose} className="w-full py-5 bg-[#d91918] text-white rounded-2xl font-black text-lg shadow-xl shadow-red-600/30 active:scale-95 transition-transform">
+                                <button onClick={onClose} className="w-full py-5 bg-[#9D1D27] text-white rounded-2xl font-black text-lg shadow-xl shadow-red-600/30 active:scale-95 transition-transform">
                                     Done
                                 </button>
                             </div>
@@ -306,7 +306,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col pb-32">
             {/* Premium Sticky Header */}
-            <div className="sticky top-0 z-50 bg-[#d91918] border-b border-white/10 px-6 py-4 flex items-center justify-between shadow-lg">
+            <div className="sticky top-0 z-50 bg-[#9D1D27] border-b border-white/10 px-6 py-4 flex items-center justify-between shadow-lg">
                 <button onClick={onBack} className="p-2 -ml-2 text-white">
                     <ArrowLeft size={24} strokeWidth={2.5} />
                 </button>
@@ -324,7 +324,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-[#d91918] rounded-[32px] p-8 text-white relative overflow-hidden shadow-2xl shadow-red-900/20"
+                    className="bg-[#9D1D27] rounded-[32px] p-8 text-white relative overflow-hidden shadow-2xl shadow-red-900/20"
                 >
                     <div className="relative z-10 space-y-6">
                         <div className="flex items-center gap-2">
@@ -334,7 +334,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                         <div>
                             <p className="text-sm font-medium text-red-100/80 mb-1 leading-none uppercase tracking-widest">Estimated Budget</p>
                             <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-black tabular-nums">AED {totalCost.toLocaleString()}</span>
+                                <span className="text-5xl font-black tabular-nums">INR {totalCost.toLocaleString()}</span>
                                 <span className="text-lg font-bold opacity-60">total</span>
                             </div>
                         </div>
@@ -349,7 +349,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                     </div>
                     {/* Watermark Bull */}
                     <div className="absolute top-1/2 -right-12 -translate-y-1/2 w-48 h-48 opacity-[0.08] pointer-events-none">
-                        <img src="/images/mclogo-for-footer.svg" className="w-full h-full object-contain brightness-0 invert" alt="" />
+                        <img src="/images/IDFC_First_Logo.png" className="w-full h-full object-contain brightness-0 invert" alt="" />
                     </div>
                 </motion.div>
 
@@ -443,7 +443,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                                             </div>
                                             <div className="text-right">
                                                 <div className="flex items-center gap-1 justify-end">
-                                                    <span className="text-xs font-bold text-slate-400">AED</span>
+                                                    <span className="text-xs font-bold text-slate-400">INR</span>
                                                     <p className="text-xl font-black text-slate-900 dark:text-white leading-none">{flight.price.toLocaleString()}</p>
                                                 </div>
                                                 <p className="text-[9px] text-slate-400 font-bold uppercase mt-1">Economy</p>
@@ -597,7 +597,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                                                 <div>
                                                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Starts from</p>
                                                     <div className="flex items-center gap-1">
-                                                        <span className="text-xs font-bold text-slate-400">AED</span>
+                                                        <span className="text-xs font-bold text-slate-400">INR</span>
                                                         <p className="text-2xl font-black text-slate-900 dark:text-white leading-none">{hotel.pricePerNight.toLocaleString()}</p>
                                                         <span className="text-[10px] text-slate-400 font-bold ml-1">/ night</span>
                                                     </div>
@@ -690,7 +690,7 @@ const MobileAICuration: React.FC<MobileAICurationProps> = ({
                                             <span className="text-red-600">{act.category}</span>
                                         </div>
                                         <div className="flex items-center justify-between mt-2">
-                                            <p className="font-black text-slate-900 dark:text-white">AED {act.price}</p>
+                                            <p className="font-black text-slate-900 dark:text-white">INR {act.price}</p>
                                             {!confirmedBooking && (
                                                 <div
                                                     onClick={(e) => {

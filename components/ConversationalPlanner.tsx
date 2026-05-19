@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+﻿import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Send, Users, Sparkles, ArrowRight, Plane, Mic, MicOff, Paperclip, Plus,
     Globe, Shield, ShieldCheck, Fingerprint, CreditCard, Lock, Unlock,
-    CheckCircle2, Star, ArrowLeft, Briefcase, Heart, Receipt, Check,
+    CheckCircle2, Star, ArrowLeft, Briefcase, Heart, Receipt, Check, Zap, Tag,
     ChevronLeft, ChevronRight, Coffee, MapPin, Hotel as HotelIcon, Camera, X, Car, RefreshCw,
     Calendar, Download, Info, Utensils, Lightbulb, ListChecks, Ticket, Volume2, VolumeX
 } from 'lucide-react';
@@ -73,6 +73,9 @@ interface ItineraryItem {
     flightRef?: Flight;
     hotelRef?: Hotel;
     activityRef?: Activity;
+    flightAlternatives?: Flight[];
+    hotelAlternatives?: Hotel[];
+    activityAlternatives?: Activity[];
     essentialsRef?: Essential[];
     dayGroup?: string;
 }
@@ -322,10 +325,27 @@ const LONDON_ACTIVITIES: Activity[] = [
 const LONDON_ALT_FLIGHTS: Flight[] = [
     { id: 'BA-857', airline: 'British Airways', airlineLogo: 'https://pics.avs.io/200/200/BA.png', departureTime: '10:45 AM', arrivalTime: '01:00 PM', price: 980, duration: '2h 15m', originIata: 'DXB', destinationIata: 'LHR', isVerified: true },
     { id: 'EY-920', airline: 'Etihad Airways (via AUH)', airlineLogo: 'https://pics.avs.io/200/200/EY.png', departureTime: '08:00 AM', arrivalTime: '12:20 PM', price: 750, duration: '4h 20m', originIata: 'DXB', destinationIata: 'LHR', isVerified: true },
+    { id: 'EK-285', airline: 'Emirates', airlineLogo: 'https://pics.avs.io/200/200/EK.png', departureTime: '02:30 PM', arrivalTime: '04:45 PM', price: 1100, duration: '2h 15m', originIata: 'DXB', destinationIata: 'LHR', isVerified: true },
+    { id: 'KL-1364', airline: 'KLM Royal Dutch', airlineLogo: 'https://pics.avs.io/200/200/KL.png', departureTime: '06:00 AM', arrivalTime: '10:30 AM', price: 820, duration: '4h 30m', originIata: 'DXB', destinationIata: 'LHR', isVerified: true },
+    { id: 'AF-1847', airline: 'Air France', airlineLogo: 'https://pics.avs.io/200/200/AF.png', departureTime: '12:15 PM', arrivalTime: '04:50 PM', price: 890, duration: '4h 35m', originIata: 'DXB', destinationIata: 'LHR', isVerified: true },
+    { id: 'LH-951', airline: 'Lufthansa', airlineLogo: 'https://pics.avs.io/200/200/LH.png', departureTime: '09:00 AM', arrivalTime: '11:15 AM', price: 920, duration: '2h 15m', originIata: 'DXB', destinationIata: 'LHR', isVerified: true },
 ];
 const LONDON_ALT_HOTELS: Hotel[] = [
     { id: 'h-lon-2', name: 'The Savoy', rating: 4.8, imageUrl: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=800', pricePerNight: 780, description: 'A legendary hotel on the Strand.', amenities: ['Pool', 'Bar', 'Spa'], address: 'Strand, London WC2R 0EZ', isVerified: true },
     { id: 'h-lon-3', name: 'The Ned', rating: 4.7, imageUrl: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&q=80&w=800', pricePerNight: 650, description: 'Members club and hotel in the City.', amenities: ['Rooftop Pool', 'Spa', 'Gym'], address: '27 Poultry, London EC2R 8AJ', isVerified: true },
+    { id: 'h-lon-4', name: 'Rosewood London', rating: 4.7, imageUrl: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800', pricePerNight: 720, description: 'Stunning courtyard hotel in Holborn.', amenities: ['Spa', 'Courtyard', 'Gym'], address: '252 High Holborn, London WC1V 7EN', isVerified: true },
+    { id: 'h-lon-5', name: 'Corinthia London', rating: 4.8, imageUrl: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&q=80&w=800', pricePerNight: 850, description: 'Grand Victorian hotel near Whitehall.', amenities: ['ESPA Life Spa', 'Pool', 'Garden Lounge'], address: 'Whitehall Pl, London SW1A 2BD', isVerified: true },
+    { id: 'h-lon-6', name: 'Claridge\'s', rating: 4.9, imageUrl: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800', pricePerNight: 950, description: 'Mayfair icon of Art Deco elegance.', amenities: ['Butler Service', 'Fumoir Bar', 'Spa'], address: 'Brook St, London W1K 4HR', isVerified: true },
+    { id: 'h-lon-7', name: 'The Connaught', rating: 4.8, imageUrl: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=800', pricePerNight: 1050, description: 'Classic Mayfair retreat.', amenities: ['Michelin Dining', 'Aman Spa'], address: 'Carlos Pl, London W1K 2AL', isVerified: true },
+];
+
+const LONDON_ALT_ACTIVITIES: Activity[] = [
+    { id: 'a-lon-alt-1', name: 'Helicopter Tour over London', duration: '30 min', price: 450, category: 'Adventure', imageUrl: 'https://images.unsplash.com/photo-1559067096-49ebca3406aa?auto=format&fit=crop&q=80&w=400' },
+    { id: 'a-lon-alt-2', name: 'Private Yacht Thames Cruise', duration: '2 hours', price: 850, category: 'Leisure', imageUrl: 'https://images.unsplash.com/photo-1567896836021-73b369e09296?auto=format&fit=crop&q=80&w=400' },
+    { id: 'a-lon-alt-3', name: 'Shard Dinner with Anya', duration: '3 hours', price: 320, category: 'Dining', imageUrl: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=400' },
+    { id: 'a-lon-alt-4', name: 'Personal Stylist at Harrods', duration: '4 hours', price: 1200, category: 'Leisure', imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=400' },
+    { id: 'a-lon-alt-5', name: 'V&A Museum Private Access', duration: '2 hours', price: 250, category: 'Culture', imageUrl: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/0b/91/74/59.jpg' },
+    { id: 'a-lon-alt-6', name: 'Afternoon Tea at Ritz', duration: '2 hours', price: 180, category: 'Dining', imageUrl: 'https://images.unsplash.com/photo-1561053740-39441df250a2?auto=format&fit=crop&q=80&w=400' },
 ];
 const FRANKFURT_FLIGHTS: Flight[] = [
     { id: 'EY-1352', airline: 'Etihad Airways', airlineLogo: 'https://pics.avs.io/200/200/EY.png', departureTime: '07:00 AM', arrivalTime: '09:15 AM', price: 890, duration: '2h 15m', originIata: 'DXB', destinationIata: 'FRA', isVerified: true },
@@ -341,8 +361,26 @@ const FRANKFURT_ACTIVITIES: Activity[] = [
     { id: 'a-fra-3', name: 'Classic Dinner at Main Tower', duration: '3 hours', price: 120, category: 'Dining', imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=400' },
 ];
 
+const FRANKFURT_ALT_ACTIVITIES: Activity[] = [
+    { id: 'a-fra-alt-1', name: 'Baden-Baden Luxury Spa Day', duration: '8 hours', price: 650, category: 'Wellness', imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=400' },
+    { id: 'a-fra-alt-2', name: 'Castle Tour by Private Car', duration: '6 hours', price: 450, category: 'History', imageUrl: 'https://images.unsplash.com/photo-1533154683836-84ea7a0bc310?auto=format&fit=crop&q=80&w=400' },
+    { id: 'a-fra-alt-3', name: 'Gourmet Skyline Dinner', duration: '3 hours', price: 280, category: 'Dining', imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=400' },
+    { id: 'a-fra-alt-4', name: 'Luxury Shopping Experience', duration: '4 hours', price: 300, category: 'Leisure', imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=400' },
+    { id: 'a-fra-alt-5', name: 'Private Gallery Access', duration: '2 hours', price: 150, category: 'Culture', imageUrl: 'https://images.unsplash.com/photo-1518998053502-bd2722f3?auto=format&fit=crop&q=80&w=400' },
+    { id: 'a-fra-alt-6', name: 'Rhine River Private Yacht', duration: '3 hours', price: 950, category: 'Leisure', imageUrl: 'https://images.unsplash.com/photo-1567896836021-73b369e09296?auto=format&fit=crop&q=80&w=400' },
+];
+
 const FRANKFURT_RETURN_FLIGHTS: Flight[] = [
     { id: 'EY-1353', airline: 'Etihad Airways', airlineLogo: 'https://pics.avs.io/200/200/EY.png', departureTime: '06:15 PM', arrivalTime: '08:30 PM', price: 720, duration: '2h 15m', originIata: 'FRA', destinationIata: 'DXB', isVerified: true },
+];
+
+const FRANKFURT_ALT_FLIGHTS: Flight[] = [
+    { id: 'LH-1100', airline: 'Lufthansa', airlineLogo: 'https://pics.avs.io/200/200/LH.png', departureTime: '08:30 AM', arrivalTime: '10:45 AM', price: 850, duration: '2h 15m', originIata: 'DXB', destinationIata: 'FRA', isVerified: true },
+    { id: 'EK-399', airline: 'Emirates', airlineLogo: 'https://pics.avs.io/200/200/EK.png', departureTime: '03:45 PM', arrivalTime: '05:55 PM', price: 720, duration: '2h 10m', originIata: 'DXB', destinationIata: 'FRA', isVerified: true },
+    { id: 'EY-1354', airline: 'Etihad Airways', airlineLogo: 'https://pics.avs.io/200/200/EY.png', departureTime: '11:00 AM', arrivalTime: '01:15 PM', price: 780, duration: '2h 15m', originIata: 'DXB', destinationIata: 'FRA', isVerified: true },
+    { id: 'KL-1762', airline: 'KLM Royal Dutch', airlineLogo: 'https://pics.avs.io/200/200/KL.png', departureTime: '07:15 AM', arrivalTime: '11:40 AM', price: 650, duration: '4h 25m', originIata: 'DXB', destinationIata: 'FRA', isVerified: true },
+    { id: 'AF-1445', airline: 'Air France', airlineLogo: 'https://pics.avs.io/200/200/AF.png', departureTime: '10:20 AM', arrivalTime: '02:55 PM', price: 690, duration: '4h 35m', originIata: 'DXB', destinationIata: 'FRA', isVerified: true },
+    { id: 'QR-067', airline: 'Qatar Airways', airlineLogo: 'https://pics.avs.io/200/200/QR.png', departureTime: '05:00 AM', arrivalTime: '09:30 AM', price: 740, duration: '4h 30m', originIata: 'DXB', destinationIata: 'FRA', isVerified: true },
 ];
 
 // Build a Curation object for scenario
@@ -404,7 +442,7 @@ const buildScript = (scenario: ScenarioId, user: UserProfile | null, branch?: st
             { aiMessage: { id: 'es1', sender: 'ai', content: "Mon–Wed confirmed. I'll book your **Club Room** at The Shard and a private transfer.\n\nAdd a working dinner at a Michelin-star restaurant?", quickReplies: [{ label: '🍽️ Yes', value: 'dinner' }, { label: '⏭️ Skip', value: 'skip_dinner' }] }, delay: 1500, autoAdvance: false },
             { aiMessage: { id: 'es2', sender: 'ai', content: "Assembling your business itinerary..." }, delay: 1500, autoAdvance: true },
             {
-                aiMessage: { id: 'es3', sender: 'ai', content: "Your **London Business Trip** is ready! Pre-vetted via Mastercard Merchant Network.\n\n➡️ **Review and book on the right.**" },
+                aiMessage: { id: 'es3', sender: 'ai', content: "Your **London Business Trip** is ready! Pre-vetted via IDFC First Bank Merchant Network.\n\n➡️ **Review and book on the right.**" },
                 itineraryUpdate: [
                     { id: 'ef1', type: 'flight', title: 'Emirates EK-281 Business', subtitle: 'DXB → LHR • Mon, Mar 2 • 06:15 → 08:30 • 2h 15m', price: 1200, badge: 'Preferred', verified: true, image: 'https://pics.avs.io/200/200/EK.png', flightRef: LONDON_FLIGHTS[0] },
                     { id: 'eh1', type: 'hotel', title: 'The Shard Shangri-La', subtitle: 'Check-in Mon, Mar 2 • Check-out Wed, Mar 4 • 2 nights • Club Room', price: 1780, badge: 'Your Usual', verified: true, image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=300', hotelRef: LONDON_HOTELS[0] },
@@ -412,7 +450,7 @@ const buildScript = (scenario: ScenarioId, user: UserProfile | null, branch?: st
                     { id: 'ee1', type: 'essentials', title: 'Business Essentials Bundle', subtitle: 'Fast Track + Lounge + eSIM • 3 items included', price: 95, badge: 'Recommended', essentialsRef: ESSENTIALS_CATALOG.slice(0, 3) },
                 ]
             },
-            { aiMessage: { id: 'es4', sender: 'ai', content: "Everything's set! You can book each item individually through Mastercard's secure payment.\n\n💡 **Tip**: Your corporate card ending in ••4492 is pre-selected for business expenses." }, autoAdvance: true, delay: 3000 },
+            { aiMessage: { id: 'es4', sender: 'ai', content: "Everything's set! You can book each item individually through IDFC First Bank's secure payment.\n\n💡 **Tip**: Your corporate card ending in ••4492 is pre-selected for business expenses." }, autoAdvance: true, delay: 3000 },
         ];
 
         // ── Full Week branch ──
@@ -498,7 +536,7 @@ const buildScript = (scenario: ScenarioId, user: UserProfile | null, branch?: st
                 aiMessage: {
                     id: 'f5',
                     sender: 'ai',
-                    content: "Checking **Mastercard Identity** family properties with safety certifications and proximity to top-tier clinics...\n\n🔍 Scanning 52 properties in Italy..."
+                    content: "Checking **IDFC First Bank Identity** family properties with safety certifications and proximity to top-tier clinics...\n\n🔍 Scanning 52 properties in Italy..."
                 },
                 delay: 2500,
                 autoAdvance: true
@@ -619,7 +657,7 @@ const buildScript = (scenario: ScenarioId, user: UserProfile | null, branch?: st
                     { id: 'be1', type: 'essentials', title: 'Business Essentials', subtitle: 'Fast Track + Lounge + eSIM', price: 95, badge: '🔵 Corporate', billingType: 'business', essentialsRef: ESSENTIALS_CATALOG.slice(0, 3) },
                 ]
             },
-            { aiMessage: { id: 'b4', sender: 'ai', content: "Your **Bleisure itinerary** is ready! 🎉\n\n📊 **Billing Split:**\n• 🔵 Corporate: ~AED 1,545\n• 🟢 Personal: ~AED 1,185\n\nClick items to book them. Each booking will auto-assign to the correct card.", quickReplies: [{ label: '✨ All set!', value: 'done' }, { label: '🍽️ Add dining', value: 'dining' }] } },
+            { aiMessage: { id: 'b4', sender: 'ai', content: "Your **Bleisure itinerary** is ready! 🎉\n\n📊 **Billing Split:**\n• 🔵 Corporate: ~INR 1,545\n• 🟢 Personal: ~INR 1,185\n\nClick items to book them. Each booking will auto-assign to the correct card.", quickReplies: [{ label: '✨ All set!', value: 'done' }, { label: '🍽️ Add dining', value: 'dining' }] } },
         ];
 
         const bizOnlyBranch: ScenarioStep[] = [
@@ -759,7 +797,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                     id: `manual-flight-${initialCuration.flightBooking.flightId}`,
                     type: 'flight',
                     title: initialCuration.flightBooking.airline || 'Flight to ' + initialCuration.destination.name,
-                    subtitle: `${initialCuration.flightBooking.originIata || 'DXB'} → ${initialCuration.flightBooking.destinationIata || 'Destination'} • ${initialCuration.flightBooking.departureTime || 'TBD'} • ${initialCuration.flightBooking.duration || ''}`,
+                    subtitle: `${initialCuration.flightBooking.originIata || 'DXB'} → ${initialCuration.flightBooking.destinationIata || 'Destination'} • ${initialCuration.flightBooking.departureTime || 'TBD'} → ${initialCuration.flightBooking.arrivalTime || 'TBD'} • ${initialCuration.flightBooking.duration || ''}`,
                     price: initialCuration.flightBooking.price,
                     image: initialCuration.flightBooking.airlineLogo || 'https://pics.avs.io/200/200/LO.png',
                     flightRef: {
@@ -831,6 +869,8 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
     });
     const [bookingTarget, setBookingTarget] = useState<BookingTarget>(null);
     const [activeFlightAlternatives, setActiveFlightAlternatives] = useState<Flight[]>([]);
+    const [activeHotelAlternatives, setActiveHotelAlternatives] = useState<Hotel[]>([]);
+    const [activeActivityAlternatives, setActiveActivityAlternatives] = useState<Activity[]>([]);
     const [curation, setCuration] = useState<Curation | null>(initialCuration);
     const chatEndRef = useRef<HTMLDivElement>(null);
     const [isTyping, setIsTyping] = useState(false);
@@ -839,7 +879,6 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
     const [showMap, setShowMap] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
     const [initialBookingStep, setInitialBookingStep] = useState<BookingStep>('details');
-    const [addingExperienceToDay, setAddingExperienceToDay] = useState<string | null>(null);
     const [experienceActiveFilter, setExperienceActiveFilter] = useState<'All' | 'Popular' | 'Adventure' | 'Culture' | 'Leisure'>('All');
     const [activeTab, setActiveTab] = useState<'Itinerary' | 'Essentials'>('Itinerary');
     const [essentialsCart, setEssentialsCart] = useState<Essential[]>([]);
@@ -1341,7 +1380,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                         const routeMatch = (parts[0] || '').match(/([A-Z]{3})\s*[→\-]+\s*([A-Z]{3})/);
                         const originIata = routeMatch?.[1] || 'DXB';
                         const destIata = routeMatch?.[2] || result.destinationName?.slice(0, 3).toUpperCase() || 'DXB';
-                        newCuration.destination.flights.push({
+                        const flightObj: Flight = {
                             id: item.id,
                             airline: item.title,
                             airlineLogo: item.image || `https://pics.avs.io/200/200/${item.title?.slice(0, 2).toUpperCase() || originIata.slice(0, 2)}.png`,
@@ -1352,7 +1391,10 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                             originIata,
                             destinationIata: destIata,
                             isVerified: true
-                        });
+                        };
+                        newCuration.destination.flights.push(flightObj);
+                        item.flightRef = item.flightRef || flightObj;
+                        (item as any).flightAlternatives = item.flightAlternatives || [];
                     } else if (item.type === 'hotel') {
                         newCuration.destination.hotels.push({
                             id: item.id,
@@ -1364,6 +1406,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                             amenities: ['Premium Suite', 'WiFi', 'Pool'],
                             isVerified: true
                         });
+                        (item as any).hotelAlternatives = item.hotelAlternatives || [];
                     } else if (item.type === 'activity') {
                         newCuration.destination.activities.push({
                             id: item.id,
@@ -1373,6 +1416,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                             category: 'Experience',
                             imageUrl: item.image || ''
                         });
+                        (item as any).activityAlternatives = item.activityAlternatives || [];
                     }
                 });
             }
@@ -1425,11 +1469,19 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         setCalendarFromDate(null); setCalendarToDate(null); setCalendarMonth(new Date());
     };
 
-    const handleBookItem = (item: ItineraryItem, initialStep: BookingStep = 'details', alts: any[] = []) => {
-        setBookingTarget({ type: item.type === 'transfer' || item.type === 'insurance' ? 'essentials' : item.type, itemId: item.id });
+    const handleBookItem = (item: ItineraryItem, initialStep: BookingStep = 'details', alts: any[] = [], isVirtual: boolean = false) => {
+        setBookingTarget({ 
+            type: item.type === 'transfer' || item.type === 'insurance' ? 'essentials' : item.type, 
+            itemId: item.id,
+            virtualItem: isVirtual ? item : undefined
+        });
         setInitialBookingStep(initialStep);
         if (item.type === 'flight') {
             setActiveFlightAlternatives(alts as Flight[]);
+        } else if (item.type === 'hotel') {
+            setActiveHotelAlternatives(alts as Hotel[]);
+        } else if (item.type === 'activity') {
+            setActiveActivityAlternatives(alts as Activity[]);
         }
         setDrawerOpen(true);
     };
@@ -1439,8 +1491,22 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
         if (bookingTarget?.virtualItem) {
             confirmedItemTitle = bookingTarget.virtualItem.title;
-            // If it was a virtual item (like the cart), add it to itinerary as booked
-            setItinerary(prev => [...prev, { ...bookingTarget.virtualItem!, booked: true }]);
+            // Add or update virtual item in itinerary
+            setItinerary(prev => {
+                const exists = prev.find(it => it.id === bookingTarget.itemId);
+                const finalItem: ItineraryItem = {
+                    ...(exists || bookingTarget.virtualItem!),
+                    title: details.activityName || (exists?.title || bookingTarget.virtualItem!.title),
+                    price: details.price || (exists?.price || bookingTarget.virtualItem!.price),
+                    image: details.imageUrl || (exists?.image || bookingTarget.virtualItem!.image),
+                    booked: true
+                };
+
+                if (exists) {
+                    return prev.map(it => it.id === bookingTarget.itemId ? finalItem : it);
+                }
+                return [...prev, finalItem];
+            });
             if (bookingTarget.type === 'essentials') {
                 setEssentialsCart([]); // Clear cart after booking
                 setActiveTab('Itinerary'); // Switch back to itinerary
@@ -1502,7 +1568,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             doc.text(`${label} Invoice`, 20, 22);
             doc.setFontSize(10);
             doc.setFont('helvetica', 'normal');
-            doc.text(`Mastercard • Frankfurt Bleisure Trip`, 20, 30);
+            doc.text(`IDFC First Bank • Frankfurt Bleisure Trip`, 20, 30);
             doc.text(`Date: ${new Date().toLocaleDateString('en-GB')}`, 150, 30);
 
             // Invoice details
@@ -1522,7 +1588,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             doc.setFontSize(9);
             doc.setFont('helvetica', 'bold');
             doc.text('Item', 24, y);
-            doc.text('Amount (AED)', 155, y);
+            doc.text('Amount (INR)', 155, y);
             y += 10;
 
             // Line items
@@ -1530,7 +1596,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             doc.setTextColor(80, 80, 80);
             section.items.forEach((item) => {
                 doc.text(item.name, 24, y);
-                doc.text(`${item.amount.toLocaleString()} AED`, 155, y);
+                doc.text(`${item.amount.toLocaleString()} INR`, 155, y);
                 doc.setDrawColor(230, 230, 230);
                 doc.line(20, y + 3, 190, y + 3);
                 y += 9;
@@ -1543,15 +1609,15 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             doc.setTextColor(255, 255, 255);
             doc.setFontSize(11);
             doc.setFont('helvetica', 'bold');
-            doc.text(`Total: ${section.total.toLocaleString()} AED`, 126, y + 1);
+            doc.text(`Total: ${section.total.toLocaleString()} INR`, 126, y + 1);
 
             // Footer
             doc.setTextColor(180, 180, 180);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
-            doc.text('Generated by Mastercard Travel Anya — mastercard.com', 20, 280);
+            doc.text('Generated by IDFC First Bank Travel Anya — IDFC First Bank.com', 20, 280);
 
-            doc.save(`Mastercard_${label}_Invoice.pdf`);
+            doc.save(`IDFC First Bank_${label}_Invoice.pdf`);
         };
 
         const renderSection = (type: 'corporate' | 'personal') => {
@@ -1585,14 +1651,14 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                         {section.items.map((item, i) => (
                             <div key={i} className="flex justify-between items-center text-[11px]">
                                 <span className="text-slate-600 truncate mr-2">{item.name}</span>
-                                <span className="font-semibold text-slate-800 whitespace-nowrap">{item.amount.toLocaleString()} AED</span>
+                                <span className="font-semibold text-slate-800 whitespace-nowrap">{item.amount.toLocaleString()} INR</span>
                             </div>
                         ))}
                     </div>
                     {/* Total */}
                     <div className={`mx-3 mb-2 rounded-lg ${totalBg} px-3 py-2 flex justify-between items-center`}>
                         <span className="text-[10px] text-white/80 font-bold uppercase">Total</span>
-                        <span className="text-sm text-white font-black">{section.total.toLocaleString()} AED</span>
+                        <span className="text-sm text-white font-black">{section.total.toLocaleString()} INR</span>
                     </div>
                     {/* Download */}
                     <button
@@ -2626,7 +2692,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                 </span>
                                             )}
                                             <p className={`${isMobile ? 'text-xs' : 'text-sm'} font-black text-slate-900 dark:text-white`}>
-                                                <span className="text-[10px] text-slate-400 font-bold mr-1">AED</span>
+                                                <span className="text-[10px] text-slate-400 font-bold mr-1">INR</span>
                                                 {totalCost.toLocaleString()}
                                             </p>
                                         </div>
@@ -2761,7 +2827,19 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                                 <p className="text-slate-500 text-sm font-medium">No plans yet for this day.</p>
                                                                                 <button
                                                                                     onClick={() => {
-                                                                                        setAddingExperienceToDay(dayLabel);
+                                                                                        const activityAlts = scenario === 'executive' ? LONDON_ALT_ACTIVITIES : (scenario === 'family' ? ITALY_ACTIVITIES : (scenario === 'bleisure' ? FRANKFURT_ALT_ACTIVITIES : (scenario === 'paris' ? PARIS_ACTIVITIES : (curation?.destination?.activities || []))));
+                                                                                        const virtualItem: ItineraryItem = {
+                                                                                            id: `virtual-${Date.now()}`,
+                                                                                            type: 'activity',
+                                                                                            title: 'New Experience',
+                                                                                            subtitle: `Suggested for ${dayLabel}`,
+                                                                                            price: 0,
+                                                                                            dayGroup: dayLabel,
+                                                                                            activityRef: activityAlts[0]
+                                                                                        };
+                                                                                        setBookingTarget({ type: 'activity', itemId: virtualItem.id, virtualItem });
+                                                                                        setActiveActivityAlternatives(activityAlts);
+                                                                                        setInitialBookingStep('search');
                                                                                         setDrawerOpen(true);
                                                                                     }}
                                                                                     className="mt-3 bg-red-50 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-100 transition"
@@ -2773,11 +2851,13 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                             // Build alternatives for this item
                                                                             const isReturn = item.id.includes('ret') || item.id === 'bf2';
                                                                             const alts = item.type === 'flight'
-                                                                                ? (scenario === 'executive' ? LONDON_ALT_FLIGHTS : (scenario === 'family' ? (isReturn ? FLIGHTS_TO_ABU_DHABI : FLIGHTS_TO_ITALY) : (scenario === 'bleisure' ? (isReturn ? FRANKFURT_RETURN_FLIGHTS : FRANKFURT_FLIGHTS) : [])))
+                                                                                ? (item.flightAlternatives?.length ? item.flightAlternatives : (scenario === 'executive' ? LONDON_ALT_FLIGHTS : (scenario === 'family' ? (isReturn ? FLIGHTS_TO_ABU_DHABI : FLIGHTS_TO_ITALY) : (scenario === 'bleisure' ? (isReturn ? FRANKFURT_RETURN_FLIGHTS : FRANKFURT_ALT_FLIGHTS) : (scenario === 'paris' ? FLIGHTS_TO_PARIS : (curation?.destination?.flights || []))))))
                                                                                 : item.type === 'hotel'
-                                                                                    ? (scenario === 'executive' ? LONDON_ALT_HOTELS : (scenario === 'family' ? ITALY_HOTELS : (scenario === 'bleisure' ? FRANKFURT_HOTELS : [])))
-                                                                                    : [];
-                                                                            const hasAlts = (scenario === 'executive' || scenario === 'family' || scenario === 'bleisure') && alts.length > 0 && !item.booked;
+                                                                                    ? (item.hotelAlternatives?.length ? item.hotelAlternatives : (scenario === 'executive' ? LONDON_ALT_HOTELS : (scenario === 'family' ? ITALY_HOTELS : (scenario === 'bleisure' ? FRANKFURT_HOTELS : (scenario === 'paris' ? PARIS_HOTELS : (curation?.destination?.hotels || []))))))
+                                                                                    : item.type === 'activity'
+                                                                                        ? (item.activityAlternatives?.length ? item.activityAlternatives : (scenario === 'executive' ? LONDON_ALT_ACTIVITIES : (scenario === 'family' ? ITALY_ACTIVITIES : (scenario === 'bleisure' ? FRANKFURT_ALT_ACTIVITIES : (scenario === 'paris' ? PARIS_ACTIVITIES : (curation?.destination?.activities || []))))))
+                                                                                        : [];
+                                                                            const hasAlts = alts.length > 0 && !item.booked;
 
 
                                                                             // Parse subtitle parts
@@ -2787,92 +2867,174 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                             const renderCardContent = () => {
                                                                                 // ─── FLIGHT CARD (horizontal booking-site style) ───
                                                                                 if (item.type === 'flight') {
-                                                                                    const route = subtitleParts[0] || '';
-                                                                                    const date = subtitleParts[1] || '';
-                                                                                    const times = subtitleParts[2] || '';
-                                                                                    const duration = subtitleParts[3] || '';
+                                                                                    const flight = item.flightRef;
+                                                                                    
+                                                                                    // 1. DATA MAPPING (Prioritize structured flightRef like in Explore Alternatives)
+                                                                                    // Extract times
+                                                                                    let depTime = flight?.departureTime || '';
+                                                                                    let arrTime = flight?.arrivalTime || '';
+                                                                                    
+                                                                                    // Extract route
+                                                                                    let origin = flight?.originIata || '';
+                                                                                    let dest = flight?.destinationIata || '';
+                                                                                    
+                                                                                    // Duration & Stops
+                                                                                    let duration = flight?.duration || '';
+                                                                                    
+                                                                                    // FALLBACK: Parsing logic for cases where flightRef is missing or incomplete
+                                                                                    let displayOrigin = origin;
+                                                                                    let displayDest = dest;
+                                                                                    let displayDepTime = depTime;
+                                                                                    let displayArrTime = arrTime;
+                                                                                    let displayDuration = duration;
+                                                                                    let displayDate = '';
+                                                                                    let foundTimes: string[] = [];
 
-                                                                                    // Extract times using regex (handles HH:MM or HH:MM AM/PM or HH:MM-HH:MM)
-                                                                                    const timeMatches = times.replace(/\s+/g, ' ').match(/\d{1,2}:\d{2}(?:\s?[AP]M)?/gi) || [];
-                                                                                    let depTime = timeMatches[0] || '';
-                                                                                    let arrTime = timeMatches[timeMatches.length - 1] || '';
-
-                                                                                    // Secondary attempt: if match is empty, try split by dash or space
-                                                                                    if (!depTime && times.includes('-')) {
-                                                                                        const parts = times.split('-').map(p => p.trim());
-                                                                                        depTime = parts[0];
-                                                                                        arrTime = parts[1];
-                                                                                    }
-
-                                                                                    // If no standard times found, fallback to separator split but filter out symbols
-                                                                                    if (!depTime) {
-                                                                                        const parts = times.split(/[\s\+→\->\-]+/).filter(p => p.trim() && !/^[\+\-→\->]+$/.test(p));
-                                                                                        depTime = parts[0] || '';
-                                                                                        arrTime = parts[parts.length - 1] || '';
-                                                                                    }
-
-                                                                                    // Robust route parsing
-                                                                                    const routeParts = route.split(/[\s→\->\-]+/).filter(p => {
-                                                                                        const trimmed = p.trim().replace(/[\(\)]/g, '');
-                                                                                        return trimmed.length >= 2 && !/^[\+→\->\-]+$/.test(trimmed);
+                                                                                    subtitleParts.forEach(part => {
+                                                                                        const p = part.trim();
+                                                                                        // Route parsing: Handle "→", "->", and " TO "
+                                                                                        if (p.includes('→') || p.includes('->') || p.toUpperCase().includes(' TO ')) {
+                                                                                            const pts = p.split(/[→\->]|\sTO\s/i).map(s => s.trim());
+                                                                                            if (!displayOrigin) displayOrigin = pts[0];
+                                                                                            if (!displayDest) displayDest = pts[1];
+                                                                                        } 
+                                                                                        // Time parsing
+                                                                                        else if (p.includes(':')) {
+                                                                                            const matches = p.match(/\d{1,2}:\d{2}(?:\s?[AP]M)?/gi);
+                                                                                            if (matches) foundTimes.push(...matches);
+                                                                                        } 
+                                                                                        // Duration parsing
+                                                                                        else if (/\d+\s*[hm]/i.test(p)) {
+                                                                                            if (!displayDuration) displayDuration = p;
+                                                                                        }
+                                                                                        // Date parsing: e.g. "Mon, Mar 2"
+                                                                                        else if (p.includes(',') && !p.includes(':')) {
+                                                                                            if (!displayDate) displayDate = p;
+                                                                                        }
                                                                                     });
-                                                                                    let origin = routeParts[0] || '';
-                                                                                    let dest = routeParts[routeParts.length - 1] || '';
 
-                                                                                    // Check if origin/dest already include the city name or just IATA
-                                                                                    // If routeParts has more segments, try to be more specific
-                                                                                    if (routeParts.length >= 2) {
-                                                                                        origin = routeParts[0];
-                                                                                        dest = routeParts[routeParts.length - 1];
+                                                                                    // Assign found times correctly
+                                                                                    if (foundTimes.length >= 2) {
+                                                                                        if (!displayDepTime) displayDepTime = foundTimes[0];
+                                                                                        if (!displayArrTime) displayArrTime = foundTimes[1];
+                                                                                    } else if (foundTimes.length === 1) {
+                                                                                        if (!displayDepTime) displayDepTime = foundTimes[0];
+                                                                                        else if (!displayArrTime) displayArrTime = foundTimes[0];
                                                                                     }
+
+                                                                                    // Airline Name Logic: Prioritize structured airline, then try to find it in subtitle
+                                                                                    let airlineName = flight?.airline || '';
+                                                                                    if (!airlineName) {
+                                                                                        // If title is a route, try to find airline in subtitle
+                                                                                        const isTitleRoute = item.title.includes('→') || item.title.includes('->') || item.title.toUpperCase().includes(' TO ');
+                                                                                        if (isTitleRoute) {
+                                                                                            const potentialAirline = subtitleParts.find(p => 
+                                                                                                !p.includes(':') && 
+                                                                                                !/\d+\s*[hm]/i.test(p) && 
+                                                                                                !p.includes('→') && 
+                                                                                                !p.includes('->') && 
+                                                                                                !p.toUpperCase().includes(' TO ')
+                                                                                            );
+                                                                                            airlineName = potentialAirline || 'Airline';
+                                                                                        } else {
+                                                                                            airlineName = item.title;
+                                                                                        }
+                                                                                    }
+                                                                                    const airlineLogo = flight?.airlineLogo || item.image || '';
+
+                                                                                    const isDirect = displayDuration.toLowerCase().includes('direct') || displayDuration.toLowerCase().includes('non-stop') || (parseFloat(displayDuration) > 0 && parseFloat(displayDuration) < 5);
+                                                                                    
+                                                                                    // Final Cleanup for display
+                                                                                    const finalDepTime = displayDepTime.split(' ')[0] || '—';
+                                                                                    const finalArrTime = displayArrTime.split(' ')[0] || '—';
+                                                                                    
+                                                                                    // Extract IATA codes from strings like "Dubai (DXB)" or just "DXB"
+                                                                                    const extractIata = (str: string) => {
+                                                                                        const match = str.match(/\(([A-Z]{3})\)/);
+                                                                                        if (match) return match[1];
+                                                                                        if (str.length === 3 && /^[A-Z]{3}$/.test(str)) return str;
+                                                                                        // Try to extract first 3 letters if it looks like a city name but no code found
+                                                                                        return str.slice(0, 3).toUpperCase();
+                                                                                    };
+
+                                                                                    const finalOrigin = extractIata(displayOrigin) || '—';
+                                                                                    const finalDest = extractIata(displayDest) || '—';
+                                                                                    
+                                                                                    const originName = displayOrigin.split('(')[0].trim() || finalOrigin;
+                                                                                    const destName = displayDest.split('(')[0].trim() || finalDest;
 
                                                                                     return (
-                                                                                        <div className="space-y-4">
-                                                                                            <div className="flex items-center justify-between">
-                                                                                                <div className="flex items-center gap-2">
-                                                                                                    <Plane size={12} className="text-slate-400" />
-                                                                                                    <span className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Flight</span>
+                                                                                        <div className="bg-white dark:bg-slate-900 rounded-[28px] border-2 border-slate-50 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                                                                            <div className="flex items-stretch gap-0">
+                                                                                                {/* Main Info */}
+                                                                                                <div className="flex-1 p-6 flex items-center justify-between">
+                                                                                                    {/* Airline */}
+                                                                                                    <div className="flex flex-col gap-3 w-32">
+                                                                                                        <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white p-2.5 shadow-inner">
+                                                                                                            <SafeImage src={airlineLogo} alt={airlineName} className="w-full h-full object-contain" category="flight" />
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <p className="text-base font-black text-slate-900 dark:text-white leading-tight">{airlineName}</p>
+                                                                                                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{flight?.id || 'FLIGHT'}</p>
+                                                                                                        </div>
+                                                                                                    </div>
+
+                                                                                                    {/* Connection Visualization */}
+                                                                                                    <div className="flex-1 flex items-center justify-center gap-6 px-4">
+                                                                                                        <div className="text-right">
+                                                                                                            <p className="text-2xl font-black text-slate-900 dark:text-white">{finalDepTime}</p>
+                                                                                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{finalOrigin}</p>
+                                                                                                        </div>
+
+                                                                                                        <div className="flex-1 max-w-[140px] flex flex-col items-center gap-2">
+                                                                                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">{displayDuration || '—'}</span>
+                                                                                                            <div className="relative w-full h-px bg-slate-100 dark:bg-slate-800">
+                                                                                                                <div className="absolute top-1/2 left-0 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                                                                                                                <div className="absolute top-1/2 right-0 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                                                                                                                <Plane size={14} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-red-500/30 rotate-90" />
+                                                                                                            </div>
+                                                                                                            <span className={`text-[10px] font-black uppercase tracking-widest ${isDirect ? 'text-emerald-500' : 'text-amber-500'}`}>
+                                                                                                                {isDirect ? 'Non-stop' : '1 Stop'}
+                                                                                                            </span>
+                                                                                                        </div>
+
+                                                                                                        <div className="text-left">
+                                                                                                            <p className="text-2xl font-black text-slate-900 dark:text-white">{finalArrTime}</p>
+                                                                                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{finalDest}</p>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                                 </div>
-                                                                                                {renderBadge()}
+
+                                                                                                {/* Price Sidebar */}
+                                                                                                <div className={`w-40 flex flex-col justify-center items-center p-6 border-l border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20`}>
+                                                                                                    <div className="text-center mb-2">
+                                                                                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Per Adult</span>
+                                                                                                        <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">INR {item.price.toLocaleString()}</p>
+                                                                                                    </div>
+                                                                                                    <div className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest border ${item.booked ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-red-50 text-red-600 border-red-100'}`}>
+                                                                                                        {item.booked ? 'Confirmed' : 'Available'}
+                                                                                                    </div>
+                                                                                                </div>
                                                                                             </div>
 
-                                                                                            <div className="flex items-center gap-6">
-                                                                                                {/* Airline Section */}
-                                                                                                <div className="flex flex-col items-center shrink-0 w-24 pr-6 border-r border-slate-100">
-                                                                                                    <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-50 flex items-center justify-center p-1.5 overflow-hidden group-hover:scale-105 transition-transform">
-                                                                                                        <SafeImage src={item.image} category="flight" alt={item.title} className="w-full h-full object-contain" />
-                                                                                                    </div>
-                                                                                                    <p className="text-[10px] text-slate-900 font-bold mt-2 text-center leading-tight uppercase tracking-wider">{item.title.split(' ').slice(0, 2).join(' ')}</p>
-                                                                                                    <span className="inline-block text-[8px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md mt-1.5 border border-blue-100 uppercase tracking-[0.1em]">Business</span>
+                                                                                            {/* Bottom Info Bar */}
+                                                                                            <div className="flex items-center gap-6 px-6 py-3 bg-slate-50/30 dark:bg-slate-800/20 border-t border-slate-50 dark:border-slate-800/50">
+                                                                                                <div className="flex items-center gap-1.5">
+                                                                                                    <Zap size={11} className="text-amber-500" />
+                                                                                                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Extra Legroom</span>
                                                                                                 </div>
-
-                                                                                                {/* Journey Section */}
-                                                                                                <div className="flex-1 flex items-center justify-between gap-4">
-                                                                                                    {/* Departure */}
-                                                                                                    <div className="flex flex-col items-start min-w-[70px]">
-                                                                                                        <p className="text-2xl font-black text-slate-900 tracking-tighter tabular-nums leading-none mb-1">{depTime || '—'}</p>
-                                                                                                        <p className="text-xs text-slate-400 font-bold uppercase tracking-wide truncate max-w-[100px]">{origin || '—'}</p>
-                                                                                                    </div>
-
-                                                                                                    {/* Path Visualizer */}
-                                                                                                    <div className="flex-1 flex flex-col items-center px-2">
-                                                                                                        <span className="text-[9px] text-slate-400 font-black uppercase tracking-[0.15em] mb-2">{duration || 'Direct'}</span>
-                                                                                                        <div className="flex items-center w-full relative">
-                                                                                                            <div className="w-1.5 h-1.5 rounded-full border-2 border-slate-200 bg-white z-10" />
-                                                                                                            <div className="flex-1 h-[2px] bg-slate-100 relative mx-0">
-                                                                                                                <div className="absolute inset-0 bg-gradient-to-r from-red-200 via-red-500 to-red-200 h-full w-full opacity-30" />
-                                                                                                                <Plane size={14} className="absolute -top-[6px] left-1/2 -track-x-1/2 text-red-600 rotate-90 z-20" />
-                                                                                                            </div>
-                                                                                                            <div className="w-1.5 h-1.5 rounded-full border-2 border-slate-200 bg-white z-10" />
-                                                                                                        </div>
-                                                                                                        <span className="text-[9px] text-emerald-600 font-black uppercase tracking-[0.15em] mt-2">Non-Stop</span>
-                                                                                                    </div>
-
-                                                                                                    {/* Arrival */}
-                                                                                                    <div className="flex flex-col items-end min-w-[70px]">
-                                                                                                        <p className="text-2xl font-black text-slate-900 tracking-tighter tabular-nums leading-none mb-1">{arrTime || '—'}</p>
-                                                                                                        <p className="text-xs text-slate-400 font-bold uppercase tracking-wide text-right truncate max-w-[100px]">{dest || '—'}</p>
-                                                                                                    </div>
+                                                                                                <div className="flex items-center gap-1.5">
+                                                                                                    <Check size={11} className="text-emerald-500" />
+                                                                                                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Free Cancellation</span>
+                                                                                                </div>
+                                                                                                <div className="flex items-center gap-1.5">
+                                                                                                    <Tag size={11} className="text-red-500" />
+                                                                                                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Verified Fare</span>
+                                                                                                </div>
+                                                                                                <div className="ml-auto">
+                                                                                                    <span className={`text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider ${item.billingType === 'business' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}`}>
+                                                                                                        {item.billingType === 'business' ? 'Business' : 'First Class'}
+                                                                                                    </span>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -3014,9 +3176,9 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                                         </div>
                                                                                     ) : (
                                                                                         <div
-                                                                                            onClick={() => !item.booked && handleBookItem(item)}
-                                                                                            className={`rounded-2xl border transition-all cursor-pointer group overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-1
-                                                                                        ${item.booked ? 'bg-emerald-50/50 border-emerald-200 cursor-default shadow-sm' : 'bg-white border-slate-200 hover:border-red-300'}
+                                                                                            onClick={() => !item.booked && item.price > 0 && handleBookItem(item, 'details', alts)}
+                                                                                            className={`rounded-2xl border transition-all group overflow-hidden shadow-md
+                                                                                        ${item.booked ? 'bg-emerald-50/50 border-emerald-200 cursor-default shadow-sm' : (item.price === 0 ? 'bg-slate-50 border-slate-100 cursor-default' : 'bg-white border-slate-200 hover:border-red-300 hover:shadow-2xl hover:-translate-y-1 cursor-pointer')}
                                                                                         ${item.billingType === 'business' ? 'border-l-4 border-l-blue-500' : item.billingType === 'personal' ? 'border-l-4 border-l-emerald-500' : ''}`}
                                                                                         >
                                                                                             <div className="p-5">
@@ -3024,45 +3186,47 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                                             </div>
 
                                                                                             {/* Footer: Price (for non-flight/hotel) + Actions */}
-                                                                                            <div className={`flex items-center justify-between px-5 py-3 border-t ${item.booked ? 'border-emerald-100 bg-emerald-50/30' : 'border-slate-100 bg-slate-50/50'}`}>
-                                                                                                <div className="flex items-center gap-3 w-1/2">
-                                                                                                    {item.type !== 'hotel' && (
-                                                                                                        <p className="text-base font-bold text-slate-900 shrink-0">AED {item.price.toLocaleString()}</p>
-                                                                                                    )}
-                                                                                                    {item.type === 'hotel' && (
-                                                                                                        <p className="text-base font-bold text-slate-900 shrink-0">AED {item.price.toLocaleString()} <span className="text-xs text-slate-400 font-medium">total incl. taxes</span></p>
-                                                                                                    )}
-                                                                                                    {(item.type === 'activity' || item.type === 'essentials') && (
-                                                                                                        <button
-                                                                                                            onClick={(e) => {
-                                                                                                                e.stopPropagation();
-                                                                                                                setItinerary(prev => prev.filter(it => it.id !== item.id));
-                                                                                                            }}
-                                                                                                            className="text-[11px] text-slate-400 hover:text-red-600 font-bold underline transition-colors"
-                                                                                                        >
-                                                                                                            Remove
-                                                                                                        </button>
-                                                                                                    )}
+                                                                                            {(item.price > 0 || item.type === 'activity') && (
+                                                                                                <div className={`flex items-center justify-between px-5 py-3 border-t ${item.booked ? 'border-emerald-100 bg-emerald-50/30' : 'border-slate-100 bg-slate-50/50'}`}>
+                                                                                                    <div className="flex items-center gap-3 w-1/2">
+                                                                                                        {item.type !== 'hotel' && item.type !== 'flight' && item.price > 0 && (
+                                                                                                            <p className="text-base font-bold text-slate-900 shrink-0">INR {item.price.toLocaleString()}</p>
+                                                                                                        )}
+                                                                                                        {item.type === 'hotel' && (
+                                                                                                            <p className="text-base font-bold text-slate-900 shrink-0">INR {item.price.toLocaleString()} <span className="text-xs text-slate-400 font-medium">total incl. taxes</span></p>
+                                                                                                        )}
+                                                                                                        {(item.type === 'activity' || item.type === 'essentials') && (
+                                                                                                            <button
+                                                                                                                onClick={(e) => {
+                                                                                                                    e.stopPropagation();
+                                                                                                                    setItinerary(prev => prev.filter(it => it.id !== item.id));
+                                                                                                                }}
+                                                                                                                className="text-[11px] text-slate-400 hover:text-red-600 font-bold underline transition-colors"
+                                                                                                            >
+                                                                                                                Remove
+                                                                                                            </button>
+                                                                                                        )}
+                                                                                                    </div>
+                                                                                                    <div className="flex items-center justify-end gap-2 w-1/2">
+                                                                                                        {hasAlts && item.price > 0 && (
+                                                                                                            <button
+                                                                                                                onClick={(e) => { e.stopPropagation(); handleBookItem(item, 'search', alts); }}
+                                                                                                                className="text-xs text-red-600 font-black flex items-center gap-1.5 transition-all px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-100 hover:border-red-200 shadow-sm hover:shadow active:scale-95 group"
+                                                                                                            >
+                                                                                                                <RefreshCw size={12} className="group-hover:rotate-180 transition-transform duration-500" /> Explore alternatives
+                                                                                                            </button>
+                                                                                                        )}
+                                                                                                        {!item.booked && item.price > 0 && (
+                                                                                                            <button
+                                                                                                                onClick={(e) => { e.stopPropagation(); handleBookItem(item, 'details', alts); }}
+                                                                                                                className="text-xs text-white font-bold flex items-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm"
+                                                                                                            >
+                                                                                                                {item.type === 'flight' ? 'Book Flight' : item.type === 'hotel' ? 'Book Hotel' : 'Book now'} <ArrowRight size={13} />
+                                                                                                            </button>
+                                                                                                        )}
+                                                                                                    </div>
                                                                                                 </div>
-                                                                                                <div className="flex items-center justify-end gap-2 w-1/2">
-                                                                                                    {hasAlts && (
-                                                                                                        <button
-                                                                                                            onClick={(e) => { e.stopPropagation(); handleBookItem(item, 'search', alts); }}
-                                                                                                            className="text-xs text-slate-500 hover:text-red-600 font-bold flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg hover:bg-red-50 border border-transparent hover:border-red-200"
-                                                                                                        >
-                                                                                                            <RefreshCw size={13} /> Explore alternatives
-                                                                                                        </button>
-                                                                                                    )}
-                                                                                                    {!item.booked && (
-                                                                                                        <button
-                                                                                                            onClick={(e) => { e.stopPropagation(); handleBookItem(item, 'details', alts); }}
-                                                                                                            className="text-xs text-white font-bold flex items-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm"
-                                                                                                        >
-                                                                                                            {item.type === 'flight' ? 'Book Flight' : item.type === 'hotel' ? 'Book Hotel' : 'Book now'} <ArrowRight size={13} />
-                                                                                                        </button>
-                                                                                                    )}
-                                                                                                </div>
-                                                                                            </div>
+                                                                                            )}
                                                                                         </div>
                                                                                     )}
 
@@ -3074,7 +3238,23 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
                                                                     {dayLabel !== 'Trip Essentials' && (
                                                                         <button
-                                                                            onClick={(e) => { e.stopPropagation(); setAddingExperienceToDay(dayLabel); }}
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation();
+                                                                                const activityAlts = scenario === 'executive' ? LONDON_ALT_ACTIVITIES : (scenario === 'family' ? ITALY_ACTIVITIES : (scenario === 'bleisure' ? FRANKFURT_ALT_ACTIVITIES : (scenario === 'paris' ? PARIS_ACTIVITIES : (curation?.destination?.activities || []))));
+                                                                                const virtualItem: ItineraryItem = {
+                                                                                    id: `virtual-${Date.now()}`,
+                                                                                    type: 'activity',
+                                                                                    title: 'New Experience',
+                                                                                    subtitle: `Suggested for ${dayLabel}`,
+                                                                                    price: 0,
+                                                                                    dayGroup: dayLabel,
+                                                                                    activityRef: activityAlts[0]
+                                                                                };
+                                                                                setBookingTarget({ type: 'activity', itemId: virtualItem.id, virtualItem });
+                                                                                setActiveActivityAlternatives(activityAlts);
+                                                                                setInitialBookingStep('search');
+                                                                                setDrawerOpen(true);
+                                                                            }}
                                                                             className="w-full mt-3 py-3 rounded-xl border-2 border-dashed border-slate-200 text-slate-500 hover:text-red-500 hover:border-red-300 hover:bg-red-50 flex items-center justify-center gap-2 font-bold transition-all hover:shadow-md"
                                                                         >
                                                                             <Plus size={16} /> Add Experience
@@ -3116,7 +3296,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                             </div>
                                                                         </div>
                                                                         <div className="text-right">
-                                                                            <p className="text-xl font-black text-slate-900">AED {item.price.toLocaleString()}</p>
+                                                                            <p className="text-xl font-black text-slate-900">INR {item.price.toLocaleString()}</p>
                                                                         </div>
                                                                     </div>
                                                                 ))}
@@ -3153,7 +3333,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                         </div>
                                                                     </div>
                                                                     <div className="text-right shrink-0">
-                                                                        <p className="text-xl font-black text-slate-900">AED {essential.price}</p>
+                                                                        <p className="text-xl font-black text-slate-900">INR {essential.price}</p>
                                                                         <button className={`mt-2 text-xs font-bold px-4 py-1.5 rounded-lg transition-all ${inCart ? 'bg-slate-900 text-white' : 'text-red-600 border border-red-100 hover:bg-red-600 hover:text-white'}`}>
                                                                             {inCart ? 'Remove' : 'Add'}
                                                                         </button>
@@ -3178,7 +3358,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                     </div>
                                                                     <div>
                                                                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Essentials Cart</p>
-                                                                        <p className="text-xl font-black">AED {essentialsCart.reduce((s, i) => s + i.price, 0).toLocaleString()}</p>
+                                                                        <p className="text-xl font-black">INR {essentialsCart.reduce((s, i) => s + i.price, 0).toLocaleString()}</p>
                                                                     </div>
                                                                 </div>
                                                                 <button
@@ -3207,7 +3387,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             {/* ─── BOOKING DRAWER (slides in from right) ─── */}
             <AnimatePresence>
                 {
-                    drawerOpen && bookingTarget && curation && (
+                    drawerOpen && bookingTarget && (
                         <>
                             {/* Backdrop */}
                             <motion.div
@@ -3234,8 +3414,10 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                         <div className="w-12 h-1.5 bg-slate-200 rounded-full" />
                                     </div>
                                 )}
-                                {/* Drawer Header */}
-                                <div className="h-14 border-b border-slate-200 flex items-center px-5 gap-3 shrink-0 bg-white">
+                                {curation ? (
+                                    <>
+                                        {/* Drawer Header */}
+                                        <div className="h-14 border-b border-slate-200 flex items-center px-5 gap-3 shrink-0 bg-white">
                                     <button onClick={handleBookingBack} className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors text-slate-400 hover:text-slate-700">
                                         <X size={18} />
                                     </button>
@@ -3243,7 +3425,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                         <p className="text-slate-900 font-bold text-sm truncate">
                                             {bookingItem?.title || 'Book Item'}
                                         </p>
-                                        <p className="text-[10px] text-slate-400">Secure checkout via Mastercard</p>
+                                        <p className="text-[10px] text-slate-400">Secure checkout via IDFC First Bank</p>
                                     </div>
                                     <ShieldCheck size={16} className="text-emerald-500" />
                                 </div>
@@ -3260,7 +3442,21 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                 flightAlternatives={activeFlightAlternatives}
                                                 initialStep={initialBookingStep}
                                                 onBookingComplete={handleBookingComplete}
-                                                onFlightSwap={() => { }}
+                                                onFlightSwap={(flight) => {
+                                                    setItinerary(prev => prev.map(it => {
+                                                        if (it.id === bookingTarget.itemId) {
+                                                            return {
+                                                                ...it,
+                                                                title: `${flight.airline} Flight`,
+                                                                subtitle: `${flight.originIata} → ${flight.destinationIata} • ${flight.departureTime}`,
+                                                                price: flight.price,
+                                                                image: flight.airlineLogo,
+                                                                flightRef: flight
+                                                            };
+                                                        }
+                                                        return it;
+                                                    }));
+                                                }}
                                                 onBack={handleBookingBack}
                                             />
                                         );
@@ -3272,9 +3468,24 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                         return (
                                             <HotelBookingView
                                                 curation={hotelCuration}
+                                                hotelAlternatives={activeHotelAlternatives}
                                                 initialStep={initialBookingStep}
                                                 onBookingComplete={handleBookingComplete}
-                                                onHotelSwap={() => { }}
+                                                onHotelSwap={(hotel) => {
+                                                    setItinerary(prev => prev.map(it => {
+                                                        if (it.id === bookingTarget.itemId) {
+                                                            return {
+                                                                ...it,
+                                                                title: hotel.name,
+                                                                subtitle: hotel.description,
+                                                                price: hotel.pricePerNight * 3,
+                                                                image: hotel.imageUrl,
+                                                                hotelRef: hotel
+                                                            };
+                                                        }
+                                                        return it;
+                                                    }));
+                                                }}
                                                 onBack={handleBookingBack}
                                             />
                                         );
@@ -3284,7 +3495,37 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                             <ExperienceBookingView
                                                 curation={curation!}
                                                 activity={bookingItem.activityRef}
+                                                activityAlternatives={activeActivityAlternatives}
+                                                initialStep={initialBookingStep}
                                                 onComplete={handleBookingComplete}
+                                                onActivitySwap={(activity) => {
+                                                    setItinerary(prev => {
+                                                        const exists = prev.find(it => it.id === bookingTarget.itemId);
+                                                        if (!exists && bookingTarget.virtualItem) {
+                                                            return [...prev, {
+                                                                ...bookingTarget.virtualItem,
+                                                                title: activity.name,
+                                                                subtitle: activity.duration,
+                                                                price: activity.price,
+                                                                image: activity.imageUrl,
+                                                                activityRef: activity
+                                                            }];
+                                                        }
+                                                        return prev.map(it => {
+                                                            if (it.id === bookingTarget.itemId) {
+                                                                return {
+                                                                    ...it,
+                                                                    title: activity.name,
+                                                                    subtitle: activity.duration,
+                                                                    price: activity.price,
+                                                                    image: activity.imageUrl,
+                                                                    activityRef: activity
+                                                                };
+                                                            }
+                                                            return it;
+                                                        });
+                                                    });
+                                                }}
                                                 onBack={handleBookingBack}
                                             />
                                         ) : (
@@ -3299,166 +3540,21 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                             onBack={handleBookingBack}
                                         />
                                     )}
-                                </div>
-                            </motion.div>
-                        </>
-                    )
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex-1 flex flex-col items-center justify-center p-12 text-center bg-white">
+                                        <RefreshCw size={48} className="text-red-600 animate-spin mb-4" />
+                                        <p className="text-slate-900 font-black text-lg">Initializing Anya...</p>
+                                        <p className="text-slate-500 font-medium text-sm">Securing your bespoke curation</p>
+                                    </div>
+                                )}
+                                </motion.div>
+                            </>
+                        )
                 }
             </AnimatePresence >
 
-            {/* ─── ADD EXPERIENCE DRAWER ─── */}
-            <AnimatePresence>
-                {
-                    addingExperienceToDay && (
-                        <>
-                            {/* Backdrop */}
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                onClick={() => { setAddingExperienceToDay(null); setExperienceActiveFilter('All'); }}
-                                className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50"
-                            />
-                            {/* Drawer */}
-                            <motion.div
-                                initial={{ y: '100%' }}
-                                animate={{ y: 0 }}
-                                exit={{ y: '100%' }}
-                                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                                className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-white rounded-t-3xl z-50 flex flex-col shadow-2xl"
-                            >
-                                <div className="flex-1 overflow-y-auto pb-8">
-                                    <div className="p-6 pb-4 flex flex-col sticky top-0 bg-white/80 backdrop-blur-md z-10 border-b border-slate-100">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div>
-                                                <h2 className="text-xl font-black text-slate-900">Add Experience</h2>
-                                                <p className="text-sm text-slate-500 font-medium">to {addingExperienceToDay} in {destName}</p>
-                                            </div>
-                                            <button onClick={() => { setAddingExperienceToDay(null); setExperienceActiveFilter('All'); }} className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition-colors">
-                                                <X size={20} />
-                                            </button>
-                                        </div>
-
-                                        {/* Filter Tabs */}
-                                        <div className="flex gap-2 overflow-x-auto scrollbar-hide py-1">
-                                            {['All', 'Popular', 'Adventure', 'Culture', 'Leisure'].map((filter) => (
-                                                <button
-                                                    key={filter}
-                                                    onClick={() => setExperienceActiveFilter(filter as any)}
-                                                    className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-bold transition-all ${experienceActiveFilter === filter
-                                                        ? 'bg-red-600 text-white shadow-md'
-                                                        : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
-                                                        }`}
-                                                >
-                                                    {filter === 'Popular' ? '🔥 Popular' : filter}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    <div className="p-6 space-y-6">
-                                        {(() => {
-                                            const activities = curation?.destination.activities || [];
-                                            const filteredActivities = activities.filter(a => {
-                                                if (experienceActiveFilter === 'All') return true;
-                                                if (experienceActiveFilter === 'Popular') return a.isPopular;
-                                                return a.category === experienceActiveFilter;
-                                            });
-
-                                            const popularAttractions = filteredActivities.filter(a => a.isPopular);
-                                            const otherActivities = filteredActivities.filter(a => !a.isPopular);
-
-                                            const renderActivityCard = (activity: Activity) => (
-                                                <div key={activity.id} className="group relative flex gap-4 p-4 rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-lg transition-all bg-white cursor-pointer overflow-hidden"
-                                                    onClick={() => {
-                                                        const newItem: ItineraryItem = {
-                                                            id: `custom-${Date.now()}-${activity.id}`,
-                                                            type: 'activity',
-                                                            title: activity.name,
-                                                            subtitle: `${addingExperienceToDay.split('(')[0].trim()} • ${activity.duration}`,
-                                                            price: activity.price,
-                                                            image: activity.imageUrl,
-                                                            activityRef: activity,
-                                                            dayGroup: addingExperienceToDay,
-                                                            badge: 'Added'
-                                                        };
-                                                        setItinerary(prev => [...prev, newItem]);
-                                                        setAddingExperienceToDay(null);
-                                                        setExperienceActiveFilter('All');
-                                                    }}
-                                                >
-                                                    <div className="relative w-24 h-24 rounded-xl overflow-hidden shrink-0">
-                                                        <img src={activity.imageUrl} alt={activity.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                                                        {activity.isMostVisited && (
-                                                            <div className="absolute top-1 left-1 bg-amber-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-md shadow-sm uppercase tracking-tighter">🏆 Most Visited</div>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex-1 flex flex-col justify-between">
-                                                        <div>
-                                                            <div className="flex items-start justify-between">
-                                                                <h3 className="text-base font-bold text-slate-900 leading-tight group-hover:text-red-600 transition-colors">{activity.name}</h3>
-                                                                {activity.isPopular && <Sparkles size={14} className="text-amber-500 fill-amber-500 shrink-0 mt-0.5" />}
-                                                            </div>
-                                                            <div className="flex items-center gap-2 mt-1">
-                                                                <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-100 uppercase tracking-tighter">{activity.category}</span>
-                                                                <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1"><RefreshCw size={10} /> {activity.duration}</span>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-50">
-                                                            <p className="text-sm font-black text-slate-900">AED {activity.price}</p>
-                                                            <div className="flex items-center gap-1.5 text-xs font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-xl group-hover:bg-red-600 group-hover:text-white transition-all shadow-sm">
-                                                                <Plus size={14} /> Add to Trip
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            );
-
-                                            return (
-                                                <>
-                                                    {popularAttractions.length > 0 && (
-                                                        <div className="space-y-4">
-                                                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                                                                <Sparkles size={14} className="text-amber-500" /> Popular Attractions
-                                                            </h3>
-                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                                {popularAttractions.map(renderActivityCard)}
-                                                            </div>
-                                                        </div>
-                                                    )}
-
-                                                    {otherActivities.length > 0 && (
-                                                        <div className="space-y-4">
-                                                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">
-                                                                {experienceActiveFilter === 'All' ? 'All Activities' : `${experienceActiveFilter} Activities`}
-                                                            </h3>
-                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                                {otherActivities.map(renderActivityCard)}
-                                                            </div>
-                                                        </div>
-                                                    )}
-
-                                                    {filteredActivities.length === 0 && (
-                                                        <div className="py-20 flex flex-col items-center justify-center text-center space-y-4">
-                                                            <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-300">
-                                                                <Camera size={32} />
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-slate-900 font-bold">No activities found</p>
-                                                                <p className="text-slate-500 text-sm">Try choosing a different category</p>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </>
-                                            );
-                                        })()}
-                                    </div>
-                                </div>
-                            </motion.div>
-                        </>
-                    )
-                }
-            </AnimatePresence >
         </div>
     );
 };

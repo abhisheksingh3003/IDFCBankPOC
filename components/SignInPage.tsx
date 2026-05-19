@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, LogIn, Facebook, ShieldCheck, ArrowRight } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -20,7 +20,7 @@ const SignInPage: React.FC<{ onLogin: (user: UserProfile) => void }> = ({ onLogi
             setIsLoading(false);
 
             // Check persistence
-            const storageKey = `mastercard_onboarded_${formData.email}`;
+            const storageKey = `IDFC First Bank_onboarded_${formData.email}`;
             const alreadyOnboarded = localStorage.getItem(storageKey) === 'true';
 
             onLogin({
@@ -60,7 +60,7 @@ const SignInPage: React.FC<{ onLogin: (user: UserProfile) => void }> = ({ onLogi
                 budgetStyle: 'standard',
                 loyaltyPrograms: [],
                 flexibleCancellation: true,
-                isOnboarded: localStorage.getItem(`mastercard_onboarded_${profile.email}`) === 'true'
+                isOnboarded: localStorage.getItem(`IDFC First Bank_onboarded_${profile.email}`) === 'true'
             };
 
             setTimeout(() => {

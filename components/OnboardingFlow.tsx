@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     CheckCircle2, 
@@ -82,8 +82,8 @@ const ONBOARDING_STEPS = [
         id: 'final',
         icon: ShieldCheck,
         label: "Ready to Explore",
-        question: "Excellent! Your profile is complete. Welcome to Mastercard Travel—The only travel planner built to know you, not just your destination.",
-        voiceText: "Excellent! Your profile is complete and securely stored. Welcome to the future of travel—Mastercard is the only travel planner built to know you, not just your destination. Let's start exploring.",
+        question: "Excellent! Your profile is complete. Welcome to IDFC First Bank Travel—The only travel planner built to know you, not just your destination.",
+        voiceText: "Excellent! Your profile is complete and securely stored. Welcome to the future of travel—IDFC First Bank is the only travel planner built to know you, not just your destination. Let's start exploring.",
         field: null,
         options: ["Start Exploring"]
     }
@@ -176,7 +176,7 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, userName })
             <div className="relative z-10 w-full px-8 py-6 flex justify-between items-center bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center shadow-lg">
-                        <img src="/images/mclogo-for-footer.svg" className="w-5 h-5 invert brightness-0" />
+                        <img src="/images/IDFC_First_Logo.png" className="w-5 h-5 invert brightness-0" />
                     </div>
                     <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-800 dark:text-white">AI Companion Onboarding</span>
                 </div>

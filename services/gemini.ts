@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, SchemaType, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+﻿import { GoogleGenerativeAI, SchemaType, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 
 // Force-reset on every module reload (Vite HMR) so model changes take effect immediately
 let genAI: any = null;
@@ -13,7 +13,7 @@ if ((import.meta as any).hot) {
 }
 
 const SYSTEM_INSTRUCTION = `
-  You are Anya, a premium AI travel assistant for Mastercard.
+  You are Anya, a premium AI travel assistant for IDFC First Bank.
   
   SPEED_PRIORITY: Output JSON immediately. Minimal reasoning.
   BREVITY_RULE: Be extremely concise. Max 2 short, direct sentences. No flowery greetings or filler.
@@ -80,21 +80,27 @@ const SYSTEM_INSTRUCTION = `
     - For Flight: 'keyword:luxury-airline-business-class-flatbed-seat'.
     - For Hotels: 'keyword:modern-minimalist-hotel-lobby-dubai'.
   
-  REALISTIC PRICING GUIDELINES (in AED):
-  - International Flights (Middle East/Asia/America): AED 3,500 - 8,000 per person.
-  - Short-haul Flights (Europe): AED 400 - 1,200 per person.
-  - Premium Hotels: AED 800 - 2,500 per night.
-  - Elite Activities: AED 300 - 1,500 per experience.
-  - Airport Transfers (Private): AED 200 - 600.
-  - Essentials (Insurance): AED 100 - 300.
+  REALISTIC PRICING GUIDELINES (in INR):
+  - International Flights (Middle East/Asia/America): INR 3,500 - 8,000 per person.
+  - Short-haul Flights (Europe): INR 400 - 1,200 per person.
+  - Premium Hotels: INR 800 - 2,500 per night.
+  - Elite Activities: INR 300 - 1,500 per experience.
+  - Airport Transfers (Private): INR 200 - 600.
+  - Essentials (Insurance): INR 100 - 300.
 
-  STRICT SUBTITLE FORMATTING:
-  - For Flights: {Route} • {Date} • {HH:MM AM/PM - HH:MM AM/PM} • {Duration}
-    - Example: DXB → LHR • Oct 24 • 10:30 AM - 06:45 PM • 8h 15m
-  - For Hotels: {City} • {Neighborhood} • {Room Type}
-    - Example: Dubai • Downtown • Premium King Suite
   - For Activities: {Type} • {Duration} • {Time Slot}
     - Example: Experience • 4 hours • Morning
+  
+  - **ALTERNATIVES (CRITICAL)**: For every itinerary item, you MUST generate a set of alternatives:
+    - For 'flight': Generate 'flightAlternatives' (at least 4 options including the primary one).
+    - For 'hotel': Generate 'hotelAlternatives' (at least 4 options including the primary one).
+    - For 'activity': Generate 'activityAlternatives' (at least 6 options including the primary one).
+    - Each alternative must match the schema for that type.
+  
+  - **BOOKABLE VS INFORMATIONAL (CRITICAL)**: 
+    - If an activity is a paid experience that requires booking (e.g., Museum Tour, Spa Day, Private Cruise), assign a realistic price > 0.
+    - If an activity is a general suggestion or a free public attraction (e.g., "Explore Old Dubai Souks", "Window shopping at Dubai Mall", "Evening stroll at Trevi Fountain"), set the **price to 0**. 
+    - Items with price 0 will be displayed as informational itinerary markers and will NOT be bookable by the user.
   
   - **DAY DESCRIPTIONS (CRITICAL)**: For EVERY day in the trip, generate a 'dayDescriptions' entry with:
     - 'dayGroup': Must match the itineraryItems dayGroup exactly (e.g., 'Day 1')
@@ -133,7 +139,59 @@ const SCHEMA: any = {
           image: { type: SchemaType.STRING },
           badge: { type: SchemaType.STRING },
           dayGroup: { type: SchemaType.STRING, description: "e.g., 'Day 1', 'Day 2', or 'Trip Essentials'" },
-          billingType: { type: SchemaType.STRING, enum: ["business", "personal"] }
+          billingType: { type: SchemaType.STRING, enum: ["business", "personal"] },
+          flightAlternatives: {
+            type: SchemaType.ARRAY,
+            description: "At least 4 flight options. Only for type 'flight'.",
+            items: {
+              type: SchemaType.OBJECT,
+              properties: {
+                id: { type: SchemaType.STRING },
+                airline: { type: SchemaType.STRING },
+                airlineLogo: { type: SchemaType.STRING },
+                departureTime: { type: SchemaType.STRING },
+                arrivalTime: { type: SchemaType.STRING },
+                price: { type: SchemaType.NUMBER },
+                duration: { type: SchemaType.STRING },
+                originIata: { type: SchemaType.STRING },
+                destinationIata: { type: SchemaType.STRING }
+              },
+              required: ["id", "airline", "airlineLogo", "departureTime", "arrivalTime", "price", "duration", "originIata", "destinationIata"]
+            }
+          },
+          hotelAlternatives: {
+            type: SchemaType.ARRAY,
+            description: "At least 4 hotel options. Only for type 'hotel'.",
+            items: {
+              type: SchemaType.OBJECT,
+              properties: {
+                id: { type: SchemaType.STRING },
+                name: { type: SchemaType.STRING },
+                rating: { type: SchemaType.NUMBER },
+                imageUrl: { type: SchemaType.STRING },
+                pricePerNight: { type: SchemaType.NUMBER },
+                description: { type: SchemaType.STRING },
+                address: { type: SchemaType.STRING }
+              },
+              required: ["id", "name", "rating", "imageUrl", "pricePerNight", "description"]
+            }
+          },
+          activityAlternatives: {
+            type: SchemaType.ARRAY,
+            description: "At least 6 activity options. Only for type 'activity'.",
+            items: {
+              type: SchemaType.OBJECT,
+              properties: {
+                id: { type: SchemaType.STRING },
+                name: { type: SchemaType.STRING },
+                duration: { type: SchemaType.STRING },
+                price: { type: SchemaType.NUMBER },
+                imageUrl: { type: SchemaType.STRING },
+                category: { type: SchemaType.STRING }
+              },
+              required: ["id", "name", "duration", "price", "imageUrl", "category"]
+            }
+          }
         },
         required: ["id", "type", "title", "subtitle", "price", "image"]
       }

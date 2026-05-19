@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Plane, ShieldCheck, Map } from 'lucide-react';
 
@@ -155,7 +155,7 @@ const MobileAILoader: React.FC<MobileAILoaderProps> = ({ onComplete }) => {
             {/* Bottom Tagline */}
             <div className="absolute bottom-12 left-0 w-full px-8">
                 <div className="flex items-center justify-center gap-3 opacity-30 grayscale contrast-125">
-                    <img src="/images/mclogo-for-footer.svg" alt="Mastercard" className="h-6 brightness-0 dark:invert" />
+                    <img src="/images/IDFC_First_Logo.png" alt="IDFC First Bank" className="h-6 brightness-0 dark:invert" />
                     <div className="w-px h-6 bg-slate-400" />
                     <span className="font-bold text-sm tracking-widest uppercase">Premium Travel</span>
                 </div>

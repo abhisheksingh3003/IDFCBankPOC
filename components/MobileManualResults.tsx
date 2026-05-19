@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Plane, Hotel as HotelIcon, Camera, ShoppingBag,
@@ -121,7 +121,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
         ] as const;
 
         return (
-            <div className="bg-[#d91918] z-40 shadow-xl pb-2">
+            <div className="bg-[#9D1D27] z-40 shadow-xl pb-2">
                 {/* Top Nav */}
                 <div className="px-4 py-3 flex items-center justify-between mb-2">
                     <button onClick={onBack} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white backdrop-blur-sm active:scale-95 transition-all">
@@ -164,10 +164,10 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                                                 transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                             />
                                         )}
-                                        <span className={`relative z-20 transition-colors duration-200 ${isActive ? 'text-[#d91918]' : 'text-red-100'}`}>
+                                        <span className={`relative z-20 transition-colors duration-200 ${isActive ? 'text-[#9D1D27]' : 'text-red-100'}`}>
                                             <tab.icon size={20} strokeWidth={isActive ? 3 : 2} />
                                         </span>
-                                        <span className={`relative z-20 text-[8px] font-bold uppercase tracking-wider transition-colors duration-200 ${isActive ? 'text-[#d91918]' : 'text-red-200/60'}`}>
+                                        <span className={`relative z-20 text-[8px] font-bold uppercase tracking-wider transition-colors duration-200 ${isActive ? 'text-[#9D1D27]' : 'text-red-200/60'}`}>
                                             {tab.label}
                                         </span>
                                     </button>
@@ -238,7 +238,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                                     <SafeImage src={flight.airlineLogo} alt={flight.airline} className="h-6 w-6 object-contain" category="flight" />
                                     <span className="font-bold text-slate-700 dark:text-slate-200 text-sm">{flight.airline}</span>
                                 </div>
-                                <span className="text-xl font-black text-slate-900 dark:text-white">AED {flight.price}</span>
+                                <span className="text-xl font-black text-slate-900 dark:text-white">INR {flight.price}</span>
                             </div>
                         </div>
                     ))}
@@ -322,7 +322,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                                     <div>
                                         <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1">Starting from</p>
                                         <div className="flex items-baseline gap-1">
-                                            <span className="text-2xl font-black text-red-500">AED {hotel.pricePerNight}</span>
+                                            <span className="text-2xl font-black text-red-500">INR {hotel.pricePerNight}</span>
                                             <span className="text-xs font-bold text-white/60">/night</span>
                                         </div>
                                     </div>
@@ -414,7 +414,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                                         <Clock size={12} /> {activity.duration}
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-2xl font-black text-white">AED {activity.price}</span>
+                                        <span className="text-2xl font-black text-white">INR {activity.price}</span>
                                         <div className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center">
                                             <ArrowRight size={18} />
                                         </div>
@@ -523,7 +523,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                                             <p className={`text-xs font-medium ${isSelected ? 'text-slate-400 dark:text-slate-500' : 'text-slate-500'}`}>{item.description}</p>
                                         </div>
                                         <div className="text-right">
-                                            <p className={`font-black ${isSelected ? 'text-white dark:text-slate-900' : 'text-slate-900 dark:text-white'}`}>AED {item.price}</p>
+                                            <p className={`font-black ${isSelected ? 'text-white dark:text-slate-900' : 'text-slate-900 dark:text-white'}`}>INR {item.price}</p>
                                             {isSelected && <div className="mt-1 flex justify-end"><Check size={14} className="text-green-500" strokeWidth={4} /></div>}
                                         </div>
                                     </div>
@@ -536,7 +536,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                     <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-slate-50 via-slate-50 to-transparent dark:from-black dark:via-black pt-20">
                         <div className="flex justify-between items-center mb-4 px-2">
                             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Selected Total</span>
-                            <span className="text-2xl font-black text-slate-900 dark:text-white">AED {totalSelected}</span>
+                            <span className="text-2xl font-black text-slate-900 dark:text-white">INR {totalSelected}</span>
                         </div>
                         <button
                             onClick={() => setView('payment')}
@@ -609,7 +609,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                             <div className="flex justify-between items-start mb-8">
                                 <div>
                                     <p className="text-red-100 font-bold text-xs uppercase tracking-widest mb-1">Total Trip Cost</p>
-                                    <h2 className="text-4xl font-black">AED {totalPrice.toLocaleString()}</h2>
+                                    <h2 className="text-4xl font-black">INR {totalPrice.toLocaleString()}</h2>
                                 </div>
                                 <div className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full border border-white/20">
                                     <p className="text-[10px] font-bold uppercase tracking-wider">4 Items Selected</p>
@@ -647,7 +647,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                                                 <SafeImage src={selectedFlight.airlineLogo} className="h-8 w-8 object-contain" alt="" category="flight" />
                                                 <span className="font-bold text-slate-900 dark:text-white">{selectedFlight.airline}</span>
                                             </div>
-                                            <span className="font-black text-slate-900 dark:text-white">AED {selectedFlight.price}</span>
+                                            <span className="font-black text-slate-900 dark:text-white">INR {selectedFlight.price}</span>
                                         </div>
 
                                         <div className="flex justify-between items-center relative mb-4">
@@ -716,7 +716,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                                         <h4 className="text-xl font-black text-white mb-1">{selectedHotel.name}</h4>
                                         <div className="flex justify-between items-end">
                                             <p className="text-white/80 text-xs font-medium line-clamp-1">{selectedHotel.address || 'Rome'}</p>
-                                            <p className="font-black text-white text-lg">AED {safeHotelPrice}</p>
+                                            <p className="font-black text-white text-lg">INR {safeHotelPrice}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -750,12 +750,12 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                                                     <p className="text-[10px] font-bold text-slate-400 uppercase">{activity.time} • {activity.quantity} Ppl</p>
                                                 </div>
                                             </div>
-                                            <p className="font-black text-sm text-slate-900 dark:text-white">AED {activity.price * (activity.quantity || 1)}</p>
+                                            <p className="font-black text-sm text-slate-900 dark:text-white">INR {activity.price * (activity.quantity || 1)}</p>
                                         </div>
                                     ))}
                                     <div className="flex justify-between items-center px-2">
                                         <span className="text-xs font-bold text-slate-400">Total Play</span>
-                                        <span className="font-black text-sm text-slate-900 dark:text-white">AED {safeActivitiesPrice}</span>
+                                        <span className="font-black text-sm text-slate-900 dark:text-white">INR {safeActivitiesPrice}</span>
                                     </div>
                                 </div>
                             ) : (
@@ -787,7 +787,7 @@ const MobileManualResults: React.FC<MobileManualResultsProps> = ({ tripData, onB
                                             </div>
                                             <div>
                                                 <p className="font-bold text-xs text-slate-900 dark:text-white line-clamp-1">{item.title}</p>
-                                                <p className="text-[10px] font-bold text-slate-400">AED {item.price}</p>
+                                                <p className="text-[10px] font-bold text-slate-400">INR {item.price}</p>
                                             </div>
                                         </div>
                                     ))}

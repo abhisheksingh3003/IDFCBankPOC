@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plane, Hotel as HotelIcon, Camera, ShoppingBag,
@@ -102,7 +102,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Mastercard-Flight-Ticket.pdf`);
+        pdf.save(`IDFC First Bank-Flight-Ticket.pdf`);
         console.log("PDF saved");
       } else {
         console.error("Template element not found!");
@@ -141,7 +141,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Mastercard-Hotel-Voucher.pdf`);
+        pdf.save(`IDFC First Bank-Hotel-Voucher.pdf`);
       }
     } catch (error) {
       console.error("Hotel Voucher Generation failed", error);
@@ -545,7 +545,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                   >
                     {/* Header with Logo */}
                     <div className="flex items-center justify-between mb-8 pb-8 border-b border-slate-200">
-                      <img src="/images/mclogo-for-footer.svg" alt="Mastercard" className="h-12 w-auto" />
+                      <img src="/images/IDFC_First_Logo.png" alt="IDFC First Bank" className="h-12 w-auto" />
                       <div className="text-right">
                         <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Booking Reference</p>
                         <p className="text-xl font-black text-red-600">FL-{Math.random().toString(36).substr(2, 4).toUpperCase()}</p>
@@ -594,7 +594,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                     </div>
 
                     <div className="mt-8 text-center">
-                      <p className="text-slate-400 font-medium text-sm">Thank you for choosing Mastercard.</p>
+                      <p className="text-slate-400 font-medium text-sm">Thank you for choosing IDFC First Bank.</p>
                     </div>
                   </div>
                   <button onClick={() => window.location.href = '/'} className="flex-1 border-2 border-slate-200 dark:border-slate-800 px-4 py-5 rounded-3xl font-black text-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all hover:scale-105 active:scale-95">Return Home</button>
@@ -657,10 +657,10 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                       <div className="pt-12 border-t border-white/10 space-y-8 text-white">
                         <h5 className="font-black text-slate-500 uppercase tracking-[0.3em] text-[10px] flex items-center gap-3"><Receipt size={16} className="text-red-600" /> Price Breakdown</h5>
                         <div className="space-y-6">
-                          <div className="flex justify-between items-center"><span className="text-slate-400 font-bold">Accommodation (3 Nights x AED {localData.selectedHotel?.pricePerNight})</span><span className="text-white font-black text-xl">AED {(localData.selectedHotel?.pricePerNight || 0) * 3}</span></div>
-                          <div className="flex justify-between items-center"><span className="text-slate-400 font-bold">Taxes & Resort Fees</span><span className="text-white font-black text-xl">AED 125</span></div>
-                          <div className="flex justify-between items-center text-red-600 font-black"><span className="uppercase tracking-widest text-xs">Special Savings</span><span className="text-xl">-AED 125</span></div>
-                          <div className="flex justify-between items-end pt-10 border-t-2 border-dashed border-white/10"><span className="text-2xl font-black text-white uppercase tracking-tighter">Aggregate Total</span><span className="text-6xl font-black text-red-600">AED {(localData.selectedHotel?.pricePerNight || 0) * 3}</span></div>
+                          <div className="flex justify-between items-center"><span className="text-slate-400 font-bold">Accommodation (3 Nights x INR {localData.selectedHotel?.pricePerNight})</span><span className="text-white font-black text-xl">INR {(localData.selectedHotel?.pricePerNight || 0) * 3}</span></div>
+                          <div className="flex justify-between items-center"><span className="text-slate-400 font-bold">Taxes & Resort Fees</span><span className="text-white font-black text-xl">INR 125</span></div>
+                          <div className="flex justify-between items-center text-red-600 font-black"><span className="uppercase tracking-widest text-xs">Special Savings</span><span className="text-xl">-INR 125</span></div>
+                          <div className="flex justify-between items-end pt-10 border-t-2 border-dashed border-white/10"><span className="text-2xl font-black text-white uppercase tracking-tighter">Aggregate Total</span><span className="text-6xl font-black text-red-600">INR {(localData.selectedHotel?.pricePerNight || 0) * 3}</span></div>
                         </div>
                       </div>
 
@@ -693,7 +693,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                           <p className="text-xs text-slate-200 font-bold leading-relaxed italic opacity-80">{localData.selectedHotel?.address || "Address sync in progress..."}</p>
                         </div>
                       </div>
-                      <p className="text-[10px] text-slate-500 font-medium italic text-center leading-relaxed">Location data provided by Mastercard.</p>
+                      <p className="text-[10px] text-slate-500 font-medium italic text-center leading-relaxed">Location data provided by IDFC First Bank.</p>
                     </div>
 
                     <div className="space-y-4">
@@ -723,7 +723,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                       >
                         {/* Header */}
                         <div className="flex items-center justify-between mb-8 pb-8 border-b border-slate-200">
-                          <img src="/images/mclogo-for-footer.svg" alt="Mastercard" className="h-10 w-auto" />
+                          <img src="/images/IDFC_First_Logo.png" alt="IDFC First Bank" className="h-10 w-auto" />
                           <div className="text-right">
                             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Booking Confirmation</p>
                             <p className="text-xl font-black text-red-500">HTL-{Math.random().toString(36).substr(2, 4).toUpperCase()}</p>
@@ -770,7 +770,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                         <div className="mb-8 pt-8 border-t border-white/10">
                           <div className="flex justify-between items-center mb-2">
                             <span className="text-slate-400 font-medium">Total Amount Paid</span>
-                            <span className="text-3xl font-black text-red-500">AED {(localData.selectedHotel?.pricePerNight || 0) * 3}</span>
+                            <span className="text-3xl font-black text-red-500">INR {(localData.selectedHotel?.pricePerNight || 0) * 3}</span>
                           </div>
                           <p className="text-xs text-slate-500 italic">Taxes and resort fees included.</p>
                         </div>
@@ -782,7 +782,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                           </div>
                           <div>
                             <p className="text-sm font-bold text-white">Present this voucher at check-in</p>
-                            <p className="text-xs text-slate-500">Mastercard Anya Service</p>
+                            <p className="text-xs text-slate-500">IDFC First Bank Anya Service</p>
                           </div>
                         </div>
                       </div>
@@ -870,7 +870,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                             <div className="p-4 bg-slate-900/50 rounded-2xl border border-white/5 flex items-start gap-3">
                               <Info size={16} className="text-red-600 mt-1 flex-shrink-0" />
                               <p className="text-[10px] text-slate-400 font-medium italic leading-relaxed">
-                                Priority skip-the-line access is included for this Mastercard Anya reservation.
+                                Priority skip-the-line access is included for this IDFC First Bank Anya reservation.
                               </p>
                             </div>
                           </div>
@@ -947,7 +947,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                     <div className="pt-8 border-t border-white/10 flex justify-between items-end">
                       <div>
                         <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total Paid</p>
-                        <p className="text-5xl font-black text-red-600">AED {localData.selectedEssentials.reduce((s, i) => s + i.price, 0)}</p>
+                        <p className="text-5xl font-black text-red-600">INR {localData.selectedEssentials.reduce((s, i) => s + i.price, 0)}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Master Ref</p>
@@ -1068,7 +1068,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                             </div>
                           </div>
                           <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-10 min-w-fit">
-                            <div className="text-center md:text-right space-y-1"><p className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">AED{f.price}</p><p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Get 2% Cashback</p></div>
+                            <div className="text-center md:text-right space-y-1"><p className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">INR{f.price}</p><p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Get 2% Cashback</p></div>
                             <button onClick={() => { setTempFlight(f); setStageView('details'); }} className="w-full sm:w-auto px-12 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-black text-lg shadow-xl shadow-red-600/30 active:scale-95 transition-all">Book</button>
                           </div>
                         </div>
@@ -1118,7 +1118,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                     {ITALY_HOTELS.map(h => (
                       <div key={h.id} className="group bg-white dark:bg-slate-900 rounded-[40px] overflow-hidden shadow-xl border border-slate-100 dark:border-slate-800 flex flex-col">
                         <div className="h-56 overflow-hidden relative"><img src={h.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-1000" alt="Hotel" /><div className="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 px-3 py-1.5 rounded-2xl flex items-center gap-1.5 text-xs font-black shadow-lg"><Star size={14} className="text-yellow-500 fill-yellow-500" /> {h.rating}</div></div>
-                        <div className="p-8 flex-1 flex flex-col"><h4 className="text-2xl font-black mb-2 leading-tight text-slate-900 dark:text-white">{h.name}</h4><p className="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 italic font-medium">"{h.description}"</p><div className="mt-auto flex items-end justify-between"><div><p className="text-3xl font-black text-red-600">AED{h.pricePerNight}</p><p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">per night</p></div><button onClick={() => { setTempHotel(h); setStageView('details'); }} className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-4 rounded-2xl hover:bg-red-600 hover:text-white transition-all"><ChevronRight size={20} /></button></div></div>
+                        <div className="p-8 flex-1 flex flex-col"><h4 className="text-2xl font-black mb-2 leading-tight text-slate-900 dark:text-white">{h.name}</h4><p className="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 italic font-medium">"{h.description}"</p><div className="mt-auto flex items-end justify-between"><div><p className="text-3xl font-black text-red-600">INR{h.pricePerNight}</p><p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">per night</p></div><button onClick={() => { setTempHotel(h); setStageView('details'); }} className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-4 rounded-2xl hover:bg-red-600 hover:text-white transition-all"><ChevronRight size={20} /></button></div></div>
                       </div>
                     ))}
                   </div>
@@ -1175,7 +1175,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                             </div>
                             <div className="flex items-center gap-10">
                               <div className="text-right">
-                                <p className="text-3xl font-black text-slate-900 dark:text-white leading-none">AED{a.price}</p>
+                                <p className="text-3xl font-black text-slate-900 dark:text-white leading-none">INR{a.price}</p>
                                 <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">per person</p>
                               </div>
                               <button
@@ -1259,7 +1259,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                         </div>
                         <button onClick={() => toggleEssential(e)} className="w-full text-left outline-none group-active:scale-95 transition-transform">
                           <div className="relative z-10"><h4 className="text-xl font-black leading-tight mb-2 text-slate-900 dark:text-white group-hover:text-red-600">{e.title}</h4><p className="text-xs text-slate-500 font-medium leading-relaxed">{e.description}</p></div>
-                          <div className="relative z-10 font-black text-red-600 text-2xl mt-4">AED{e.price}</div>
+                          <div className="relative z-10 font-black text-red-600 text-2xl mt-4">INR{e.price}</div>
                         </button>
                         <div className="flex justify-end pt-2">
                           <button
@@ -1355,7 +1355,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                         </h4>
                       </div>
                       <div className="text-right flex items-center gap-6">
-                        <p className="text-xl font-black text-slate-900 dark:text-white">AED{localData.selectedFlight?.price ? localData.selectedFlight.price * totalTravellers : 0}</p>
+                        <p className="text-xl font-black text-slate-900 dark:text-white">INR{localData.selectedFlight?.price ? localData.selectedFlight.price * totalTravellers : 0}</p>
                         <ChevronDown className={`text-slate-400 transition-transform duration-500 ${expandedSummary === 'flight' ? 'rotate-180' : ''}`} />
                       </div>
                     </button>
@@ -1419,7 +1419,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                         </h4>
                       </div>
                       <div className="text-right flex items-center gap-6">
-                        <p className="text-xl font-black text-slate-900 dark:text-white">AED{localData.selectedHotel?.pricePerNight ? localData.selectedHotel.pricePerNight * 3 : 0}</p>
+                        <p className="text-xl font-black text-slate-900 dark:text-white">INR{localData.selectedHotel?.pricePerNight ? localData.selectedHotel.pricePerNight * 3 : 0}</p>
                         <ChevronDown className={`text-slate-400 transition-transform duration-500 ${expandedSummary === 'hotel' ? 'rotate-180' : ''}`} />
                       </div>
                     </button>
@@ -1458,10 +1458,10 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                                 <div className="pt-12 border-t border-white/10 space-y-8 text-white">
                                   <h5 className="font-black text-slate-500 uppercase tracking-[0.3em] text-[10px] flex items-center gap-3"><Receipt size={16} className="text-red-600" /> Price Breakdown</h5>
                                   <div className="space-y-6">
-                                    <div className="flex justify-between items-center"><span className="text-slate-400 font-bold">Accommodation (3 Nights x AED{localData.selectedHotel?.pricePerNight})</span><span className="text-white font-black text-xl">AED{(localData.selectedHotel?.pricePerNight || 0) * 3}</span></div>
+                                    <div className="flex justify-between items-center"><span className="text-slate-400 font-bold">Accommodation (3 Nights x INR{localData.selectedHotel?.pricePerNight})</span><span className="text-white font-black text-xl">INR{(localData.selectedHotel?.pricePerNight || 0) * 3}</span></div>
                                     <div className="flex justify-between items-center"><span className="text-slate-400 font-bold">Taxes & Resort Fees</span><span className="text-white font-black text-xl">AED125</span></div>
                                     <div className="flex justify-between items-center text-red-600 font-black"><span className="uppercase tracking-widest text-xs">Special Savings</span><span className="text-xl">-AED125</span></div>
-                                    <div className="flex justify-between items-end pt-10 border-t-2 border-dashed border-white/10"><span className="text-2xl font-black text-white uppercase tracking-tighter">Aggregate Total</span><span className="text-6xl font-black text-red-600">AED{(localData.selectedHotel?.pricePerNight || 0) * 3}</span></div>
+                                    <div className="flex justify-between items-end pt-10 border-t-2 border-dashed border-white/10"><span className="text-2xl font-black text-white uppercase tracking-tighter">Aggregate Total</span><span className="text-6xl font-black text-red-600">INR{(localData.selectedHotel?.pricePerNight || 0) * 3}</span></div>
                                   </div>
                                 </div>
                               </div>
@@ -1488,7 +1488,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                         </h4>
                       </div>
                       <div className="text-right flex items-center gap-6">
-                        <p className="text-xl font-black text-slate-900 dark:text-white">AED{localData.selectedActivities.reduce((s, a) => s + (a.price * totalTravellers), 0)}</p>
+                        <p className="text-xl font-black text-slate-900 dark:text-white">INR{localData.selectedActivities.reduce((s, a) => s + (a.price * totalTravellers), 0)}</p>
                         <ChevronDown className={`text-slate-400 transition-transform duration-500 ${expandedSummary === 'exp' ? 'rotate-180' : ''}`} />
                       </div>
                     </button>
@@ -1550,7 +1550,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                         </h4>
                       </div>
                       <div className="text-right flex items-center gap-6">
-                        <p className="text-xl font-black text-slate-900 dark:text-white">AED{localData.selectedEssentials.reduce((s, i) => s + i.price, 0)}</p>
+                        <p className="text-xl font-black text-slate-900 dark:text-white">INR{localData.selectedEssentials.reduce((s, i) => s + i.price, 0)}</p>
                         <ChevronDown className={`text-slate-400 transition-transform duration-500 ${expandedSummary === 'ess' ? 'rotate-180' : ''}`} />
                       </div>
                     </button>
@@ -1582,7 +1582,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                                 <div className="pt-8 border-t border-white/10 flex justify-between items-end">
                                   <div>
                                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total Paid</p>
-                                    <p className="text-5xl font-black text-red-600">AED{localData.selectedEssentials.reduce((s, i) => s + i.price, 0)}</p>
+                                    <p className="text-5xl font-black text-red-600">INR{localData.selectedEssentials.reduce((s, i) => s + i.price, 0)}</p>
                                   </div>
                                   <div className="text-right">
                                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Master Ref</p>
@@ -1608,7 +1608,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                   <div className="text-center">
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Aggregate Curation Total</p>
                     <p className="text-6xl font-black text-red-600">
-                      AED{((localData.selectedFlight?.price || 0) * totalTravellers) +
+                      INR{((localData.selectedFlight?.price || 0) * totalTravellers) +
                         ((localData.selectedHotel?.pricePerNight || 0) * 3) +
                         localData.selectedActivities.reduce((s, a) => s + (a.price * totalTravellers), 0) +
                         localData.selectedEssentials.reduce((s, i) => s + i.price, 0)}
@@ -1652,7 +1652,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                 <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 flex items-center justify-between">
                   <div className="text-left">
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Curation Price</p>
-                    <p className="text-3xl font-black text-slate-900 dark:text-white">AED{viewingEssential.price}</p>
+                    <p className="text-3xl font-black text-slate-900 dark:text-white">INR{viewingEssential.price}</p>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center gap-1 text-emerald-500 font-black text-[10px] uppercase tracking-widest">

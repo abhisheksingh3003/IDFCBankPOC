@@ -26,7 +26,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
         else root.classList.remove('dark');
     }, [theme]);
 
-    const mcLogoUrl = "/images/mastercard-logo-official.svg";
+    const mcLogoUrl = "/images/IDFC_First_Logo.png";
 
     return (
         <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 flex flex-col md:flex-row transition-colors duration-500 overflow-hidden">
@@ -43,7 +43,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                         alt="Premium Travel"
                         className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[3000ms]"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-transparent to-slate-950/20 dark:to-slate-950/80" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/65 via-slate-950/20 to-transparent dark:to-slate-950/80" />
                 </motion.div>
 
                 {/* Subtle Brand Overlay Content */}
@@ -53,7 +53,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.5 }}
                     >
-                        <img src={mcLogoUrl} alt="Mastercard" className="h-12 w-auto" />
+                        <img src={mcLogoUrl} alt="IDFC First Bank" className="h-12 w-auto" />
                     </motion.div>
 
                     <div className="max-w-xl">
@@ -61,10 +61,10 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.7 }}
-                            className="text-5xl font-black text-white leading-tight tracking-tight mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]"
+                            className="text-5xl font-black text-white leading-tight tracking-tight mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]"
                         >
                             Experience the World, <br />
-                            <span className="mc-gradient-text filter drop-shadow-[0_0_15px_rgba(235,0,27,0.3)]">Priceless™</span> Style.
+                            <span className="bg-gradient-to-r from-[#FF5252] via-[#F57C00] to-[#FBC02D] bg-clip-text text-transparent filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">Always You First.</span>
                         </motion.h2>
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}

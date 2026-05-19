@@ -1,4 +1,4 @@
-
+﻿
 import React from 'react';
 import { Plane, Clock } from 'lucide-react';
 import SafeImage from './SafeImage';
@@ -22,7 +22,7 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
           </div>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-bold text-red-600">AED {flight.price}</p>
+          <p className="text-2xl font-bold text-red-600">INR {flight.price}</p>
           <p className="text-xs text-slate-400">One way</p>
         </div>
       </div>

@@ -1,4 +1,4 @@
-
+﻿
 import React from 'react';
 import { Star, MapPin } from 'lucide-react';
 import { Hotel } from '../types';
@@ -36,7 +36,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
         </p>
         <div className="mt-auto flex items-center justify-between">
           <div>
-            <span className="text-xl font-bold text-red-600">AED {hotel.pricePerNight}</span>
+            <span className="text-xl font-bold text-red-600">INR {hotel.pricePerNight}</span>
             <span className="text-sm text-slate-500"> / night</span>
           </div>
           <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">

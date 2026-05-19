@@ -1,16 +1,18 @@
-
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Ticket, Hotel as HotelIcon, Plane, Sparkles, CheckCircle2, Calendar, MapPin, Hash, ArrowRight, ShieldCheck, Box, X, Info, FileText, Camera, QrCode, Clock, Map, Briefcase, User, ChevronRight } from 'lucide-react';
-import { Curation, Essential, ExperienceBooking, BookingCategory } from '../types';
-import HotelBookingView from './HotelBookingView';
-import FlightBookingView from './FlightBookingView';
+import { Curation, BookingCategory, ExperienceBooking, Essential } from '../types';
 import PreTripConcierge from './PreTripConcierge';
+import BundleBookingView from './BundleBookingView';
+import FlightBookingView from './FlightBookingView';
+import HotelBookingView from './HotelBookingView';
 import SafeImage from './SafeImage';
 
 interface MyBookingsViewProps {
   curations: Curation[];
   initialCategory?: BookingCategory;
+  onBookEssentials?: (essentials: Essential[], curationId: string) => void;
+  onBundleComplete?: (details: any, curationId: string) => void;
 }
 
 // Helper to generate itinerary directly from booked assets instead of random templates
@@ -112,7 +114,7 @@ const EssentialIconMap: Record<string, React.ElementType> = {
   Ticket: Box
 };
 
-const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCategory }) => {
+const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCategory, onBookEssentials, onBundleComplete }) => {
   const [activeCategory, setActiveCategory] = useState<BookingCategory>(initialCategory || 'itinerary');
 
   React.useEffect(() => {
@@ -126,6 +128,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
   const [selectedExpForVoucher, setSelectedExpForVoucher] = useState<{ booking: ExperienceBooking, curation: Curation } | null>(null);
   const [selectedItinerary, setSelectedItinerary] = useState<{ curation: Curation, schedule: any[] } | null>(null);
   const [itineraryDetailMode, setItineraryDetailMode] = useState<'itinerary' | 'flight' | 'hotel' | 'experiences'>('itinerary');
+  const [selectedEssentialsForBooking, setSelectedEssentialsForBooking] = useState<{ essentials: Essential[], curation: Curation } | null>(null);
 
   // Derive bookings from curations
   const hotelBookings = curations.filter(c => c.hotelBooking).map(c => ({
@@ -273,7 +276,15 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
           ) : (
             <div className="space-y-4">
               {activeCategory === 'concierge' && curations[0] && (
-                <PreTripConcierge curation={curations[0]} />
+                <PreTripConcierge 
+                  curation={curations[0]} 
+                  onBookEssentials={(essentials, curationId) => {
+                    const curation = curations.find(c => c.curationId === curationId);
+                    if (curation) {
+                      setSelectedEssentialsForBooking({ essentials, curation });
+                    }
+                  }} 
+                />
               )}
 
               {activeCategory === 'itinerary' && (
@@ -292,7 +303,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                           <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 border border-slate-200 dark:border-slate-700">
                             <Calendar size={10} /> {trip.schedule.length} Days
                           </span>
-                          <p className="text-lg font-black text-slate-900 dark:text-white">AED {trip.price.toLocaleString()}</p>
+                          <p className="text-lg font-black text-slate-900 dark:text-white">INR {trip.price.toLocaleString()}</p>
                         </div>
                         <button className="w-full py-3 bg-slate-50 dark:bg-slate-800/80 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-all">
                           Full Itinerary <ArrowRight size={14} />
@@ -334,7 +345,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                           </td>
                           <td className="p-4 align-middle text-xs font-bold text-slate-600 dark:text-slate-300 font-mono">{booking.date}</td>
                           <td className="p-4 align-middle text-[10px] font-bold text-slate-500 font-mono">{booking.ref}</td>
-                          <td className="p-4 align-middle text-right text-sm font-black text-slate-900 dark:text-white">AED {booking.price.toLocaleString()}</td>
+                          <td className="p-4 align-middle text-right text-sm font-black text-slate-900 dark:text-white">INR {booking.price.toLocaleString()}</td>
                           <td className="p-4 align-middle text-right">
                             <button
                               onClick={() => setSelectedCurationForHotelVoucher(booking.originalCuration)}
@@ -380,7 +391,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                           <td className="p-4 align-middle font-bold text-slate-600 dark:text-slate-300">{booking.location}</td>
                           <td className="p-4 align-middle text-xs font-bold text-slate-600 dark:text-slate-300 font-mono">{booking.date}</td>
                           <td className="p-4 align-middle text-[10px] text-slate-500 font-bold font-mono">{booking.ref}</td>
-                          <td className="p-4 align-middle text-right font-black text-slate-900 dark:text-white">AED {booking.price.toLocaleString()}</td>
+                          <td className="p-4 align-middle text-right font-black text-slate-900 dark:text-white">INR {booking.price.toLocaleString()}</td>
                           <td className="p-4 align-middle text-right">
                             <button
                               onClick={() => setSelectedCurationForFlightVoucher(booking.originalCuration)}
@@ -425,7 +436,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                           </td>
                           <td className="p-4 align-middle text-xs font-bold text-slate-600 dark:text-slate-300 font-mono">{booking.date} at {booking.time}</td>
                           <td className="p-4 align-middle text-[10px] text-slate-500 font-bold font-mono">{booking.bookingRef}</td>
-                          <td className="p-4 align-middle text-right font-black text-slate-900 dark:text-white">AED {booking.price.toLocaleString()}</td>
+                          <td className="p-4 align-middle text-right font-black text-slate-900 dark:text-white">INR {booking.price.toLocaleString()}</td>
                           <td className="p-4 align-middle text-right">
                             <button
                               onClick={() => setSelectedExpForVoucher({ booking, curation: booking.originalCuration })}
@@ -468,7 +479,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                                 <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{item.title}</span>
                               </div>
                               <div className="flex items-center gap-3">
-                                <span className="text-[10px] font-black text-slate-900 dark:text-white">AED {item.price}</span>
+                                <span className="text-[10px] font-black text-slate-900 dark:text-white">INR {item.price}</span>
                                 <button
                                   onClick={() => setSelectedItem(item)}
                                   className="text-slate-400 hover:text-red-600 transition-colors"
@@ -482,7 +493,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                       </div>
                       <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800/50">
                         <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Total Value</p>
-                        <p className="text-xl font-black text-slate-900 dark:text-white">AED {booking.price}</p>
+                        <p className="text-xl font-black text-slate-900 dark:text-white">INR {booking.price}</p>
                       </div>
                     </div>
                   ))}
@@ -492,6 +503,41 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
           )}
         </AnimatePresence>
       </div>
+
+      {/* Essentials Booking Sliding Panel */}
+      <AnimatePresence>
+        {selectedEssentialsForBooking && (
+          <div className="fixed inset-0 z-[200] flex justify-end">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setSelectedEssentialsForBooking(null)} 
+              className="absolute inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm" 
+            />
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative w-full max-w-3xl h-full bg-white dark:bg-slate-900 shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col z-10 overflow-hidden"
+            >
+              <BundleBookingView 
+                curation={selectedEssentialsForBooking.curation}
+                essentials={selectedEssentialsForBooking.essentials}
+                onComplete={(details) => {
+                  if (onBundleComplete) {
+                    onBundleComplete(details, selectedEssentialsForBooking.curation.curationId);
+                  }
+                  // Keep it open for success state, or close it?
+                  // BundleBookingView handles success state internally.
+                }}
+                onBack={() => setSelectedEssentialsForBooking(null)}
+              />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Itinerary Detail Modal (Slide-in) */}
       <AnimatePresence>
@@ -527,7 +573,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                     </div>
                     <div className="text-right hidden md:block">
                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Total Value</p>
-                      <p className="text-xl font-black text-white">AED {((selectedItinerary.curation.flightBooking?.price || 0) + (selectedItinerary.curation.hotelBooking?.totalPrice || 0) + (selectedItinerary.curation.experienceBookings?.reduce((s, a) => s + a.price, 0) || 0) + (selectedItinerary.curation.essentialsBooking?.totalPrice || 0)).toLocaleString()}</p>
+                      <p className="text-xl font-black text-white">INR {((selectedItinerary.curation.flightBooking?.price || 0) + (selectedItinerary.curation.hotelBooking?.totalPrice || 0) + (selectedItinerary.curation.experienceBookings?.reduce((s, a) => s + a.price, 0) || 0) + (selectedItinerary.curation.essentialsBooking?.totalPrice || 0)).toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
@@ -677,7 +723,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                                 </div>
                                 <div>
                                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Total Value</p>
-                                  <p className="font-bold text-slate-900 dark:text-white">AED {selectedItinerary.curation.hotelBooking.totalPrice.toLocaleString()}</p>
+                                  <p className="font-bold text-slate-900 dark:text-white">INR {selectedItinerary.curation.hotelBooking.totalPrice.toLocaleString()}</p>
                                 </div>
                               </div>
                               <div className="flex justify-between items-center">
@@ -820,7 +866,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                     </div>
                     <div>
                       <h4 className="font-black text-emerald-900 dark:text-emerald-400 text-sm">Smart Pass Active</h4>
-                      <p className="text-xs text-emerald-700 dark:text-emerald-500/80 font-medium mt-1 leading-relaxed">Present your Mastercard ID at the reception for expedited VIP check-in and complimentary breakfast throughout your stay.</p>
+                      <p className="text-xs text-emerald-700 dark:text-emerald-500/80 font-medium mt-1 leading-relaxed">Present your IDFC First Bank ID at the reception for expedited VIP check-in and complimentary breakfast throughout your stay.</p>
                     </div>
                   </div>
 
@@ -978,7 +1024,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                     <div className="p-3 bg-white rounded-xl shadow-lg"><QrCode size={80} className="text-slate-900" /></div>
                     <div className="flex-1 space-y-3">
                       <h4 className="font-black flex items-center gap-2"><MapPin size={16} className="text-red-600" /> Redemption Point</h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed italic">"Present this voucher at the main entrance 15 minutes prior to your selected slot. Priority entry is included for Mastercard guests."</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed italic">"Present this voucher at the main entrance 15 minutes prior to your selected slot. Priority entry is included for IDFC First Bank guests."</p>
                     </div>
                   </div>
                   <button onClick={() => setSelectedExpForVoucher(null)} className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-4 rounded-xl font-black text-sm">Close Voucher</button>
@@ -1011,7 +1057,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                 <p className="text-sm text-slate-500 dark:text-slate-400 font-medium italic leading-relaxed">{selectedItem.description}</p>
                 <div className="w-full grid grid-cols-2 gap-4 py-5 border-y border-slate-100 dark:border-slate-800">
                   <div className="text-left"><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p><p className="font-black text-green-600 flex items-center gap-1.5"><CheckCircle2 size={14} /> Active</p></div>
-                  <div className="text-right"><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Paid Amount</p><p className="font-black text-slate-900 dark:text-white text-lg">AED {selectedItem.price}</p></div>
+                  <div className="text-right"><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Paid Amount</p><p className="font-black text-slate-900 dark:text-white text-lg">INR {selectedItem.price}</p></div>
                 </div>
               </div>
 

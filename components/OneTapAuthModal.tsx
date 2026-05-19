@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Fingerprint, CheckCircle2, ShieldCheck, Lock, Smartphone } from 'lucide-react';
 
@@ -75,7 +75,7 @@ const OneTapAuthModal: React.FC<OneTapAuthModalProps> = ({ amount, onSuccess, on
                     </div>
 
                     <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">
-                        Mastercard Secure Pay
+                        IDFC First Bank Secure Pay
                     </h3>
                     <p className="text-slate-500 dark:text-slate-400 font-medium text-sm mb-6">
                         {step === 'scan' ? 'Touch to authorize payment' : step === 'processing' ? 'Verifying biometrics...' : 'Payment Authorized'}
@@ -84,7 +84,7 @@ const OneTapAuthModal: React.FC<OneTapAuthModalProps> = ({ amount, onSuccess, on
                     <div className="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 mb-6 border border-slate-100 dark:border-slate-700">
                         <div className="flex justify-between items-center mb-1">
                             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Amount</span>
-                            <span className="text-lg font-black text-slate-900 dark:text-white">AED {amount.toLocaleString()}</span>
+                            <span className="text-lg font-black text-slate-900 dark:text-white">INR {amount.toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Account</span>
@@ -97,7 +97,7 @@ const OneTapAuthModal: React.FC<OneTapAuthModalProps> = ({ amount, onSuccess, on
                     {step === 'scan' && (
                         <div className="text-xs text-slate-400 flex items-center gap-2">
                             <Lock size={12} />
-                            <span>Secured by Mastercard Identity™</span>
+                            <span>Secured by IDFC First Bank Identity™</span>
                         </div>
                     )}
                 </div>

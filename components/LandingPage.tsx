@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   Compass,
   Sparkles,
@@ -31,7 +31,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     manualCardDesc: "Build your trip step-by-step, exactly how you want it. Complete control over every hotel, flight, and activity.",
     footer: "Powered by: Pointlabs"
   };
-  const mcLogoUrl = "/images/mclogo-for-footer.svg";
+  const mcLogoUrl = "/images/IDFC_First_Logo.png";
 
 
   return (
@@ -88,7 +88,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </div>
           </motion.button>
 
-          {/* AI Trip Builder Card - Updated to Mastercard Red */}
+          {/* AI Trip Builder Card - Updated to IDFC First Bank Red */}
           <motion.button
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import {
   MapPin,
   Calendar,
@@ -437,7 +437,7 @@ const AITripBuilder: React.FC<AITripBuilderProps> = ({ onGenerate, isLoading }) 
                   >
                     {isLoading ? (
                       <div className="w-10 h-10 flex items-center justify-center">
-                        <img src="/images/mclogo-for-footer.svg" className="w-full h-full object-contain" alt="Loading" />
+                        <img src="/images/IDFC_First_Logo.png" className="w-full h-full object-contain" alt="Loading" />
                       </div>
                     ) : (
                       <Sparkles size={32} className="group-hover:rotate-12 transition-transform" />

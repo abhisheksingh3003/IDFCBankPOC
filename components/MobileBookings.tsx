@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Ticket,
@@ -98,7 +98,7 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
                     {/* Flight Detail View */}
                     {booking.flight && (
                         <div className="p-0">
-                            <div className="bg-[#d91918] p-8 pb-12 pt-12">
+                            <div className="bg-[#9D1D27] p-8 pb-12 pt-12">
                                 <div className="flex justify-between items-center mb-8">
                                     <div className="flex items-center gap-3">
                                         <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center p-2 shadow-lg">
@@ -199,7 +199,7 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
                                     <div className="w-px h-8 bg-slate-200 dark:bg-slate-700" />
                                     <div className="text-center flex-1">
                                         <p className="text-slate-400 text-[10px] font-black uppercase mb-1">Nights</p>
-                                        <p className="text-[#d91918] font-black text-lg">3</p>
+                                        <p className="text-[#9D1D27] font-black text-lg">3</p>
                                     </div>
                                     <div className="w-px h-8 bg-slate-200 dark:bg-slate-700" />
                                     <div className="text-center flex-1">
@@ -229,7 +229,7 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
                                     </div>
                                 </div>
 
-                                <button onClick={onClose} className="w-full py-5 bg-[#d91918] text-white rounded-2xl font-black text-lg shadow-xl shadow-red-600/30 active:scale-95 transition-transform">
+                                <button onClick={onClose} className="w-full py-5 bg-[#9D1D27] text-white rounded-2xl font-black text-lg shadow-xl shadow-red-600/30 active:scale-95 transition-transform">
                                     Back to Bookings
                                 </button>
                             </div>
@@ -316,7 +316,7 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
 
                                         <div className="flex justify-between items-center text-xs font-bold">
                                             <span className="text-slate-400 font-mono uppercase">REF: #MC-{Math.random().toString(36).substr(2, 8).toUpperCase()}</span>
-                                            <span className="text-slate-900 dark:text-white font-black text-lg">AED {ess.price}</span>
+                                            <span className="text-slate-900 dark:text-white font-black text-lg">INR {ess.price}</span>
                                         </div>
                                     </div>
                                 ))}
@@ -334,7 +334,7 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-32">
-            <div className="bg-[#d91918] z-40 shadow-xl pb-4 sticky top-0">
+            <div className="bg-[#9D1D27] z-40 shadow-xl pb-4 sticky top-0">
                 <div className="px-6 pt-6 pb-4">
                     <div className="relative flex items-center justify-center mb-6">
                         {onBack && (
@@ -363,10 +363,10 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
                                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                         />
                                     )}
-                                    <span className={`relative z-20 transition-colors duration-200 ${isActive ? 'text-[#d91918]' : 'text-red-100'}`}>
+                                    <span className={`relative z-20 transition-colors duration-200 ${isActive ? 'text-[#9D1D27]' : 'text-red-100'}`}>
                                         <tab.icon size={20} strokeWidth={isActive ? 3 : 2} />
                                     </span>
-                                    <span className={`relative z-20 text-[8px] font-bold uppercase tracking-wider transition-colors duration-200 ${isActive ? 'text-[#d91918]' : 'text-red-200/60'}`}>
+                                    <span className={`relative z-20 text-[8px] font-bold uppercase tracking-wider transition-colors duration-200 ${isActive ? 'text-[#9D1D27]' : 'text-red-200/60'}`}>
                                         {tab.label}
                                     </span>
                                 </button>
@@ -408,7 +408,7 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
                                             </div>
                                             <div className="flex-1 px-8 relative flex items-center justify-center">
                                                 <div className="w-full h-px border-t-2 border-dashed border-slate-100 dark:border-slate-800" />
-                                                <Plane size={18} className="text-[#d91918] absolute rotate-90" />
+                                                <Plane size={18} className="text-[#9D1D27] absolute rotate-90" />
                                             </div>
                                             <div className="text-center">
                                                 <p className="text-3xl font-black text-slate-900 dark:text-white">{booking.flight.destinationIata}</p>
@@ -428,7 +428,7 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
                                                 <p className="text-[11px] font-black text-slate-700 dark:text-slate-300">24A</p>
                                             </div>
                                         </div>
-                                        <p className="text-lg font-black text-[#d91918]">AED {booking.flight.price}</p>
+                                        <p className="text-lg font-black text-[#9D1D27]">INR {booking.flight.price}</p>
                                     </div>
                                 </motion.div>
                             );
@@ -448,10 +448,10 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
                                     <div className="flex-1 p-5 flex flex-col justify-between">
                                         <div>
                                             <div className="flex justify-between items-start mb-2">
-                                                <span className="text-[9px] font-black text-[#d91918] uppercase tracking-widest px-2 py-0.5 bg-red-50 dark:bg-red-900/20 rounded-md">Premier Stay</span>
+                                                <span className="text-[9px] font-black text-[#9D1D27] uppercase tracking-widest px-2 py-0.5 bg-red-50 dark:bg-red-900/20 rounded-md">Premier Stay</span>
                                                 <Check size={14} className="text-green-500" strokeWidth={3} />
                                             </div>
-                                            <h4 className="font-black text-slate-900 dark:text-white leading-tight mb-2 group-hover:text-[#d91918] transition-colors">{booking.hotel.name}</h4>
+                                            <h4 className="font-black text-slate-900 dark:text-white leading-tight mb-2 group-hover:text-[#9D1D27] transition-colors">{booking.hotel.name}</h4>
                                             <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold">
                                                 <MapPin size={10} />
                                                 <span className="line-clamp-1">Rome</span>
@@ -520,7 +520,7 @@ const MobileBookings: React.FC<MobileBookingsProps> = ({ confirmedBookings, onBa
                                                 <div className="flex-1">
                                                     <div className="flex justify-between items-start">
                                                         <h4 className="font-black text-slate-900 dark:text-white text-sm">{ess.title}</h4>
-                                                        <span className="font-black text-slate-900 dark:text-white">AED {ess.price}</span>
+                                                        <span className="font-black text-slate-900 dark:text-white">INR {ess.price}</span>
                                                     </div>
                                                     <div className="flex justify-between items-center">
                                                         <p className="text-[10px] font-bold text-slate-400 uppercase">{ess.category}</p>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronLeft, CreditCard, User, Mail, Phone, Loader2, Check, PartyPopper,
@@ -52,7 +52,7 @@ const BundleBookingView: React.FC<BundleBookingViewProps> = ({ curation, essenti
       <div className="flex items-center justify-between w-full">
         <div>
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Bundle Total</p>
-          <p className="text-3xl font-black text-slate-900 dark:text-white">AED {totalPrice.toLocaleString()}</p>
+          <p className="text-3xl font-black text-slate-900 dark:text-white">INR {totalPrice.toLocaleString()}</p>
         </div>
         {step === 'checkout' && (
           <button
@@ -95,7 +95,7 @@ const BundleBookingView: React.FC<BundleBookingViewProps> = ({ curation, essenti
                         <p className="font-black text-slate-900 dark:text-white text-lg">{e.title}</p>
                         <p className="text-xs text-slate-500 font-medium">{e.description}</p>
                       </div>
-                      <p className="font-black text-slate-900 dark:text-white">AED {e.price}</p>
+                      <p className="font-black text-slate-900 dark:text-white">INR {e.price}</p>
                     </div>
                   </BookingSection>
                 );
@@ -115,7 +115,7 @@ const BundleBookingView: React.FC<BundleBookingViewProps> = ({ curation, essenti
           >
             <PaymentGateway
               total={totalPrice}
-              currency="AED"
+              currency="INR"
               onPay={handlePay}
               onBack={() => setStep('checkout')}
               isLoading={isProcessing}

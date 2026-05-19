@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Plane, Check, ChevronLeft, CreditCard,
@@ -125,7 +125,7 @@ const FlightBookingView: React.FC<FlightBookingViewProps> = ({
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Mastercard-Flight-Ticket-${curation.curationId}.pdf`);
+        pdf.save(`IDFC First Bank-Flight-Ticket-${curation.curationId}.pdf`);
       }
     } catch (error) {
       console.error("PDF Generation failed", error);
@@ -150,7 +150,7 @@ const FlightBookingView: React.FC<FlightBookingViewProps> = ({
       <div className="flex items-center justify-between w-full">
         <div>
           <p className="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Total Due</p>
-          <p className="text-3xl font-black text-slate-900 dark:text-white">AED {calculatedTotal.toLocaleString()}</p>
+          <p className="text-3xl font-black text-slate-900 dark:text-white">INR {calculatedTotal.toLocaleString()}</p>
         </div>
 
         {step === 'details' && (
@@ -305,7 +305,7 @@ const FlightBookingView: React.FC<FlightBookingViewProps> = ({
                         <div className={`w-40 flex flex-col justify-center items-center p-6 border-l transition-colors ${isSelected ? 'border-red-100 bg-red-50 dark:bg-red-900/10' : 'border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20 group-hover:bg-red-50/30 dark:group-hover:bg-red-900/5'}`}>
                           <div className="text-center mb-4">
                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Per Adult</span>
-                            <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">AED {flight.price.toLocaleString()}</p>
+                            <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">INR {flight.price.toLocaleString()}</p>
                           </div>
                           <button className={`w-full py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isSelected
                             ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
@@ -611,7 +611,7 @@ const FlightBookingView: React.FC<FlightBookingViewProps> = ({
                     <div className="space-y-4 relative z-10">
                       <div className="flex justify-between items-center group">
                         <span className="text-slate-400 text-sm font-bold group-hover:text-white transition-colors">Base Fare ({curation.travelers}x)</span>
-                        <span className="font-black text-lg tracking-tight">AED {calculatedTotal.toLocaleString()}</span>
+                        <span className="font-black text-lg tracking-tight">INR {calculatedTotal.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between items-center group">
                         <span className="text-slate-400 text-sm font-bold group-hover:text-white transition-colors">Surcharges & Taxes</span>
@@ -626,7 +626,7 @@ const FlightBookingView: React.FC<FlightBookingViewProps> = ({
                     <div className="pt-8 border-t border-white/10 flex justify-between items-end relative z-10">
                       <div className="space-y-1">
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Final Total</p>
-                        <p className="text-5xl font-black tracking-tighter text-white">AED {calculatedTotal.toLocaleString()}</p>
+                        <p className="text-5xl font-black tracking-tighter text-white">INR {calculatedTotal.toLocaleString()}</p>
                       </div>
                       <div className="flex flex-col items-end gap-2">
                         <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 rounded-xl text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">
@@ -662,7 +662,7 @@ const FlightBookingView: React.FC<FlightBookingViewProps> = ({
           >
             <PaymentGateway
               total={calculatedTotal}
-              currency="AED"
+              currency="INR"
               onPay={handlePayment}
               onBack={() => setStep('review')}
               isLoading={isProcessing}
@@ -699,7 +699,7 @@ const FlightBookingView: React.FC<FlightBookingViewProps> = ({
               <div className="bg-slate-900 p-8 flex justify-between items-center relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-full bg-red-600/20 skew-x-12 translate-x-16" />
                 <div className="relative z-10">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1">Mastercard Travel</p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1">IDFC First Bank Travel</p>
                   <p className="text-white font-black tracking-widest text-lg">BOARDING PASS</p>
                 </div>
                 <Plane className="text-red-600 relative z-10" size={28} />

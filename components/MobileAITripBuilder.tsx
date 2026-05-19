@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     MapPin, Calendar, Users, TrendingUp, Sparkles, Plus, Minus,
@@ -119,7 +119,7 @@ const MobileAITripBuilder: React.FC<MobileAITripBuilderProps> = ({ onGenerate, i
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col pt-safe-top pb-safe-bottom">
             {/* Red Gentle Curve Header */}
-            <motion.div layoutId="travel-header-background" className="bg-[#d91918] text-white pt-4 pb-20 rounded-b-[50%_40px] relative z-50 mb-12 shadow-lg">
+            <motion.div layoutId="travel-header-background" className="bg-[#9D1D27] text-white pt-4 pb-20 rounded-b-[50%_40px] relative z-50 mb-12 shadow-lg">
                 <div className="px-6 flex justify-between items-center mb-0 relative z-10">
                     <button
                         onClick={handlePrev}
@@ -128,10 +128,10 @@ const MobileAITripBuilder: React.FC<MobileAITripBuilderProps> = ({ onGenerate, i
                         <ChevronLeft size={24} className="text-white" strokeWidth={2.5} />
                     </button>
                     <div className="flex items-center gap-3">
-                        <img src="/images/mclogo-for-footer.svg" alt="Mastercard" className="h-8 brightness-0 invert" />
+                        <img src="/images/IDFC_First_Logo.png" alt="IDFC First Bank" className="h-8 brightness-0 invert" />
                         <span className="font-bold text-xl tracking-wide">AI Trip Builder</span>
                     </div>
-                    <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#d91918]">
+                    <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#9D1D27]">
                         <Phone size={20} strokeWidth={2.5} />
                     </button>
                 </div>
@@ -162,7 +162,7 @@ const MobileAITripBuilder: React.FC<MobileAITripBuilderProps> = ({ onGenerate, i
                                 <div
                                     className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shadow-md transition-all border-2 border-slate-50 relative z-30
                                     ${isActive
-                                            ? 'bg-[#d91918] text-white scale-110'
+                                            ? 'bg-[#9D1D27] text-white scale-110'
                                             : isCompleted
                                                 ? 'bg-red-400 text-white'
                                                 : 'bg-gray-200 text-slate-500'
@@ -389,7 +389,7 @@ const MobileAITripBuilder: React.FC<MobileAITripBuilderProps> = ({ onGenerate, i
                                 <div className="pt-4">
                                     {isLoading ? (
                                         <div className="flex flex-col items-center justify-center p-8 space-y-4">
-                                            <img src="/images/mclogo-for-footer.svg" className="w-16 h-16 animate-pulse" />
+                                            <img src="/images/IDFC_First_Logo.png" className="w-16 h-16 animate-pulse" />
                                             <p className="text-sm font-bold text-slate-500 animate-pulse">Generating your itinerary...</p>
                                         </div>
                                     ) : (

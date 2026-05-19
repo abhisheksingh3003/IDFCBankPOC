@@ -13,7 +13,7 @@ interface PaymentGatewayProps {
 
 const PaymentGateway: React.FC<PaymentGatewayProps> = ({
     total,
-    currency = 'AED',
+    currency = 'INR',
     onPay,
     onBack,
     breakdown,
@@ -81,7 +81,7 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                             </div>
                             <div className="flex items-center gap-3 text-slate-400">
                                 <QrCode size={16} className="text-red-500" />
-                                <span className="text-xs font-bold">Authorized by Mastercard SA</span>
+                                <span className="text-xs font-bold">Authorized by IDFC First Bank</span>
                             </div>
                         </div>
                     </div>
@@ -99,33 +99,47 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                                 transition={{ duration: 0.8, ease: "easeOut" }}
                                 className="w-full h-full relative preserve-3d"
                             >
-                                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-black z-0"></div>
-                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0 mix-blend-overlay"></div>
-                                <div className="absolute top-[-50%] left-[-20%] w-[80%] h-[80%] bg-red-600/40 rounded-full blur-[60px] z-0"></div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#5C1117] via-[#9D1D27] to-[#250508] z-0"></div>
+                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-15 z-0 mix-blend-overlay"></div>
+                                <div className="absolute bottom-[-30%] right-[-20%] w-[70%] h-[70%] bg-[#C4953A]/20 rounded-full blur-[50px] z-0"></div>
+                                <div className="absolute top-[-40%] left-[-10%] w-[60%] h-[60%] bg-[#9D1D27]/30 rounded-full blur-[40px] z-0"></div>
+                                <div className="absolute -inset-y-20 left-1/3 w-[15%] bg-gradient-to-r from-transparent via-white/5 to-transparent rotate-12 group-hover:left-2/3 transition-all duration-[2000ms] ease-out pointer-events-none" />
+                                
                                 <div className="relative z-10 w-full h-full p-6 flex flex-col justify-between text-white border border-white/10 rounded-[24px]">
-                                    <div className="flex justify-between items-start">
-                                        <div className="w-12 h-8 rounded bg-gradient-to-r from-yellow-400 to-yellow-200 opacity-80 shadow-sm" />
-                                        <div className="flex items-center gap-1 scale-125 origin-right">
-                                            <div className="w-6 h-6 rounded-full bg-[#EB001B] mix-blend-screen" />
-                                            <div className="w-6 h-6 rounded-full bg-[#F79E1B] -ml-3 mix-blend-screen" />
+                                    <div className="flex justify-between items-center">
+                                        {/* Realistic Golden Microchip */}
+                                        <div className="w-12 h-9 rounded-lg bg-gradient-to-br from-amber-300 via-amber-500 to-yellow-600 p-[1px] shadow-lg">
+                                            <div className="w-full h-full rounded-[6px] bg-gradient-to-r from-amber-100 to-amber-300 opacity-95 relative overflow-hidden">
+                                                <div className="absolute inset-x-0 top-1/2 h-[1px] bg-amber-700/30" />
+                                                <div className="absolute inset-y-0 left-1/2 w-[1px] bg-amber-700/30" />
+                                                <div className="absolute inset-y-0 left-1/4 w-[1px] bg-amber-700/30" />
+                                                <div className="absolute inset-y-0 right-1/4 w-[1px] bg-amber-700/30" />
+                                                <div className="absolute top-1/4 bottom-1/4 left-1/4 right-1/4 border border-amber-700/20 rounded" />
+                                            </div>
+                                        </div>
+                                        {/* IDFC First Bank Logo Container */}
+                                        <div className="bg-white/95 px-3 py-1.5 rounded-lg shadow-sm border border-white/10 flex items-center justify-center">
+                                            <img src="/images/IDFC_First_Logo.png" alt="IDFC First Bank" className="h-5 w-auto object-contain" />
                                         </div>
                                     </div>
-                                    <div className="space-y-6">
-                                        <div className="flex gap-4">
-                                            <span className="font-mono text-lg tracking-widest">4242</span>
-                                            <span className="font-mono text-lg tracking-widest group-hover:hidden">••••</span>
-                                            <span className="font-mono text-lg tracking-widest hidden group-hover:block">1234</span>
-                                            <span className="font-mono text-lg tracking-widest">••••</span>
-                                            <span className="font-mono text-lg tracking-widest">8829</span>
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center">
+                                            <div className="flex gap-4">
+                                                <span className="font-mono text-lg md:text-xl tracking-widest text-slate-100">4242</span>
+                                                <span className="font-mono text-lg md:text-xl tracking-widest text-slate-300 group-hover:hidden">••••</span>
+                                                <span className="font-mono text-lg md:text-xl tracking-widest text-slate-200 hidden group-hover:block">1234</span>
+                                                <span className="font-mono text-lg md:text-xl tracking-widest text-slate-300">••••</span>
+                                                <span className="font-mono text-lg md:text-xl tracking-widest text-slate-100">8829</span>
+                                            </div>
                                         </div>
-                                        <div className="flex justify-between items-end">
+                                        <div className="flex justify-between items-end border-t border-white/5 pt-3">
                                             <div>
-                                                <p className="text-[9px] font-bold uppercase tracking-widest text-white/50 mb-1">Card Holder</p>
-                                                <p className="font-bold tracking-wide text-xl uppercase">Mastercard Holder</p>
+                                                <p className="text-[8px] font-bold uppercase tracking-widest text-white/40 mb-0.5">Card Holder</p>
+                                                <p className="font-bold tracking-wide text-sm uppercase text-slate-100">IDFC First Bank Holder</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className="text-[9px] font-bold uppercase tracking-widest text-white/50 mb-1">Expires</p>
-                                                <p className="font-bold tracking-wide">09/28</p>
+                                                <p className="text-[8px] font-bold uppercase tracking-widest text-white/40 mb-0.5">Expires</p>
+                                                <p className="font-bold tracking-wide text-sm text-slate-100">09/28</p>
                                             </div>
                                         </div>
                                     </div>

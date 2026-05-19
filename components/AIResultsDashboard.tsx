@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plane,
@@ -46,7 +46,7 @@ interface AIResultsDashboardProps {
   onBookStay: (step: BookingStep) => void;
   onBookFlight: (step: BookingStep, alternatives?: Flight[]) => void;
   onBookExperience: (activity: Activity) => void;
-  onFinalizeBundle: (essentials: Essential[]) => void;
+  onFinalizeBundle: (essentials: Essential[], curationId?: string) => void;
   onHotelSwap: (hotel: Hotel) => void;
   onFlightSwap: (flight: Flight) => void;
 }
@@ -123,7 +123,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
     ? Array.from(new Set(localCuration.familyMembers.map(m => m.vibe)))
     : [];
 
-  const mcLogoUrl = "/images/mclogo-for-footer.svg";
+  const mcLogoUrl = "/images/IDFC_First_Logo.png";
 
   const selectedActivities = destination.activities.slice(0, 4);
   const travelersCount = localCuration.familyMembers?.length || travelers;
@@ -173,7 +173,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
     <div className="w-full mx-auto max-w-[1600px] px-4 sm:px-8 py-4 sm:py-8 space-y-8 sm:space-y-12 pb-32">
       {/* Header Section */}
       <div className="relative">
-        {/* MASTERCARD LOGO WATERMARK */}
+        {/* IDFC First Bank LOGO WATERMARK */}
         <div className="absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] opacity-[0.035] dark:opacity-[0.02] pointer-events-none select-none z-0">
           <img src={mcLogoUrl} className="w-full h-full object-contain" alt="" />
         </div>
@@ -200,7 +200,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
 
           <motion.div initial="hiddenRight" animate="visible" variants={magicVariants} transition={{ delay: 0.2 }} className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 text-left md:text-right min-w-full md:min-w-[240px]">
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Estimated Cost</p>
-            <p className="text-2xl sm:text-3xl font-black text-red-600">AED{totalCost.toLocaleString()}</p>
+            <p className="text-2xl sm:text-3xl font-black text-red-600">INR{totalCost.toLocaleString()}</p>
             <p className="text-[10px] text-slate-500 font-medium mt-1">Includes flights, stays, and curated activities</p>
           </motion.div>
         </div>
@@ -314,7 +314,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
               </div>
               <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <div>
-                  <p className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">AED{hotelBooking.totalPrice}</p>
+                  <p className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">INR{hotelBooking.totalPrice}</p>
                   <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">total 3 nights invested</p>
                 </div>
                 <button onClick={handleBookSelectedHotel} className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95">View Voucher</button>
@@ -348,7 +348,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
                     {h.isVerified && (
                       <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider shadow-lg flex items-center gap-2 border border-white/20">
                         <ShieldCheck size={12} className="text-red-500" />
-                        Mastercard Verified
+                        IDFC First Bank Verified
                       </div>
                     )}
                     {!h.isVerified && idx === 0 && (
@@ -370,7 +370,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
 
                     <div className="flex items-center justify-between mt-auto pt-6 border-t border-slate-50 dark:border-slate-800">
                       <div>
-                        <p className="text-2xl font-black text-slate-900 dark:text-white">AED{h.pricePerNight * 3}</p>
+                        <p className="text-2xl font-black text-slate-900 dark:text-white">INR{h.pricePerNight * 3}</p>
                         <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">3 nights</p>
                       </div>
                       <button
@@ -398,7 +398,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
                     <div className="p-8">
                       <h4 className="text-xl font-black text-slate-900 dark:text-white mb-2 leading-tight">{h.name}</h4>
                       <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 italic mb-6">"{h.description}"</p>
-                      <div className="flex items-center justify-between"><p className="text-2xl font-black text-slate-900 dark:text-white">AED{h.pricePerNight * 3}</p><button onClick={() => { setSelectedHotelIndex(idx + 3); window.scrollTo(0, 0); }} className="p-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl hover:bg-red-600 hover:text-white transition-all"><RefreshCw size={18} /></button></div>
+                      <div className="flex items-center justify-between"><p className="text-2xl font-black text-slate-900 dark:text-white">INR{h.pricePerNight * 3}</p><button onClick={() => { setSelectedHotelIndex(idx + 3); window.scrollTo(0, 0); }} className="p-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl hover:bg-red-600 hover:text-white transition-all"><RefreshCw size={18} /></button></div>
                     </div>
                   </motion.div>
                 ))}
@@ -461,7 +461,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
 
             <div className="flex flex-col items-end gap-3 min-w-[160px]">
               <div className="text-right">
-                <p className="text-2xl font-black text-slate-900 dark:text-white leading-none mb-1">AED{flightBooking.price}</p>
+                <p className="text-2xl font-black text-slate-900 dark:text-white leading-none mb-1">INR{flightBooking.price}</p>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{flightBooking.duration || selectedFlight.duration} • Direct</p>
               </div>
               <button
@@ -488,7 +488,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
                   {f.isVerified && (
                     <div className="absolute top-0 right-8 bg-slate-900 text-white px-3 py-1 rounded-b-xl text-[8px] font-black uppercase tracking-widest shadow-lg flex items-center gap-1.5 border-x border-b border-white/10">
                       <ShieldCheck size={10} className="text-red-500" />
-                      Mastercard Verified
+                      IDFC First Bank Verified
                     </div>
                   )}
                   {idx === 0 && <div className="absolute top-0 left-0 w-full h-1 bg-red-600" />}
@@ -521,7 +521,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
 
                   <div className="flex items-center justify-between border-t border-slate-50 dark:border-slate-800 pt-6">
                     <div>
-                      <p className="text-xl font-black text-slate-900 dark:text-white">AED{f.price}</p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white">INR{f.price}</p>
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Direct</p>
                     </div>
                     <button
@@ -553,7 +553,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
                       </div>
                     </div>
                     <div className="text-right flex flex-col items-end gap-2">
-                      <p className="text-xl font-black text-slate-900 dark:text-white leading-none">AED{f.price}</p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white leading-none">INR{f.price}</p>
                       <button onClick={() => handleBookSelectedFlight(idx + 3)} className="text-[10px] font-black text-red-600 uppercase tracking-widest hover:underline leading-none">Select Option</button>
                     </div>
                   </motion.div>
@@ -571,7 +571,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
           <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100 dark:border-slate-800">
             <div>
               <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">Elite Experiences</h3>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Hand-picked by Mastercard Intelligence</p>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Hand-picked by IDFC First Bank Intelligence</p>
             </div>
             <button onClick={() => setShowMoreExperiences(!showMoreExperiences)} className="flex items-center gap-2 px-6 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl text-xs font-black uppercase tracking-widest text-slate-500 hover:text-red-600 transition-all border border-slate-100 dark:border-slate-700">
               {showMoreExperiences ? <><ChevronDown className="rotate-180" size={14} /> Show Less</> : <><LayoutGrid size={14} /> See Full Portfolio</>}
@@ -598,7 +598,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-800">
-                      <p className={`text-xl font-black ${booking ? 'text-green-700 dark:text-green-400' : 'text-slate-900 dark:text-white'}`}>AED{act.price}</p>
+                      <p className={`text-xl font-black ${booking ? 'text-green-700 dark:text-green-400' : 'text-slate-900 dark:text-white'}`}>INR{act.price}</p>
                       <button
                         onClick={() => booking ? setSelectedExpForVoucher(booking) : onBookExperience(act)}
                         className={`text-[10px] font-black uppercase px-5 py-2.5 rounded-xl transition-all shadow-md active:scale-95 whitespace-nowrap ${booking ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 hover:text-white'}`}
@@ -638,7 +638,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
-                      <p className="font-black text-xl text-red-50">AED{ess.price}</p>
+                      <p className="font-black text-xl text-red-50">INR{ess.price}</p>
                       {!essentialsBooking && (
                         <div className="flex items-center gap-2">
                           <button onClick={() => setEditingId(ess.id)} className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-all"><Pencil size={16} /></button>
@@ -661,7 +661,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
           </div>
 
           <div className="mt-8 pt-8 border-t border-white/10">
-            {essentialsBooking ? <button onClick={() => setShowEssentialsVoucher(true)} className="w-full bg-white text-slate-900 hover:bg-red-600 hover:text-white py-4 rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3">View Master Bundle <FileText size={18} /></button> : <button onClick={() => onFinalizeBundle(localEssentials)} className="w-full max-w-sm mx-auto bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-red-600/30 transition-all flex items-center justify-center gap-2"><ShoppingBag size={16} />Finalize Bundle</button>}
+            {essentialsBooking ? <button onClick={() => setShowEssentialsVoucher(true)} className="w-full bg-white text-slate-900 hover:bg-red-600 hover:text-white py-4 rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3">View Master Bundle <FileText size={18} /></button> : <button onClick={() => onFinalizeBundle(localEssentials, curationId)} className="w-full max-w-sm mx-auto bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-red-600/30 transition-all flex items-center justify-center gap-2"><ShoppingBag size={16} />Finalize Bundle</button>}
           </div>
 
           <AnimatePresence>
@@ -670,7 +670,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
                 <div className="flex items-center justify-between mb-8"><div><h4 className="text-xl font-black uppercase tracking-widest">Select Provider</h4><p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-1">Options for {localEssentials.find(e => e.id === editingId)?.category}</p></div><button onClick={() => setEditingId(null)} className="p-2 text-slate-400 hover:text-white"><X size={28} /></button></div>
                 <div className="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-thin">
                   {ESSENTIALS_CATALOG.find(e => e.id === editingId)?.variants?.map((v) => (
-                    <button key={v.id} onClick={() => handleUpdateVariant(editingId, v.id)} className="w-full flex items-center justify-between p-6 bg-white/5 hover:bg-red-600 rounded-3xl transition-all group/opt border border-white/5"><div className="text-left"><p className="font-black text-white text-lg">{v.title}</p><p className="text-[10px] text-slate-500 group-hover/opt:text-red-100 uppercase font-bold tracking-widest">{v.description}</p></div><div className="text-right"><p className="font-black text-red-50 group-hover/opt:text-white">AED{v.price}</p></div></button>
+                    <button key={v.id} onClick={() => handleUpdateVariant(editingId, v.id)} className="w-full flex items-center justify-between p-6 bg-white/5 hover:bg-red-600 rounded-3xl transition-all group/opt border border-white/5"><div className="text-left"><p className="font-black text-white text-lg">{v.title}</p><p className="text-[10px] text-slate-500 group-hover/opt:text-red-100 uppercase font-bold tracking-widest">{v.description}</p></div><div className="text-right"><p className="font-black text-red-50 group-hover/opt:text-white">INR{v.price}</p></div></button>
                   ))}
                 </div>
               </motion.div>
@@ -682,7 +682,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
                   {ESSENTIALS_CATALOG.filter(cat => !localEssentials.some(le => le.id === cat.id)).map((cat) => {
                     const CatIcon = EssentialIconMap[cat.icon] || Sparkles;
                     return (
-                      <button key={cat.id} onClick={() => handleAddNewEssential(cat)} className="w-full flex items-center justify-between p-6 bg-white/5 hover:bg-red-600 rounded-3xl transition-all border border-white/5"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center"><CatIcon size={24} className="text-slate-400 group-hover:text-white" /></div><div className="text-left"><p className="font-black text-white text-lg">{cat.title}</p><p className="text-[10px] text-slate-500 group-hover:text-red-100 uppercase font-bold tracking-widest">{cat.description}</p></div></div><div className="text-right"><p className="font-black text-red-50 group-hover:text-white">AED{cat.price}</p></div></button>
+                      <button key={cat.id} onClick={() => handleAddNewEssential(cat)} className="w-full flex items-center justify-between p-6 bg-white/5 hover:bg-red-600 rounded-3xl transition-all border border-white/5"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center"><CatIcon size={24} className="text-slate-400 group-hover:text-white" /></div><div className="text-left"><p className="font-black text-white text-lg">{cat.title}</p><p className="text-[10px] text-slate-500 group-hover:text-red-100 uppercase font-bold tracking-widest">{cat.description}</p></div></div><div className="text-right"><p className="font-black text-red-50 group-hover:text-white">INR{cat.price}</p></div></button>
                     );
                   })}
                 </div>

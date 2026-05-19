@@ -1,5 +1,5 @@
-/**
- * Shared Speech Synthesis Service for Mastercard AI Travel Planner
+﻿/**
+ * Shared Speech Synthesis Service for IDFC First Bank AI Travel Planner
  * Uses Google Cloud Text-to-Speech for premium "Journey/Neural" quality.
  * Falls back to browser Web Speech API if Cloud API is unavailable.
  */

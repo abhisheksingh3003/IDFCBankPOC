@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Compass,
   Map as MapIcon,
@@ -117,7 +117,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
     const updatedUser = { ...user, ...data, isOnboarded: true };
     
     // Persist onboarding status
-    const storageKey = `mastercard_onboarded_${user.email}`;
+    const storageKey = `IDFC First Bank_onboarded_${user.email}`;
     localStorage.setItem(storageKey, 'true');
     
     setUser(updatedUser);
@@ -126,7 +126,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
 
   const handleResetPreference = () => {
     if (!user) return;
-    const storageKey = `mastercard_onboarded_${user.email}`;
+    const storageKey = `IDFC First Bank_onboarded_${user.email}`;
     localStorage.removeItem(storageKey);
     const updatedUser = { ...user, isOnboarded: false };
     setUser(updatedUser);
@@ -393,7 +393,8 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
     setView('experience-booking');
   };
 
-  const handleFinalizeBundle = (essentials: Essential[]) => {
+  const handleFinalizeBundle = (essentials: Essential[], curationId?: string) => {
+    if (curationId) setActiveCurationId(curationId);
     setSelectedEssentials(essentials);
     setView('bundle-booking');
   };
@@ -411,9 +412,10 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
     setCurations(prev => prev.map(c => c.curationId === activeCurationId ? { ...c, status: 'partially_booked', experienceBookings: [...(c.experienceBookings || []), details] } : c));
   };
 
-  const handleBundleComplete = (details: any) => {
-    if (!activeCurationId) return;
-    setCurations(prev => prev.map(c => c.curationId === activeCurationId ? { ...c, status: c.status === 'partially_booked' ? 'fully_booked' : 'partially_booked', essentialsBooking: details } : c));
+  const handleBundleComplete = (details: any, curationId?: string) => {
+    const targetId = curationId || activeCurationId;
+    if (!targetId) return;
+    setCurations(prev => prev.map(c => c.curationId === targetId ? { ...c, status: 'fully_booked', essentialsBooking: details } : c));
   };
 
   const handleHotelSwap = (curationId: string, newHotel: Hotel) => {
@@ -451,7 +453,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
             )}
             <button onClick={handleGoHome} className="flex items-center group h-8">
               <img
-                src="/images/mclogo-for-footer.svg"
+                src="/images/IDFC_First_Logo.png"
                 alt="Logo"
                 className="h-full w-auto object-contain transition-transform group-hover:scale-105"
               />
@@ -498,7 +500,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       className="absolute top-full right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 p-4 z-[150] overflow-hidden"
                     >
-                      <div className="absolute top-0 left-0 w-full h-1 bg-[#EB001B]" />
+                      <div className="absolute top-0 left-0 w-full h-1 bg-[#9D1D27]" />
                       
                       <div className="space-y-4 pt-2">
                         <div className="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
@@ -575,7 +577,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
               >
                 <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
                   <img
-                    src="/images/mclogo-for-footer.svg"
+                    src="/images/IDFC_First_Logo.png"
                     alt="Loading"
                     className="w-full h-full object-contain"
                   />
@@ -622,9 +624,9 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
 
                 <div className="flex items-center gap-3 px-6 py-3 bg-red-50 dark:bg-red-950/20 rounded-full border border-red-100 dark:border-red-900/30">
                   <div className="w-6 h-6 flex items-center justify-center">
-                    <img src="/images/mclogo-for-footer.svg" className="w-full h-full object-contain" />
+                    <img src="/images/IDFC_First_Logo.png" className="w-full h-full object-contain" />
                   </div>
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-red-600">Mastercard Travel Intelligence</span>
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-red-600">IDFC First Bank Travel Intelligence</span>
                 </div>
               </motion.div>
             )}
@@ -670,7 +672,7 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
             ) : view === 'my-curations' ? (
               <motion.div key="my-curations" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full"><MyCurationsView curations={curations} onView={(id) => { setActiveCurationId(id); setView('results'); }} /></motion.div>
             ) : view === 'my-bookings' ? (
-              <motion.div key="my-bookings" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full"><MyBookingsView curations={curations} initialCategory={bookingsCategory} /></motion.div>
+              <motion.div key="my-bookings" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full"><MyBookingsView curations={curations} initialCategory={bookingsCategory} onBookEssentials={handleFinalizeBundle} onBundleComplete={handleBundleComplete} /></motion.div>
             ) : view === 'booking' && activeCuration ? (
               <motion.div key="booking" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full"><HotelBookingView curation={activeCuration} initialStep={initialBookingStep} onBookingComplete={(details) => handleBookingComplete(activeCuration.curationId, details)} onHotelSwap={(hotel) => handleHotelSwap(activeCuration.curationId, hotel)} onBack={() => setView('results')} /></motion.div>
             ) : view === 'flight-booking' && activeCuration ? (

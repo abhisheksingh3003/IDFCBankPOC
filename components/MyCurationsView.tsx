@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Calendar, Users, ChevronRight, Sparkles, Clock, Compass, ShieldCheck } from 'lucide-react';
 import { Curation } from '../types';
@@ -21,7 +21,7 @@ const MyCurationsView: React.FC<MyCurationsViewProps> = ({ curations, onView }) 
         </div>
         <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">No Masterpieces Yet</h2>
         <p className="text-slate-500 dark:text-slate-400 max-w-sm text-sm italic leading-relaxed">
-          "The canvas is blank. Ignite the Mastercard Intelligence engine to forge your first elite travel experience."
+          "The canvas is blank. Ignite the IDFC First Bank Intelligence engine to forge your first elite travel experience."
         </p>
       </div>
     );

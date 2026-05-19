@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronLeft, Calendar, Clock, CreditCard, Loader2, Check, PartyPopper,
@@ -9,23 +9,30 @@ import BookingLayout from './booking/BookingLayout';
 import BookingSection from './booking/BookingSection';
 import SummaryCard from './booking/SummaryCard';
 import PaymentGateway from './PaymentGateway';
+import SafeImage from './SafeImage';
 
 interface ExperienceBookingViewProps {
   curation: Curation;
   activity: Activity;
+  activityAlternatives?: Activity[];
+  initialStep?: 'search' | 'details' | 'payment' | 'success';
   onComplete: (details: any) => void;
+  onActivitySwap: (newActivity: Activity) => void;
   onBack: () => void;
 }
 
 const TIME_SLOTS = ["09:00 AM", "11:30 AM", "02:00 PM", "04:30 PM", "07:00 PM"];
 
-const ExperienceBookingView: React.FC<ExperienceBookingViewProps> = ({ curation, activity, onComplete, onBack }) => {
-  const [step, setStep] = useState<'details' | 'payment' | 'success'>('details');
+const ExperienceBookingView: React.FC<ExperienceBookingViewProps> = ({ curation, activity, activityAlternatives = [], initialStep = 'details', onComplete, onActivitySwap, onBack }) => {
+  const [step, setStep] = useState<'search' | 'details' | 'payment' | 'success'>(initialStep);
+  const activityPool = activityAlternatives.length > 0 ? activityAlternatives : [activity];
+  const [selectedActivity, setSelectedActivity] = useState<Activity>(activity);
   const [selectedDate, setSelectedDate] = useState(curation.startDate || '');
   const [selectedTime, setSelectedTime] = useState(TIME_SLOTS[2]);
   const [pickupLocation, setPickupLocation] = useState('');
   const [dropoffLocation, setDropoffLocation] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [filterTab, setFilterTab] = useState<'All' | 'Paid' | 'Free'>('All');
   const [bookingRef] = useState(`EXP-${Math.random().toString(36).substr(2, 6).toUpperCase()}`);
 
   const isAirportTransfer = activity.name === 'Airport Transfer';
@@ -72,20 +79,27 @@ const ExperienceBookingView: React.FC<ExperienceBookingViewProps> = ({ curation,
       setIsProcessing(false);
       setStep('success');
       onComplete({
-        activityId: activity.id,
-        activityName: activity.name,
+        activityId: selectedActivity.id,
+        activityName: selectedActivity.name,
         bookingRef: bookingRef,
         date: selectedDate,
         time: selectedTime,
         pickup: pickupLocation,
         dropoff: dropoffLocation,
-        price: activity.price * curation.travelers,
-        imageUrl: activity.imageUrl
+        price: selectedActivity.price * curation.travelers,
+        imageUrl: selectedActivity.imageUrl
       });
     }, 2000);
   };
 
+  const filteredPool = activityPool.filter(act => {
+    if (filterTab === 'Paid') return act.price > 0;
+    if (filterTab === 'Free') return act.price === 0;
+    return true;
+  });
+
   const steps: { key: string; label: string }[] = [
+    { key: 'search', label: 'Explore' },
     { key: 'details', label: 'Experience' },
     { key: 'payment', label: 'Payment' },
     { key: 'success', label: 'Ticket' }
@@ -99,15 +113,15 @@ const ExperienceBookingView: React.FC<ExperienceBookingViewProps> = ({ curation,
       <div className="flex items-center justify-between w-full">
         <div>
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Experience</p>
-          <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">AED {(activity.price * curation.travelers).toLocaleString()}</p>
+          <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">INR {(selectedActivity.price * curation.travelers).toLocaleString()}</p>
         </div>
         {step === 'details' && (
           <button
-            onClick={() => setStep('payment')}
+            onClick={() => selectedActivity.price === 0 ? handlePay() : setStep('payment')}
             disabled={!selectedDate || (isAirportTransfer && (!pickupLocation || !dropoffLocation))}
-            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-red-600/20 active:scale-95 flex items-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-lg active:scale-95 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Explore & Secure <ArrowRight size={16} />
+            {selectedActivity.price === 0 ? 'Confirm Selection' : 'Continue to Book'} <ArrowRight size={18} />
           </button>
         )}
       </div>
@@ -116,15 +130,99 @@ const ExperienceBookingView: React.FC<ExperienceBookingViewProps> = ({ curation,
 
   return (
     <BookingLayout
-      title={step === 'success' ? 'Experience Secured' : (isAirportTransfer ? 'Transfer Service' : 'Activity Experience')}
-      subtitle={step === 'success' ? 'Nov 24, 2024' : `${activity.name} • ${activity.duration}`}
-      onBack={step === 'success' ? undefined : onBack}
+      title={step === 'search' ? 'Explore Experiences' : step === 'success' ? 'Experience Secured' : (isAirportTransfer ? 'Transfer Service' : 'Activity Experience')}
+      subtitle={step === 'success' ? 'Nov 24, 2024' : `${selectedActivity.name} • ${selectedActivity.duration}`}
+      onBack={step === 'success' ? undefined : (step === 'search' ? onBack : (step === 'details' ? (activityAlternatives.length > 0 ? () => setStep('search') : onBack) : () => setStep('details')))}
       footer={renderFooter()}
-      backgroundImage={step === 'details' ? activity.imageUrl : undefined}
+      backgroundImage={step === 'details' ? selectedActivity.imageUrl : undefined}
       currentStep={stepIndex}
       totalSteps={steps.length}
     >
       <AnimatePresence mode="wait">
+        {step === 'search' && (
+          <motion.div
+            key="search"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="space-y-8"
+          >
+            {/* Header */}
+            <div className="flex items-end justify-between border-b border-slate-100 dark:border-slate-800 pb-6">
+              <div className="space-y-1">
+                <h3 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">Top Recommendations</h3>
+                <p className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  {curation.destination.name} • Curated for your Travel DNA
+                </p>
+              </div>
+              <div className="flex flex-col items-end gap-2">
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 dark:bg-slate-800 px-3 py-1.5 rounded-xl">
+                  {filteredPool.length} Experiences Found
+                </span>
+                <div className="flex gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl">
+                  {(['All', 'Paid', 'Free'] as const).map(tab => (
+                    <button
+                      key={tab}
+                      onClick={() => setFilterTab(tab)}
+                      className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${filterTab === tab
+                        ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
+                        : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
+                        }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Activity Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredPool.slice(0, 12).map((act, idx) => {
+                const isSelected = selectedActivity.id === act.id;
+                return (
+                  <motion.div
+                    key={act.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    onClick={() => {
+                      setSelectedActivity(act);
+                      onActivitySwap(act);
+                      setStep('details');
+                    }}
+                    className={`group relative bg-white dark:bg-slate-900 rounded-[32px] border-2 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col ${isSelected
+                      ? 'border-red-600 ring-4 ring-red-600/10 shadow-2xl'
+                      : 'border-slate-50 dark:border-slate-800 hover:border-red-200 dark:hover:border-red-900/40 hover:shadow-xl'
+                      }`}
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <SafeImage src={act.imageUrl} alt="" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" category="activity" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
+                      <div className="absolute bottom-4 left-4">
+                        <p className="text-white font-black text-lg tracking-tight">{act.name}</p>
+                        <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">{act.duration}</p>
+                      </div>
+                    </div>
+                    <div className="p-5 flex items-center justify-between">
+                      <div>
+                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Experience Price</span>
+                        <p className="text-lg font-black text-slate-900 dark:text-white">INR {act.price.toLocaleString()}</p>
+                      </div>
+                      <button className={`px-5 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${isSelected
+                        ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
+                        : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700'
+                        }`}>
+                        {isSelected ? 'Selected' : 'Choose'}
+                      </button>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+
         {step === 'details' && (
           <motion.div
             key="details"
@@ -265,7 +363,7 @@ const ExperienceBookingView: React.FC<ExperienceBookingViewProps> = ({ curation,
                       <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex items-center justify-between relative z-10">
                          <div className="space-y-1">
                             <p className="text-[9px] font-black text-slate-400 uppercase">Rate Lock</p>
-                            <p className="text-lg font-black tracking-tighter text-white">AED {activity.price.toLocaleString()}/guest</p>
+                            <p className="text-lg font-black tracking-tighter text-white">INR {selectedActivity.price.toLocaleString()}/guest</p>
                          </div>
                          <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
                             <Check size={18} strokeWidth={3} />
@@ -296,7 +394,7 @@ const ExperienceBookingView: React.FC<ExperienceBookingViewProps> = ({ curation,
           >
             <PaymentGateway
               total={activity.price * curation.travelers}
-              currency="AED"
+              currency="INR"
               onPay={handlePay}
               onBack={() => setStep('details')}
               isLoading={isProcessing}
@@ -354,7 +452,7 @@ const ExperienceBookingView: React.FC<ExperienceBookingViewProps> = ({ curation,
                 <div className="space-y-6">
                    <div className="space-y-1">
                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Experience</p>
-                      <p className="text-xl font-black text-slate-900 dark:text-white tracking-tight">{activity.name}</p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white tracking-tight">{selectedActivity.name}</p>
                    </div>
 
                    <div className="grid grid-cols-2 gap-4">

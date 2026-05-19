@@ -1,4 +1,4 @@
-
+﻿
 import React from 'react';
 import { Clock } from 'lucide-react';
 import { Activity } from '../types';
@@ -33,7 +33,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
               <span>{activity.duration}</span>
             </div>
           </div>
-          <p className="font-bold text-slate-800 dark:text-slate-200">AED {activity.price}</p>
+          <p className="font-bold text-slate-800 dark:text-slate-200">INR {activity.price}</p>
         </div>
       </div>
     </motion.div>

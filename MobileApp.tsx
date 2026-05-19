@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import {
     Home,
     Briefcase,
@@ -42,8 +42,8 @@ const BankLoader: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
     return (
         <div className="fixed inset-0 bg-white z-[100] flex items-center justify-center">
             <img
-                src="/images/mclogo-for-footer.svg"
-                alt="Mastercard"
+                src="/images/IDFC_First_Logo.png"
+                alt="IDFC First Bank"
                 className="w-48 h-auto object-contain animate-pulse"
             />
         </div>
@@ -66,10 +66,10 @@ const BankLogin: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
             {/* Content */}
             <div className="relative z-10 flex-1 flex flex-col justify-end px-6 pb-4 items-center text-center">
                 <div className="w-20 h-20 mb-6 mt-0">
-                    <img src="/images/mclogo-for-footer.svg" alt="Mastercard" className="w-full h-full object-contain" />
+                    <img src="/images/IDFC_First_Logo.png" alt="IDFC First Bank" className="w-full h-full object-contain" />
                 </div>
 
-                <h1 className="text-3xl font-bold text-slate-900 mb-6">Welcome to Mastercard Pay</h1>
+                <h1 className="text-3xl font-bold text-slate-900 mb-6">Welcome to IDFC First Bank Pay</h1>
 
                 <button
                     onClick={onLogin}
@@ -79,7 +79,7 @@ const BankLogin: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
                 </button>
 
                 <button className="w-full py-4 bg-white text-slate-900 border border-red-100 rounded-2xl font-bold text-lg shadow-sm active:scale-95 transition-transform">
-                    Become a Mastercard customer
+                    Become an IDFC First Bank customer
                 </button>
             </div>
 
@@ -101,10 +101,10 @@ const BankDashboard: React.FC<{ onTravelClick: () => void; onLogout: () => void 
                         <Power size={20} className="text-white" strokeWidth={2.5} />
                     </button>
                     <div className="flex items-center gap-3">
-                        <img src="/images/mclogo-for-footer.svg" alt="Mastercard" className="h-8 brightness-0 invert" />
-                        <span className="font-bold text-xl tracking-wide">Mastercard</span>
+                        <img src="/images/IDFC_First_Logo.png" alt="IDFC First Bank" className="h-8 brightness-0 invert" />
+                        <span className="font-bold text-xl tracking-wide">IDFC First Bank</span>
                     </div>
-                    <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#EB001B]">
+                    <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#9D1D27]">
                         <Phone size={20} strokeWidth={2.5} />
                     </button>
                 </div>
@@ -118,12 +118,12 @@ const BankDashboard: React.FC<{ onTravelClick: () => void; onLogout: () => void 
                         <h3 className="font-bold text-[#1a1a1a] mb-8 text-lg">Elite Checking Account</h3>
                         <div>
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Available funds</p>
-                            <div className="text-3xl font-black text-[#1a1a1a] tracking-tight">7,122.70 <span className="text-xl font-bold text-slate-500">AED</span></div>
+                            <div className="text-3xl font-black text-[#1a1a1a] tracking-tight">7,122.70 <span className="text-xl font-bold text-slate-500">INR</span></div>
                         </div>
                     </div>
                     {/* Watermark */}
                     <div className="absolute top-1/2 -right-8 w-48 h-48 opacity-[0.03] pointer-events-none -translate-y-1/2">
-                        <img src="/images/mclogo-for-footer.svg" className="w-full h-full object-contain" />
+                        <img src="/images/IDFC_First_Logo.png" className="w-full h-full object-contain" />
                     </div>
                 </div>
                 {/* Second Card Preview */}
@@ -141,7 +141,7 @@ const BankDashboard: React.FC<{ onTravelClick: () => void; onLogout: () => void 
             {/* Shortcuts Grid */}
             <div className="px-6 mt-2 relative z-10 grid grid-cols-4 gap-4 mb-8">
                 <Shortcut
-                    icon={<div className="w-8 h-8 rounded-full bg-[#EB001B] flex items-center justify-center text-white italic font-serif font-black text-xl pb-1 pr-0.5">b</div>}
+                    icon={<div className="w-8 h-8 rounded-full bg-[#9D1D27] flex items-center justify-center text-white italic font-serif font-black text-xl pb-1 pr-0.5">b</div>}
                     label="BLIK"
                     bg="bg-brand-red"
                 />
@@ -156,8 +156,8 @@ const BankDashboard: React.FC<{ onTravelClick: () => void; onLogout: () => void 
                     bg="bg-brand-red"
                 />
                 <Shortcut
-                    icon={<MapIcon size={28} className="text-[#EB001B]" strokeWidth={2} />}
-                    label="Mastercard Travel"
+                    icon={<MapIcon size={28} className="text-[#9D1D27]" strokeWidth={2} />}
+                    label="IDFC First Bank Travel"
                     bg="bg-white"
                     isWhite
                     onClick={onTravelClick}
@@ -182,11 +182,11 @@ const BankDashboard: React.FC<{ onTravelClick: () => void; onLogout: () => void 
                 <div className="bg-[#f3f4f600] rounded-3xl p-2 mb-6">
                     <div className="flex justify-between items-center mb-2 px-2">
                         <h3 className="text-slate-500 font-medium">Recent transactions</h3>
-                        <button className="text-[#EB001B] text-sm font-bold">More</button>
+                        <button className="text-[#9D1D27] text-sm font-bold">More</button>
                     </div>
                     <div className="bg-white rounded-3xl p-4 shadow-sm space-y-6">
-                        <Transaction name="Grocery" type="Card payment" amount="- 120.90 AED" />
-                        <Transaction name="Internet shop" type="BLIK" amount="- 43.79 AED" />
+                        <Transaction name="Grocery" type="Card payment" amount="- 120.90 INR" />
+                        <Transaction name="Internet shop" type="BLIK" amount="- 43.79 INR" />
                     </div>
                 </div>
             </div>
@@ -375,10 +375,10 @@ const TravelModule: React.FC<{ onBack: () => void; onShowAssistant: () => void }
                         <ChevronLeft size={24} className="text-white" strokeWidth={2.5} />
                     </button>
                     <div className="flex items-center gap-3">
-                        <img src="/images/mclogo-for-footer.svg" alt="Mastercard" className="h-8 brightness-0 invert" />
-                        <span className="font-bold text-xl tracking-wide">Mastercard</span>
+                        <img src="/images/IDFC_First_Logo.png" alt="IDFC First Bank" className="h-8 brightness-0 invert" />
+                        <span className="font-bold text-xl tracking-wide">IDFC First Bank</span>
                     </div>
-                    <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#EB001B]">
+                    <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#9D1D27]">
                         <Phone size={20} strokeWidth={2.5} />
                     </button>
                 </div>
@@ -460,9 +460,9 @@ const TravelModule: React.FC<{ onBack: () => void; onShowAssistant: () => void }
                     </div>
                     <div className="flex gap-4 overflow-x-auto pb-8 pr-6 scrollbar-hide snap-x">
                         {[
-                            { title: 'Weekend in Alps', price: 'AED 1,200', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=400' },
-                            { title: 'Kyoto zen', price: 'AED 3,450', img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=400' },
-                            { title: 'Safari Kenya', price: 'AED 5,100', img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=400' },
+                            { title: 'Weekend in Alps', price: 'INR 1,200', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=400' },
+                            { title: 'Kyoto zen', price: 'INR 3,450', img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=400' },
+                            { title: 'Safari Kenya', price: 'INR 5,100', img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=400' },
                         ].map((item, i) => (
                             <motion.div
                                 key={i}
@@ -488,7 +488,7 @@ const TravelModule: React.FC<{ onBack: () => void; onShowAssistant: () => void }
 
     const MobileCurations = () => (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-32">
-            <div className="bg-[#EB001B] z-40 shadow-xl pb-4 sticky top-0">
+            <div className="bg-[#9D1D27] z-40 shadow-xl pb-4 sticky top-0">
                 <div className="px-6 pt-6 pb-4">
                     <div className="relative flex items-center justify-center">
                         <button
@@ -779,7 +779,7 @@ const TravelModule: React.FC<{ onBack: () => void; onShowAssistant: () => void }
                     <Ticket size={28} strokeWidth={2} />
                     <span className="text-[11px] font-bold">Bookings</span>
                 </button>
-                <button onClick={() => window.open('https://wa.me/+919028604659?text=Good%20morning%2C%20I%20need%20support%20regarding%20Mastercard%20services.%20Please%20help', '_blank')} className={`flex flex-col items-center gap-1 text-slate-400`}>
+                <button onClick={() => window.open('https://wa.me/+919028604659?text=Good%20morning%2C%20I%20need%20support%20regarding%20IDFC First Bank%20services.%20Please%20help', '_blank')} className={`flex flex-col items-center gap-1 text-slate-400`}>
                     <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                     </svg>
@@ -794,7 +794,7 @@ const TravelModule: React.FC<{ onBack: () => void; onShowAssistant: () => void }
 // --- AI Assistant Overlay ---
 const AIAssistantOverlay: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [text, setText] = useState('');
-    const fullText = "Hi, I am Anya, your Mastercard travel assistant. How may I help you today?";
+    const fullText = "Hi, I am Anya, your IDFC First Bank Travel assistant. How may I help you today?";
     const hasSpoken = useRef(false);
 
     useEffect(() => {

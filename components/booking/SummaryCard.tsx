@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Plane, Calendar, MapPin, Star } from 'lucide-react';
 import SafeImage from '../SafeImage';
 
@@ -21,7 +21,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
     details,
     status = 'draft',
     price,
-    currency = 'AED',
+    currency = 'INR',
     className = '',
     category = 'activity'
 }) => {

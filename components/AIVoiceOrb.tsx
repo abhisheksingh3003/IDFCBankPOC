@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 
 interface AIVoiceOrbProps {
@@ -36,9 +36,9 @@ const AIVoiceOrb: React.FC<AIVoiceOrbProps> = ({ isActive }) => {
         })
     };
 
-    const colorRed = "235, 0, 27";    // Mastercard Red (#EB001B)
-    const colorOrange = "255, 95, 0"; // Mastercard Orange (#FF5F00)
-    const colorYellow = "247, 158, 27"; // Mastercard Yellow (#F79E1B)
+    const colorRed = "157, 29, 39";    // IDFC First Bank Red (#9D1D27)
+    const colorOrange = "184, 52, 46"; // IDFC First Bank Orange (#B8342E)
+    const colorYellow = "196, 149, 58"; // IDFC First Bank Yellow (#C4953A)
 
     return (
         <div className="relative w-full h-full flex items-center justify-center bg-transparent">

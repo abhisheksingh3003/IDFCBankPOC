@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Star, MapPin, Check, ChevronLeft, CreditCard, Heart,
@@ -19,6 +19,7 @@ import SafeImage from './SafeImage';
 interface HotelBookingViewProps {
   curation: Curation;
   initialStep?: BookingStep;
+  hotelAlternatives?: Hotel[];
   preSelectedHotel?: Hotel;
   onBookingComplete: (bookingDetails: any) => void;
   onHotelSwap: (newHotel: Hotel) => void;
@@ -41,6 +42,7 @@ const ROOM_OPTIONS: RoomOption[] = [
 const HotelBookingView: React.FC<HotelBookingViewProps> = ({
   curation,
   initialStep = 'details',
+  hotelAlternatives = [],
   preSelectedHotel,
   onBookingComplete,
   onHotelSwap,
@@ -107,7 +109,7 @@ const HotelBookingView: React.FC<HotelBookingViewProps> = ({
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Mastercard-Hotel-Voucher-AI.pdf`);
+        pdf.save(`IDFC First Bank-Hotel-Voucher-AI.pdf`);
       }
     } catch (error) {
       console.error("Hotel Voucher Generation failed", error);
@@ -118,11 +120,13 @@ const HotelBookingView: React.FC<HotelBookingViewProps> = ({
   };
 
   // Determine which hotels to show based on destination
-  const displayHotels = curation.destination.name.toLowerCase().includes('italy')
-    ? ITALY_HOTELS
-    : curation.destination.name.toLowerCase().includes('paris')
-      ? PARIS_HOTELS
-      : ALTERNATIVE_HOTELS;
+  const displayHotels = hotelAlternatives.length > 0
+    ? hotelAlternatives
+    : (curation.destination.name.toLowerCase().includes('italy')
+      ? ITALY_HOTELS
+      : curation.destination.name.toLowerCase().includes('paris')
+        ? PARIS_HOTELS
+        : ALTERNATIVE_HOTELS);
 
   const steps: { key: BookingStep; label: string }[] = [
     { key: 'details', label: 'Details' },
@@ -149,7 +153,7 @@ const HotelBookingView: React.FC<HotelBookingViewProps> = ({
       <div className="flex items-center justify-between w-full">
         <div>
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Stay</p>
-          <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">AED {calculatedTotal.toLocaleString()}</p>
+          <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">INR {calculatedTotal.toLocaleString()}</p>
         </div>
 
         {step === 'details' && (
@@ -282,7 +286,7 @@ const HotelBookingView: React.FC<HotelBookingViewProps> = ({
                          <div className="pt-6 border-t border-slate-50 dark:border-slate-800 flex items-end justify-between">
                             <div>
                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Nightly rate</span>
-                               <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">AED {hotel.pricePerNight.toLocaleString()}</p>
+                               <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">INR {hotel.pricePerNight.toLocaleString()}</p>
                             </div>
                             <button className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isSelected
                               ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
@@ -422,7 +426,7 @@ const HotelBookingView: React.FC<HotelBookingViewProps> = ({
 
                   <div className="pt-6 flex items-end justify-between">
                     <div>
-                      <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">AED {Math.round(selectedHotel.pricePerNight * room.priceMultiplier).toLocaleString()}</p>
+                      <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">INR {Math.round(selectedHotel.pricePerNight * room.priceMultiplier).toLocaleString()}</p>
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">per luxury night</p>
                     </div>
                     {selectedRoom.id === room.id && (
@@ -528,7 +532,7 @@ const HotelBookingView: React.FC<HotelBookingViewProps> = ({
           >
             <PaymentGateway
               total={calculatedTotal}
-              currency="AED"
+              currency="INR"
               onPay={handlePayment}
               onBack={() => setStep('guests')}
               isLoading={isProcessing}
@@ -602,7 +606,7 @@ const HotelBookingView: React.FC<HotelBookingViewProps> = ({
                 <div className="pt-8 border-t border-slate-50 dark:border-slate-800 flex justify-between items-end">
                    <div className="space-y-1">
                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Total Paid</p>
-                      <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">AED {calculatedTotal.toLocaleString()}</p>
+                      <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">INR {calculatedTotal.toLocaleString()}</p>
                    </div>
                    <div className="bg-slate-50 dark:bg-slate-800 p-2 rounded-2xl shadow-inner border border-slate-100 dark:border-slate-700">
                       <QrCode size={48} className="text-slate-900 dark:text-white" />

@@ -36,13 +36,19 @@ const App: React.FC = () => {
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={user ? <DesktopApp user={user} setUser={setUser} /> : <Navigate to="/signin" replace />} />
-        <Route path="/mobile" element={user ? <DesktopApp user={user} setUser={setUser} /> : <Navigate to="/signin" replace />} />
-        <Route path="/docs" element={<Docs />} />
-        <Route path="/signin" element={<SignInPage onLogin={handleLogin} />} />
-        <Route path="/signup" element={<SignUpPage onRegister={handleLogin} />} />
-      </Routes>
+        <Routes>
+          <Route path="/docs" element={<Docs />} />
+          <Route path="/signin" element={<SignInPage onLogin={handleLogin} />} />
+          <Route path="/signup" element={<SignUpPage onRegister={handleLogin} />} />
+          <Route 
+            path="*" 
+            element={
+              isMobile ? 
+              <MobileApp /> : 
+              <DesktopApp user={user} setUser={setUser} />
+            } 
+          />
+        </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>
   );
