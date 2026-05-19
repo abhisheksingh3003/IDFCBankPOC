@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plane, Hotel as HotelIcon, Camera, ShoppingBag,
@@ -64,8 +64,8 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
 
   // Local Guest state for the hotel flow
   const [guestInfo, setGuestInfo] = useState({
-    name: 'Alex Johnson',
-    email: 'alex.j@example.com',
+    name: 'Rahul',
+    email: 'rahul@example.com',
     phone: '+44 7700 900000'
   });
 
@@ -510,7 +510,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-8 pt-10 border-t border-slate-800">
-                      <div><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Lead Passenger</p><p className="font-black text-lg">Alex Johnson</p><p className="text-xs text-slate-500 font-medium">+{totalTravellers - 1} Travelers</p></div>
+                      <div><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Lead Passenger</p><p className="font-black text-lg">Rahul</p><p className="text-xs text-slate-500 font-medium">+{totalTravellers - 1} Travelers</p></div>
                     </div>
                   </div>
                   <div className="bg-slate-900/50 p-6 sm:p-12 flex flex-col items-center justify-center text-center gap-8 md:w-72 border-t md:border-t-0 md:border-l border-slate-800">
@@ -1389,7 +1389,7 @@ const ManualBuildingDashboard: React.FC<ManualBuildingDashboardProps> = ({ tripD
                                   </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-8 pt-10 border-t border-slate-800">
-                                  <div><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Lead Passenger</p><p className="font-black text-lg">Alex Johnson</p><p className="text-xs text-slate-500 font-medium">+{totalTravellers - 1} Travelers</p></div>
+                                  <div><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Lead Passenger</p><p className="font-black text-lg">Rahul</p><p className="text-xs text-slate-500 font-medium">+{totalTravellers - 1} Travelers</p></div>
                                 </div>
                               </div>
                               <div className="bg-slate-900/50 p-12 flex flex-col items-center justify-center text-center gap-8 md:w-72 border-l border-slate-800">

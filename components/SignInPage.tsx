@@ -25,7 +25,7 @@ const SignInPage: React.FC<{ onLogin: (user: UserProfile) => void }> = ({ onLogi
 
             onLogin({
                 id: '1',
-                name: 'Alex Johnson',
+                name: 'Rahul',
                 email: formData.email,
                 avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100",
                 mobilityNeeds: [],

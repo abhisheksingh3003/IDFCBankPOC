@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Plane, Check, ChevronLeft, CreditCard,
@@ -47,8 +47,8 @@ const FlightBookingView: React.FC<FlightBookingViewProps> = ({
   const [passengers, setPassengers] = useState(
     Array.from({ length: curation.travelers }, (_, i) => ({
       id: i,
-      name: i === 0 ? 'Alex Johnson' : '',
-      email: i === 0 ? 'alex.j@example.com' : '',
+      name: i === 0 ? 'Rahul' : '',
+      email: i === 0 ? 'rahul@example.com' : '',
       passport: i === 0 ? `P${Math.floor(10000000 + Math.random() * 90000000)}` : ''
     }))
   );

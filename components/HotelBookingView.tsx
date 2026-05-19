@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Star, MapPin, Check, ChevronLeft, CreditCard, Heart,
@@ -55,8 +55,8 @@ const HotelBookingView: React.FC<HotelBookingViewProps> = ({
   const [isDownloading, setIsDownloading] = useState(false);
 
   const [guestData, setGuestData] = useState({
-    name: 'Alex Johnson',
-    email: 'alex.j@example.com',
+    name: 'Rahul',
+    email: 'rahul@example.com',
     phone: '+44 7700 900000'
   });
 

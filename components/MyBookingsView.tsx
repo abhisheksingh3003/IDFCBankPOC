@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Ticket, Hotel as HotelIcon, Plane, Sparkles, CheckCircle2, Calendar, MapPin, Hash, ArrowRight, ShieldCheck, Box, X, Info, FileText, Camera, QrCode, Clock, Map, Briefcase, User, ChevronRight } from 'lucide-react';
 import { Curation, BookingCategory, ExperienceBooking, Essential } from '../types';
@@ -850,7 +850,7 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                     <div className="space-y-3">
                       <div className="flex items-center justify-between py-2 text-sm">
                         <span className="text-slate-500 font-medium">Primary Guest</span>
-                        <span className="font-black text-slate-900 dark:text-white">Alex Johnson</span>
+                        <span className="font-black text-slate-900 dark:text-white">Rahul</span>
                       </div>
                       <div className="flex items-center justify-between py-2 text-sm">
                         <span className="text-slate-500 font-medium">Total Travelers</span>
@@ -964,8 +964,8 @@ const MyBookingsView: React.FC<MyBookingsViewProps> = ({ curations, initialCateg
                     <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest mb-4">Passenger Manifest</h3>
                     <div className="flex items-center justify-between py-2 border-b border-slate-200 dark:border-slate-700 last:border-0">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-black text-xs text-slate-600 dark:text-slate-400">AJ</div>
-                        <span className="text-sm font-bold text-slate-900 dark:text-white">Alex Johnson</span>
+                        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-black text-xs text-slate-600 dark:text-slate-400">R</div>
+                        <span className="text-sm font-bold text-slate-900 dark:text-white">Rahul</span>
                       </div>
                       <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 rounded uppercase tracking-wider">Checked In</span>
                     </div>
