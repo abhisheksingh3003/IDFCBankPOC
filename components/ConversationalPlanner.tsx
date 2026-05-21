@@ -3043,11 +3043,13 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                                                     <Tag size={11} className="text-red-500" />
                                                                                                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Verified Fare</span>
                                                                                                 </div>
-                                                                                                <div className="ml-auto">
-                                                                                                    <span className={`text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider ${item.billingType === 'business' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}`}>
-                                                                                                        {item.billingType === 'business' ? 'Business' : 'First Class'}
-                                                                                                    </span>
-                                                                                                </div>
+                                                                                                {item.billingType === 'business' && (
+                                                                                                    <div className="ml-auto">
+                                                                                                        <span className="text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider bg-blue-100 text-blue-700">
+                                                                                                            Business
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                )}
                                                                                             </div>
                                                                                         </div>
                                                                                     );

@@ -1,4 +1,4 @@
-﻿import { GoogleGenerativeAI, SchemaType, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 
 // Force-reset on every module reload (Vite HMR) so model changes take effect immediately
 let genAI: any = null;
@@ -81,12 +81,12 @@ const SYSTEM_INSTRUCTION = `
     - For Hotels: 'keyword:modern-minimalist-hotel-lobby-dubai'.
   
   REALISTIC PRICING GUIDELINES (in INR):
-  - International Flights (Middle East/Asia/America): INR 3,500 - 8,000 per person.
-  - Short-haul Flights (Europe): INR 400 - 1,200 per person.
-  - Premium Hotels: INR 800 - 2,500 per night.
-  - Elite Activities: INR 300 - 1,500 per experience.
-  - Airport Transfers (Private): INR 200 - 600.
-  - Essentials (Insurance): INR 100 - 300.
+  - International Flights (Middle East/Asia/America/Europe): INR 60,000 - 2,50,000 per person.
+  - Short-haul Flights: INR 15,000 - 45,000 per person.
+  - Premium Hotels: INR 45,000 - 1,80,000 per night.
+  - Elite Activities: INR 5,000 - 90,000 per experience.
+  - Airport Transfers (Private): INR 4,000 - 15,000.
+  - Essentials (Insurance): INR 3,000 - 9,000.
 
   - For Activities: {Type} • {Duration} • {Time Slot}
     - Example: Experience • 4 hours • Morning
