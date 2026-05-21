@@ -78,6 +78,9 @@ export interface AIItinerary {
     time: string;
     description: string;
     consensus?: string[];
+    locationName?: string;
+    lat?: number;
+    lng?: number;
   }[];
 }
 
@@ -97,6 +100,7 @@ export interface Curation {
   origin?: string;
   destination: Destination;
   itinerary: AIItinerary[];
+  itineraryDays?: AIItinerary[];   // AI-generated itinerary with lat/lng/locationName per event
   travelers: number;
   status: 'draft' | 'partially_booked' | 'fully_booked';
   startDate?: string;

@@ -21,8 +21,30 @@ import BundleBookingView from './BundleBookingView';
 import { generateAIItinerary } from '../services/gemini';
 import { speakText } from '../services/speechService';
 import SafeImage from './SafeImage';
+import ItineraryMapComponent from './ItineraryMap';
+import { geocodeLandmark } from '../utils/geocoder';
 
-
+const parseItineraryDaysFromDayDescriptions = (dayDescs: any[]): import('../types').AIItinerary[] => {
+    if (!dayDescs || !Array.isArray(dayDescs)) return [];
+    return dayDescs.map(d => {
+        const dayMatch = d.dayGroup?.match(/\d+/);
+        const dayNumber = dayMatch ? parseInt(dayMatch[0], 10) : 1;
+        return {
+            day: dayNumber,
+            title: d.theme || `Day ${dayNumber}`,
+            events: (d.mapEvents || []).map((e: any) => {
+                const geo = geocodeLandmark(e.locationName);
+                return {
+                    time: e.time || '09:00 AM',
+                    description: e.description || '',
+                    locationName: e.locationName || 'Location',
+                    lat: geo ? geo.lat : (typeof e.lat === 'number' ? e.lat : undefined),
+                    lng: geo ? geo.lng : (typeof e.lng === 'number' ? e.lng : undefined)
+                };
+            })
+        };
+    });
+};
 
 // ─── Types ───────────────────────────────────────────────────────────
 interface ConversationalPlannerProps {
@@ -95,6 +117,13 @@ interface DayDescription {
     inclusions: string[];
     whyThisWorks: string;
     diningTips: DiningTip[];
+    mapEvents?: {
+        time: string;
+        description: string;
+        locationName: string;
+        lat: number;
+        lng: number;
+    }[];
 }
 
 interface TripMeta {
@@ -880,7 +909,8 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
     const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
     const [initialBookingStep, setInitialBookingStep] = useState<BookingStep>('details');
     const [experienceActiveFilter, setExperienceActiveFilter] = useState<'All' | 'Popular' | 'Adventure' | 'Culture' | 'Leisure'>('All');
-    const [activeTab, setActiveTab] = useState<'Itinerary' | 'Essentials'>('Itinerary');
+    const [activeTab, setActiveTab] = useState<'Itinerary' | 'Essentials' | 'Map'>('Itinerary');
+    const [itineraryDays, setItineraryDays] = useState<import('../types').AIItinerary[]>(initialCuration?.itinerary || []);
     const [essentialsCart, setEssentialsCart] = useState<Essential[]>([]);
     const [calendarMonth, setCalendarMonth] = useState(new Date()); // Initialize to current month
     const [calendarFromDate, setCalendarFromDate] = useState<Date | null>(null);
@@ -1173,9 +1203,13 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                 setSuggestions([]);
             }
 
+            const parsedItinerary = parseItineraryDaysFromDayDescriptions(result.dayDescriptions || []);
+
             if (result.dayDescriptions) {
                 setDayDescriptions(result.dayDescriptions);
             }
+            setItineraryDays(parsedItinerary);
+
             if (result.tripSummary || result.advanceBookItems) {
                 setTripMeta({
                     tripSummary: result.tripSummary || '',
@@ -1186,6 +1220,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             if (result.destinationName && curation) {
                 const updatedCuration: Curation = {
                     ...curation,
+                    itinerary: parsedItinerary,
                     destination: {
                         ...curation.destination,
                         name: result.destinationName,
@@ -1331,9 +1366,13 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                 setItinerary(result.itineraryItems);
             }
 
+            const parsedItinerary = parseItineraryDaysFromDayDescriptions(result.dayDescriptions || []);
+
             if (result.dayDescriptions) {
                 setDayDescriptions(result.dayDescriptions);
             }
+            setItineraryDays(parsedItinerary);
+
             if (result.tripSummary || result.advanceBookItems) {
                 setTripMeta({
                     tripSummary: result.tripSummary || '',
@@ -1354,7 +1393,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                     hotels: [],
                     activities: []
                 },
-                itinerary: [],
+                itinerary: parsedItinerary,
                 travelers: result.travelers || 1,
                 status: 'draft',
                 tripName: result.tripName || 'New Trip',
@@ -2728,16 +2767,16 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                     {/* Tabs Row */}
                                     <div className={`flex items-center justify-between ${isMobile ? 'gap-2' : 'mt-4 pt-4 border-t border-white/10'}`}>
                                         <div className="flex gap-1.5 overflow-x-auto scrollbar-hide py-1 flex-1">
-                                            {['Itinerary', 'Essentials'].map(tab => (
+                                            {(['Itinerary', 'Map', 'Essentials'] as const).map(tab => (
                                                 <button
                                                     key={tab}
-                                                    onClick={() => setActiveTab(tab as any)}
+                                                    onClick={() => setActiveTab(tab)}
                                                     className={`shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all ${activeTab === tab
                                                         ? 'glass-pill-active text-red-700 dark:text-white shadow-md font-black'
                                                         : 'glass-pill text-slate-600 dark:text-slate-400 hover:text-[#1a1a2e] dark:hover:text-white'
                                                         }`}
                                                 >
-                                                    {tab}
+                                                    {tab === 'Map' ? '🗺 Map' : tab}
                                                 </button>
                                             ))}
                                         </div>
@@ -2786,7 +2825,15 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
 
                                 {/* Itinerary Items */}
                                 <div className="flex-1 overflow-y-auto p-[0.6rem] px-6 scrollbar-hide bg-transparent">
-                                    {showMap ? (
+                                    {activeTab === 'Map' ? (
+                                        /* ── Real Mapbox interactive map ── */
+                                        <div className="w-full" style={{ height: '520px' }}>
+                                            <ItineraryMapComponent
+                                                itinerary={itineraryDays}
+                                                destinationName={destName}
+                                            />
+                                        </div>
+                                    ) : showMap ? (
                                         <div className="w-full h-full min-h-[500px] rounded-2xl overflow-hidden relative shadow-inner border border-slate-200 bg-slate-100 mb-8">
                                             <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=1600" className="w-full h-full object-cover grayscale opacity-80" alt="Map View" />
 

@@ -47,6 +47,29 @@ import ConversationalPlanner from './components/ConversationalPlanner';
 import OneTapAuthModal from './components/OneTapAuthModal';
 import OnboardingFlow from './components/OnboardingFlow';
 import { generateAIItinerary } from './services/gemini';
+import { geocodeLandmark } from './utils/geocoder';
+
+const parseItineraryDaysFromDayDescriptions = (dayDescs: any[]): AIItinerary[] => {
+  if (!dayDescs || !Array.isArray(dayDescs)) return [];
+  return dayDescs.map(d => {
+    const dayMatch = d.dayGroup?.match(/\d+/);
+    const dayNumber = dayMatch ? parseInt(dayMatch[0], 10) : 1;
+    return {
+      day: dayNumber,
+      title: d.theme || `Day ${dayNumber}`,
+      events: (d.mapEvents || []).map((e: any) => {
+        const geo = geocodeLandmark(e.locationName);
+        return {
+          time: e.time || '09:00 AM',
+          description: e.description || '',
+          locationName: e.locationName || 'Location',
+          lat: geo ? geo.lat : (typeof e.lat === 'number' ? e.lat : undefined),
+          lng: geo ? geo.lng : (typeof e.lng === 'number' ? e.lng : undefined)
+        };
+      })
+    };
+  });
+};
 
 // Dynamic Loading Phases for high-fidelity UX
 const LOADING_PHASES = [
@@ -222,9 +245,12 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
         defaultHotel = ALTERNATIVE_HOTELS[0];
       }
 
+      const parsedItinerary = parseItineraryDaysFromDayDescriptions(result?.dayDescriptions || []);
+
       const resultCuration: Curation = {
         ...skeletonCuration,
-        itinerary: result,
+        itinerary: parsedItinerary.length > 0 ? parsedItinerary : (result?.itineraryDays || result || []),
+        itineraryDays: parsedItinerary.length > 0 ? parsedItinerary : (result?.itineraryDays || []),
         flightBooking: defaultFlight ? {
           flightId: defaultFlight.id,
           bookingRef: 'MNL-FLT-' + Math.floor(1000 + Math.random() * 9000),
@@ -340,11 +366,14 @@ const DesktopApp: React.FC<{ user: UserProfile | null; setUser: (u: UserProfile 
 
     try {
       const result = await generateAIItinerary(targetName);
+      const parsedItinerary = parseItineraryDaysFromDayDescriptions(result?.dayDescriptions || []);
+
       const newCuration: Curation = {
         curationId: Math.random().toString(36).substr(2, 9).toUpperCase(),
         origin: originName,
         destination: mockDestTemplate,
-        itinerary: result,
+        itinerary: parsedItinerary.length > 0 ? parsedItinerary : (result?.itineraryDays || result || []),
+        itineraryDays: parsedItinerary.length > 0 ? parsedItinerary : (result?.itineraryDays || []),
         travelers: travelersCount,
         status: 'draft',
         startDate: formData?.fromDate || '2026-10-24',

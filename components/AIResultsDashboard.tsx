@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plane,
@@ -33,13 +33,15 @@ import {
   LayoutGrid,
   TrendingUp,
   Award,
-  ShieldCheck
+  ShieldCheck,
+  Map as MapIcon
 } from 'lucide-react';
 import { Destination, AIItinerary, Essential, Curation, Hotel, BookingStep, Activity, ExperienceBooking, Flight } from '../types';
 import { ESSENTIALS, ESSENTIALS_CATALOG } from '../mockData';
 import AIItineraryView from './AIItineraryView';
 import FlightBookingView from './FlightBookingView';
 import SafeImage from './SafeImage';
+import ItineraryMap from './ItineraryMap';
 
 interface AIResultsDashboardProps {
   curation: Curation;
@@ -105,6 +107,7 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
   const [showFlightTicket, setShowFlightTicket] = useState(false);
   const [localCuration, setLocalCuration] = useState<Curation>(curation);
   const [isConsensusSimulated, setIsConsensusSimulated] = useState(false);
+  const [activeMapDay, setActiveMapDay] = useState(1);
 
   // Group Consensus Logic
   const handleSimulateConsensus = () => {
@@ -692,10 +695,76 @@ const AIResultsDashboard: React.FC<AIResultsDashboardProps> = ({
         </motion.div >
       </div >
 
-      {/* MAGIC AI ITINERARY VISUALIZATION */}
-      <motion.div initial="hiddenBottom" animate="visible" variants={magicVariants} transition={{ delay: 0.9 }}>
-        <AIItineraryView itinerary={localCuration.itinerary} />
-      </motion.div>
+      {/* ═══════════════════════════════════════════════════════════════ */}
+      {/* TRAVEL NAVIGATOR: Dual-pane Map + Itinerary Timeline           */}
+      {/* ═══════════════════════════════════════════════════════════════ */}
+      <motion.section
+        initial="hiddenBottom"
+        animate="visible"
+        variants={magicVariants}
+        transition={{ delay: 0.9 }}
+        className="space-y-6"
+      >
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-5">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-red-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-red-600/20">
+              <MapIcon size={20} />
+            </div>
+            <div>
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">
+                Travel Navigator
+              </h3>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                Interactive day-by-day route map &amp; itinerary
+              </p>
+            </div>
+          </div>
+
+          {/* Day tabs – only show when we have itinerary data */}
+          {localCuration.itinerary.length > 0 && (
+            <div className="flex gap-2 flex-wrap">
+              {localCuration.itinerary.map(day => (
+                <button
+                  key={day.day}
+                  onClick={() => setActiveMapDay(day.day)}
+                  className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-200 ${
+                    activeMapDay === day.day
+                      ? 'bg-red-600 text-white shadow-lg shadow-red-600/25'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  }`}
+                >
+                  Day {day.day}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Dual-pane layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+          {/* Left pane – scrollable itinerary timeline */}
+          <div className="lg:col-span-5 xl:col-span-4">
+            <div className="max-h-[560px] overflow-y-auto pr-1 space-y-0
+                            scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700 scrollbar-track-transparent">
+              <AIItineraryView
+                itinerary={localCuration.itinerary}
+                activeDay={activeMapDay}
+                onDayChange={setActiveMapDay}
+              />
+            </div>
+          </div>
+
+          {/* Right pane – Mapbox canvas */}
+          <div className="lg:col-span-7 xl:col-span-8 h-[560px]">
+            <ItineraryMap
+              itinerary={localCuration.itinerary}
+              destinationName={destination.name}
+            />
+          </div>
+        </div>
+      </motion.section>
 
       {/* MODALS & PORTALS */}
       <AnimatePresence>

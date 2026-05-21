@@ -109,6 +109,13 @@ const SYSTEM_INSTRUCTION = `
     - 'inclusions': Array of 3-6 key experiences/sights included in this day
     - 'whyThisWorks': A thoughtful 1-2 sentence explanation of why this day's plan suits the travelers
     - 'diningTips': Array of 2-3 recommended restaurants for this day. Each restaurant should have a 'name', 'type' (cuisine), 'description' (concise 1-sentence highlight), 'priceRange' ('$', '$$', or '$$$'), and 'imageKeyword' (e.g., 'keyword:ristorante-roma').
+    - 'mapEvents': Array of 4-8 key stops for this day, EACH WITH PRECISE GPS COORDINATES:
+      - 'time': Time of the stop (e.g., '09:00 AM')
+      - 'description': 1 sentence about what happens here
+      - 'locationName': Exact venue or landmark name (e.g., 'Burj Khalifa', 'Dubai Mall', 'JBR Beach')
+      - 'lat': Precise decimal latitude using your geographic knowledge (e.g., 25.1972)
+      - 'lng': Precise decimal longitude (e.g., 55.2744)
+      NEVER omit mapEvents — every dayDescriptions entry MUST have 4-8 events with accurate lat/lng.
   - Also generate 'tripSummary': A 2-3 sentence paragraph summarizing the whole trip.
   - Also generate 'advanceBookItems': Array of items that should be booked in advance with ticket details.
 
@@ -225,9 +232,24 @@ const SCHEMA: any = {
               required: ["name", "type", "description", "priceRange", "imageKeyword"]
             },
             description: "2-3 recommended restaurants"
+          },
+          mapEvents: {
+            type: SchemaType.ARRAY,
+            description: "4-8 key stops for this day, each with precise GPS coordinates. ALWAYS populate this for every day.",
+            items: {
+              type: SchemaType.OBJECT,
+              properties: {
+                time:         { type: SchemaType.STRING, description: "Time of stop, e.g., '09:00 AM'" },
+                description:  { type: SchemaType.STRING, description: "1-sentence description of what happens here" },
+                locationName: { type: SchemaType.STRING, description: "Exact venue name, e.g., 'Burj Khalifa', 'Dubai Mall'" },
+                lat:          { type: SchemaType.NUMBER, description: "Precise decimal latitude, e.g., 25.1972" },
+                lng:          { type: SchemaType.NUMBER, description: "Precise decimal longitude, e.g., 55.2744" }
+              },
+              required: ["time", "description", "locationName", "lat", "lng"]
+            }
           }
         },
-        required: ["dayGroup", "theme", "description", "inclusions", "whyThisWorks", "diningTips"]
+        required: ["dayGroup", "theme", "description", "inclusions", "whyThisWorks", "diningTips", "mapEvents"]
       }
     },
     tripSummary: { type: SchemaType.STRING, description: "2-3 sentence paragraph summarizing the complete trip. Empty during discovery." },
