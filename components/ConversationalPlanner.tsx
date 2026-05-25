@@ -46,10 +46,68 @@ const parseItineraryDaysFromDayDescriptions = (dayDescs: any[]): import('../type
     });
 };
 
+const parseDuration = (dur: string): number => {
+    if (!dur) return 0;
+    const hMatch = dur.match(/(\d+)\s*h/i);
+    const mMatch = dur.match(/(\d+)\s*m/i);
+    const hours = hMatch ? parseInt(hMatch[1], 10) : 0;
+    const minutes = mMatch ? parseInt(mMatch[1], 10) : 0;
+    return hours * 60 + minutes;
+};
+
+const getFlightOptions = (alts: Flight[]) => {
+    if (!alts || alts.length === 0) return [];
+    
+    const pool = [...alts];
+    
+    // 1. Cheapest
+    pool.sort((a, b) => a.price - b.price);
+    const cheapest = pool[0];
+    
+    // 2. Fastest
+    const poolForFastest = pool.filter(f => f.id !== cheapest.id);
+    let fastest = poolForFastest.length > 0 ? poolForFastest.sort((a, b) => parseDuration(a.duration) - parseDuration(b.duration))[0] : cheapest;
+    
+    // 3. Best Choice
+    const poolForBest = pool.filter(f => f.id !== cheapest.id && f.id !== fastest.id);
+    let best = poolForBest.length > 0 ? poolForBest[0] : (pool.find(f => f.id !== cheapest.id) || cheapest);
+    
+    return [
+        { label: 'Cheapest', flight: cheapest, icon: Tag, colorClass: 'bg-emerald-55 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border-emerald-200' },
+        { label: 'Fastest', flight: fastest, icon: Zap, colorClass: 'bg-amber-55 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border-amber-200' },
+        { label: 'Best Choice', flight: best, icon: Sparkles, colorClass: 'bg-purple-55 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border-purple-200' }
+    ];
+};
+
+const getHotelOptions = (alts: Hotel[]) => {
+    if (!alts || alts.length === 0) return [];
+    
+    const pool = [...alts];
+    
+    // 1. Cheapest (Best Value)
+    pool.sort((a, b) => a.pricePerNight - b.pricePerNight);
+    const cheapest = pool[0];
+    
+    // 2. Premium Stay (highest price)
+    const poolForPremium = pool.filter(h => h.id !== cheapest.id);
+    const premium = poolForPremium.length > 0 ? poolForPremium.sort((a, b) => b.pricePerNight - a.pricePerNight)[0] : cheapest;
+    
+    // 3. Most Popular (highest rating)
+    const poolForPopular = pool.filter(h => h.id !== cheapest.id && h.id !== premium.id);
+    const popular = poolForPopular.length > 0 ? poolForPopular.sort((a, b) => b.rating - a.rating)[0] : (pool.find(h => h.id !== cheapest.id) || cheapest);
+    
+    return [
+        { label: 'Best Value', hotel: cheapest, icon: Tag, colorClass: 'bg-emerald-55 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border-emerald-200' },
+        { label: 'Most Popular', hotel: popular, icon: Star, colorClass: 'bg-purple-55 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border-purple-200' },
+        { label: 'Premium Stay', hotel: premium, icon: Sparkles, colorClass: 'bg-amber-55 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border-amber-200' }
+    ];
+};
+
 // ─── Types ───────────────────────────────────────────────────────────
 interface ConversationalPlannerProps {
     onGenerateTrip: (itinerary: any[]) => void;
     onOpenManual: () => void;
+    language?: string;
     onSyncCuration: (curation: Curation) => void;
     initialCuration?: Curation | null;
     viewMode?: 'conversational' | 'results-only';
@@ -517,7 +575,7 @@ const buildScript = (scenario: ScenarioId, user: UserProfile | null, branch?: st
                 aiMessage: {
                     id: 'f1',
                     sender: 'ai',
-                    content: `Italy family trip! 🍕 Safety is my priority. What are the ages of your ${childCount || 2} kids?`,
+                    content: "Italy family trip! 🍕 Safety is my priority. What are the ages of your kids?",
                     showAgeInput: true,
                 },
                 delay: 1500,
@@ -709,6 +767,11 @@ const buildScript = (scenario: ScenarioId, user: UserProfile | null, branch?: st
     }
 
     if (scenario === 'paris') {
+        const opening: ScenarioStep[] = [
+            { aiMessage: { id: 'p1', sender: 'ai', content: "Bonjour! I see you are planning a getaway to Paris. Let's design your perfect Parisian experience!" }, delay: 1500, autoAdvance: true },
+            { aiMessage: { id: 'p2', sender: 'ai', content: "I can curate a premium itinerary with a stay at **Ritz Paris** and flights on **Emirates Business**.\n\nShould we focus on culture & museums, fine dining, or a mix?", quickReplies: [{ label: '🏛️ Culture & Art', value: 'culture' }, { label: '🍷 Fine Dining', value: 'dining' }, { label: '✨ Curator\'s Mix', value: 'mix' }] }, delay: 2000, autoAdvance: false }
+        ];
+
         // FILTER REDUNDANT STEPS FOR PARIS SCENARIO
         let filteredSteps = [...opening];
 
@@ -930,6 +993,18 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
         });
     }, [childCount]);
     const [isMobile, setIsMobile] = useState(false);
+    const [showThreeOptions, setShowThreeOptions] = useState(true);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.ctrlKey && e.altKey && e.key.toLowerCase() === 't') || (e.altKey && e.key.toLowerCase() === 't')) {
+                e.preventDefault();
+                setShowThreeOptions(prev => !prev);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
     const [mobileView, setMobileView] = useState<'chat' | 'itinerary'>('chat');
     const [isGenerating, setIsGenerating] = useState(false);
     const [dayDescriptions, setDayDescriptions] = useState<DayDescription[]>([]);
@@ -1523,6 +1598,62 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
             setActiveActivityAlternatives(alts as Activity[]);
         }
         setDrawerOpen(true);
+    };
+
+    const handleSelectAndBookAlternative = (item: ItineraryItem, selectedAlt: Flight | Hotel, alts: any[]) => {
+        setItinerary(prev => prev.map(it => {
+            if (it.id === item.id) {
+                if (item.type === 'flight') {
+                    const flight = selectedAlt as Flight;
+                    return {
+                        ...it,
+                        title: `${flight.airline} ${flight.id}`,
+                        subtitle: `${flight.originIata || 'DXB'} → ${flight.destinationIata || 'LHR'} • ${flight.departureTime} → ${flight.arrivalTime} • ${flight.duration}`,
+                        price: flight.price,
+                        image: flight.airlineLogo,
+                        flightRef: flight
+                    };
+                } else if (item.type === 'hotel') {
+                    const hotel = selectedAlt as Hotel;
+                    const dayMatch = item.subtitle.match(/Day\s*\d+\s*-\s*Day\s*(\d+)/i);
+                    const nights = dayMatch ? parseInt(dayMatch[1], 10) : 7;
+                    return {
+                        ...it,
+                        title: hotel.name,
+                        subtitle: `${hotel.address?.split(',')[0] || 'Premium Stay'} • Rating: ${hotel.rating}`,
+                        price: hotel.pricePerNight * nights,
+                        image: hotel.imageUrl,
+                        hotelRef: hotel
+                    };
+                }
+            }
+            return it;
+        }));
+
+        setTimeout(() => {
+            const dayMatch = item.subtitle.match(/Day\s*\d+\s*-\s*Day\s*(\d+)/i);
+            const nights = dayMatch ? parseInt(dayMatch[1], 10) : 7;
+            const updatedItem = {
+                ...item,
+                ...(item.type === 'flight' 
+                    ? { 
+                        title: `${(selectedAlt as Flight).airline} ${(selectedAlt as Flight).id}`,
+                        subtitle: `${(selectedAlt as Flight).originIata || 'DXB'} → ${(selectedAlt as Flight).destinationIata || 'LHR'} • ${(selectedAlt as Flight).departureTime} → ${(selectedAlt as Flight).arrivalTime} • ${(selectedAlt as Flight).duration}`,
+                        price: (selectedAlt as Flight).price, 
+                        image: (selectedAlt as Flight).airlineLogo,
+                        flightRef: selectedAlt as Flight 
+                      } 
+                    : { 
+                        title: (selectedAlt as Hotel).name, 
+                        subtitle: `${(selectedAlt as Hotel).address?.split(',')[0] || 'Premium Stay'} • Rating: ${(selectedAlt as Hotel).rating}`,
+                        price: (selectedAlt as Hotel).pricePerNight * nights, 
+                        image: (selectedAlt as Hotel).imageUrl,
+                        hotelRef: selectedAlt as Hotel 
+                      }
+                )
+            };
+            handleBookItem(updatedItem, 'details', alts);
+        }, 50);
     };
 
     const handleBookingComplete = (details: any) => {
@@ -2767,18 +2898,36 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                     {/* Tabs Row */}
                                     <div className={`flex items-center justify-between ${isMobile ? 'gap-2' : 'mt-4 pt-4 border-t border-white/10'}`}>
                                         <div className="flex gap-1.5 overflow-x-auto scrollbar-hide py-1 flex-1">
-                                            {(['Itinerary', 'Map', 'Essentials'] as const).map(tab => (
-                                                <button
-                                                    key={tab}
-                                                    onClick={() => setActiveTab(tab)}
-                                                    className={`shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all ${activeTab === tab
-                                                        ? 'glass-pill-active text-red-700 dark:text-white shadow-md font-black'
-                                                        : 'glass-pill text-slate-600 dark:text-slate-400 hover:text-[#1a1a2e] dark:hover:text-white'
-                                                        }`}
-                                                >
-                                                    {tab === 'Map' ? '🗺 Map' : tab}
-                                                </button>
-                                            ))}
+                                            {(['Itinerary', 'Map', 'Essentials'] as const).map(tab => {
+                                                // Map option is disabled and hidden for now as per requirements
+                                                if (tab === 'Map') return null;
+                                                return (
+                                                    <button
+                                                        key={tab}
+                                                        onClick={() => setActiveTab(tab)}
+                                                        className={`shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all ${activeTab === tab
+                                                            ? 'glass-pill-active text-red-700 dark:text-white shadow-md font-black'
+                                                            : 'glass-pill text-slate-600 dark:text-slate-400 hover:text-[#1a1a2e] dark:hover:text-white'
+                                                            }`}
+                                                    >
+                                                        {tab}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                        <div className="flex items-center gap-2 mr-2">
+                                            <button
+                                                onClick={() => setShowThreeOptions(prev => !prev)}
+                                                className={`shrink-0 px-3 py-1.5 rounded-xl text-[10px] font-black transition-all flex items-center gap-1.5 border shadow-sm active:scale-95
+                                                    ${showThreeOptions 
+                                                        ? 'bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-400 border-purple-250 dark:border-purple-900 shadow-purple-50' 
+                                                        : 'bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'
+                                                    }`}
+                                                title="Keyboard Shortcut: Alt + T"
+                                            >
+                                                <Sparkles size={11} className={showThreeOptions ? 'text-purple-600 animate-pulse' : 'text-slate-400'} />
+                                                {showThreeOptions ? '✨ 3-Option Mode' : 'Single Option'}
+                                            </button>
                                         </div>
                                         {isMobile && bookedCount > 0 && (
                                             <span className="text-[9px] font-black text-emerald-400 glass-pill px-2 py-1 rounded-lg uppercase tracking-wider">
@@ -3235,6 +3384,169 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                                                                 {item.title} — {item.subtitle.split(' • ')[1] || 'All Day'}
                                                                                             </p>
                                                                                         </div>
+                                                                                    ) : (showThreeOptions && !item.booked && (item.type === 'flight' || item.type === 'hotel')) ? (
+                                                                                        /* Render 3 Options Layout */
+                                                                                        <div className="bg-white dark:bg-slate-950/40 rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-lg space-y-4">
+                                                                                            {item.type === 'flight' ? (
+                                                                                                /* Render Flight 3 Cards */
+                                                                                                <div className="space-y-3 w-full">
+                                                                                                    {/* Label Row */}
+                                                                                                    <div className="flex items-center justify-between">
+                                                                                                        <div className="flex items-center gap-2">
+                                                                                                            <Plane size={14} className="text-slate-500 dark:text-slate-400" />
+                                                                                                            <span className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold">Recommended Flight Options</span>
+                                                                                                        </div>
+                                                                                                        {renderBadge()}
+                                                                                                    </div>
+                                                                                                    
+                                                                                                    {/* Grid of 3 options */}
+                                                                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
+                                                                                                        {getFlightOptions(alts as Flight[]).map(({ label, flight, icon: Icon }) => {
+                                                                                                            const isSelected = item.flightRef?.id === flight.id;
+                                                                                                            return (
+                                                                                                                <div 
+                                                                                                                    key={flight.id}
+                                                                                                                    onClick={() => handleSelectAndBookAlternative(item, flight, alts)}
+                                                                                                                    className={`flex flex-col justify-between p-4 rounded-2xl border transition-all cursor-pointer hover:shadow-lg hover:-translate-y-0.5 relative group
+                                                                                                                        ${isSelected 
+                                                                                                                            ? 'bg-red-50/20 dark:bg-red-950/20 border-red-500 shadow-sm' 
+                                                                                                                            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-red-300'
+                                                                                                                        }`}
+                                                                                                                >
+                                                                                                                    {/* Label Tag */}
+                                                                                                                    <div className="absolute -top-2.5 left-3 flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border shadow-sm bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800">
+                                                                                                                        <Icon size={9} className="text-red-600" />
+                                                                                                                        <span className="text-slate-700 dark:text-slate-300">{label}</span>
+                                                                                                                    </div>
+
+                                                                                                                    <div className="mt-2 space-y-3">
+                                                                                                                        {/* Airline */}
+                                                                                                                        <div className="flex items-center gap-2">
+                                                                                                                            <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white p-1.5 shadow-inner shrink-0">
+                                                                                                                                <SafeImage src={flight.airlineLogo} alt={flight.airline} className="w-full h-full object-contain" category="flight" />
+                                                                                                                            </div>
+                                                                                                                            <div className="min-w-0">
+                                                                                                                                <p className="text-xs font-black text-slate-900 dark:text-white leading-tight truncate">{flight.airline}</p>
+                                                                                                                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{flight.id}</p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+
+                                                                                                                        {/* Connection Times */}
+                                                                                                                        <div className="flex items-center justify-between text-center gap-1 bg-slate-50/55 dark:bg-slate-900/50 p-2 rounded-xl border border-slate-100 dark:border-slate-800">
+                                                                                                                            <div>
+                                                                                                                                <p className="text-xs font-black text-slate-900 dark:text-white">{flight.departureTime.split(' ')[0]}</p>
+                                                                                                                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{flight.originIata || 'DXB'}</p>
+                                                                                                                            </div>
+                                                                                                                            <div className="flex-1 flex flex-col items-center px-1">
+                                                                                                                                <span className="text-[7px] font-black text-slate-450 uppercase tracking-tighter leading-none">{flight.duration}</span>
+                                                                                                                                <div className="w-full h-px bg-slate-200 dark:bg-slate-800 my-1 relative">
+                                                                                                                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-red-400" />
+                                                                                                                                </div>
+                                                                                                                                <span className="text-[7px] font-black uppercase tracking-widest text-emerald-500 leading-none">Non-stop</span>
+                                                                                                                            </div>
+                                                                                                                            <div>
+                                                                                                                                <p className="text-xs font-black text-slate-900 dark:text-white">{flight.arrivalTime.split(' ')[0]}</p>
+                                                                                                                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{flight.destinationIata || 'LHR'}</p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+
+                                                                                                                    {/* Pricing & Booking */}
+                                                                                                                    <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-1">
+                                                                                                                        <div>
+                                                                                                                            <span className="text-[7px] font-black text-slate-400 uppercase tracking-widest block leading-none mb-0.5">Per Adult</span>
+                                                                                                                            <p className="text-xs font-black text-slate-900 dark:text-white tracking-tight">INR {flight.price.toLocaleString()}</p>
+                                                                                                                        </div>
+                                                                                                                        <button className="text-[9px] text-white font-bold flex items-center gap-0.5 px-2.5 py-1.5 bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm whitespace-nowrap active:scale-95">
+                                                                                                                            Book <ArrowRight size={8} />
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            );
+                                                                                                        })}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            ) : (
+                                                                                                /* Render Hotel 3 Cards */
+                                                                                                <div className="space-y-3 w-full">
+                                                                                                    {/* Label Row */}
+                                                                                                    <div className="flex items-center justify-between">
+                                                                                                        <div className="flex items-center gap-2">
+                                                                                                            <HotelIcon size={14} className="text-slate-500 dark:text-slate-400" />
+                                                                                                            <span className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold">Recommended Hotel Options</span>
+                                                                                                        </div>
+                                                                                                        {renderBadge()}
+                                                                                                    </div>
+
+                                                                                                    {/* Grid of 3 options */}
+                                                                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
+                                                                                                        {getHotelOptions(alts as Hotel[]).map(({ label, hotel, icon: Icon }) => {
+                                                                                                            const isSelected = item.hotelRef?.id === hotel.id;
+                                                                                                            return (
+                                                                                                                <div 
+                                                                                                                    key={hotel.id}
+                                                                                                                    onClick={() => handleSelectAndBookAlternative(item, hotel, alts)}
+                                                                                                                    className={`flex flex-col justify-between p-4 rounded-2xl border transition-all cursor-pointer hover:shadow-lg hover:-translate-y-0.5 relative group
+                                                                                                                        ${isSelected 
+                                                                                                                            ? 'bg-red-50/20 dark:bg-red-950/20 border-red-500 shadow-sm' 
+                                                                                                                            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-red-300'
+                                                                                                                        }`}
+                                                                                                                >
+                                                                                                                    {/* Label Tag */}
+                                                                                                                    <div className="absolute -top-2.5 left-3 flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border shadow-sm bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800">
+                                                                                                                        <Icon size={9} className="text-amber-500 fill-amber-400" />
+                                                                                                                        <span className="text-slate-700 dark:text-slate-305">{label}</span>
+                                                                                                                    </div>
+
+                                                                                                                    <div className="mt-2 space-y-3">
+                                                                                                                        {/* Image */}
+                                                                                                                        <div className="relative w-full h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0">
+                                                                                                                            <SafeImage src={hotel.imageUrl} category="hotel" alt={hotel.name} className="w-full h-full object-cover" />
+                                                                                                                            <div className="absolute bottom-1 right-1 bg-black/60 backdrop-blur px-1 py-0.5 rounded flex items-center gap-0.5 text-white">
+                                                                                                                                <Star size={8} className="text-amber-400 fill-amber-400" />
+                                                                                                                                <span className="text-[8px] font-black">{hotel.rating}</span>
+                                                                                                                            </div>
+                                                                                                                        </div>
+
+                                                                                                                        {/* Hotel Info */}
+                                                                                                                        <div className="min-w-0">
+                                                                                                                            <h4 className="text-xs font-black text-slate-900 dark:text-white leading-tight line-clamp-1 group-hover:text-red-650 transition-colors">{hotel.name}</h4>
+                                                                                                                            <div className="flex items-center gap-1 mt-1 text-[8px] text-slate-400 font-medium">
+                                                                                                                                <MapPin size={8} className="text-slate-400 shrink-0" />
+                                                                                                                                <span className="truncate">{hotel.address?.split(',')[0] || 'Prime Location'}</span>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+
+                                                                                                                    {/* Pricing & Booking */}
+                                                                                                                    <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-1">
+                                                                                                                        <div>
+                                                                                                                            <span className="text-[7px] font-black text-slate-400 uppercase tracking-widest block leading-none mb-0.5">Per Night</span>
+                                                                                                                            <p className="text-xs font-black text-slate-900 dark:text-white tracking-tight">INR {hotel.pricePerNight.toLocaleString()}</p>
+                                                                                                                        </div>
+                                                                                                                        <button className="text-[9px] text-white font-bold flex items-center gap-0.5 px-2.5 py-1.5 bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm whitespace-nowrap active:scale-95">
+                                                                                                                            Book <ArrowRight size={8} />
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            );
+                                                                                                        })}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            )}
+
+                                                                                            {/* Explore alternatives Button at the bottom */}
+                                                                                            {hasAlts && (
+                                                                                                <div className="flex justify-end pt-1 border-t border-slate-100 dark:border-slate-800">
+                                                                                                    <button
+                                                                                                        onClick={(e) => { e.stopPropagation(); handleBookItem(item, 'search', alts); }}
+                                                                                                        className="text-[10px] text-red-650 font-black flex items-center gap-1 transition-all px-3 py-1.5 rounded-xl bg-red-50 dark:bg-red-950/20 hover:bg-red-100 dark:hover:bg-red-950/40 border border-red-100 dark:border-red-900 shadow-sm hover:shadow active:scale-95 group"
+                                                                                                    >
+                                                                                                        <RefreshCw size={10} className="group-hover:rotate-180 transition-transform duration-500" /> Explore alternatives
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            )}
+                                                                                        </div>
                                                                                     ) : (
                                                                                         <div
                                                                                             onClick={() => !item.booked && item.price > 0 && handleBookItem(item, 'details', alts)}
@@ -3501,7 +3813,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                             <FlightBookingView
                                                 curation={flightCuration}
                                                 flightAlternatives={activeFlightAlternatives}
-                                                initialStep={initialBookingStep}
+                                                initialStep={initialBookingStep as any}
                                                 onBookingComplete={handleBookingComplete}
                                                 onFlightSwap={(flight) => {
                                                     setItinerary(prev => prev.map(it => {
@@ -3530,7 +3842,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                             <HotelBookingView
                                                 curation={hotelCuration}
                                                 hotelAlternatives={activeHotelAlternatives}
-                                                initialStep={initialBookingStep}
+                                                initialStep={initialBookingStep as any}
                                                 onBookingComplete={handleBookingComplete}
                                                 onHotelSwap={(hotel) => {
                                                     setItinerary(prev => prev.map(it => {
@@ -3557,7 +3869,7 @@ const ConversationalPlanner: React.FC<ConversationalPlannerProps> = ({
                                                 curation={curation!}
                                                 activity={bookingItem.activityRef}
                                                 activityAlternatives={activeActivityAlternatives}
-                                                initialStep={initialBookingStep}
+                                                initialStep={initialBookingStep as any}
                                                 onComplete={handleBookingComplete}
                                                 onActivitySwap={(activity) => {
                                                     setItinerary(prev => {
